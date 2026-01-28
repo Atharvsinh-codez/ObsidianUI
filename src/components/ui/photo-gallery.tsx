@@ -204,7 +204,7 @@ const PhotoGallery = ({
 
   return (
     <div className="flex flex-col gap-6 h-full w-full items-center justify-center">
-      <h1 className="text-lg lg:text-xl">{title}</h1>
+      <h2 className="text-lg lg:text-xl">{title}</h2>
       <div className="relative h-full w-full overflow-y-hidden p-0">
         {vignette && <Vignette />}
         {selectedPhoto && (

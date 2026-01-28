@@ -7,24 +7,28 @@ import { MaskedAvatars } from "@/components/ui/masked-avatars";
 import GlassSearchBar from "@/components/mine/landing-page/glass-search-bar";
 import { SpotlightNavbar } from "@/components/ui/spotlight-navbar";
 import { GithubButton } from "@/components/github-button";
+import { useVisitorCount } from "@/hooks/use-visitor-count";
 
 export const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  // Removed state to prevent re-renders on every mouse move
   const lastUpdateRef = useRef<number>(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Throttled mouse move handler for better performance
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const now = Date.now();
-    if (now - lastUpdateRef.current < 32) return; // Throttle to ~30fps
-    lastUpdateRef.current = now;
+  const { count, loading } = useVisitorCount();
 
+  // Direct DOM update for best performance without re-renders
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+
+    // Throttle via requestAnimationFrame for smoother 60fps tracking
+    requestAnimationFrame(() => {
+      const rect = containerRef.current!.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      containerRef.current!.style.setProperty('--mouse-x', `${x}px`);
+      containerRef.current!.style.setProperty('--mouse-y', `${y}px`);
     });
   }, []);
 
@@ -43,10 +47,10 @@ export const HeroSection = () => {
         className="relative h-[calc(100vh-1rem)] md:h-[calc(100vh-2rem)] min-h-[550px] md:min-h-[600px] max-h-[900px] w-[96%] md:w-[98%] max-w-[1600px] flex flex-col items-center justify-center overflow-hidden rounded-[24px] md:rounded-[40px] transition-all duration-500 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
         style={{
           background: `
-            radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(0, 0, 0, 0.02), transparent 40%),
+            radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 0, 0, 0.02), transparent 40%),
             linear-gradient(to bottom, #ffffff 0%, #f9fafb 50%, #f6f7f9 100%)
           `,
-        }}
+        } as React.CSSProperties}
       >
         {/* Vertical Lines Pattern */}
         <div
@@ -132,7 +136,7 @@ export const HeroSection = () => {
                 ))}
                 <div className="border-t border-zinc-200 mt-2 pt-3">
                   <a
-                    href="https://github.com/obsidianui"
+                    href="https://github.com/Atharvsinh-codez/ObsidianUI"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 transition-colors font-medium"
@@ -208,7 +212,13 @@ export const HeroSection = () => {
                   className="flex flex-col"
                 >
                   <div className="flex items-center gap-1">
-                    <span className="text-sm font-semibold text-zinc-900">1000+</span>
+                    <span className="text-sm font-semibold text-zinc-900">
+                      {loading ? (
+                        <span className="inline-block w-8 h-4 bg-zinc-200 animate-pulse rounded"></span>
+                      ) : (
+                        <span>{count > 0 ? count.toLocaleString() + "+" : "1000+"}</span>
+                      )}
+                    </span>
                     <span className="text-sm text-zinc-600">developers</span>
                   </div>
                   <span className="text-xs text-zinc-500 font-medium">trust ObsidianUI</span>

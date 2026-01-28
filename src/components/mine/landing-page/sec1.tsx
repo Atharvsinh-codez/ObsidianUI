@@ -40,9 +40,9 @@ export const Sec1 = () => {
           className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
           style={{ y: backgroundY, opacity: backgroundOpacity }}
         >
-          <h1 className="text-[20vw] md:text-[15vw] lg:text-[12vw] font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-neutral-200 via-neutral-300 to-neutral-200 dark:from-neutral-800 dark:via-neutral-700 dark:to-neutral-800 whitespace-nowrap">
+          <div className="text-[20vw] md:text-[15vw] lg:text-[12vw] font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-neutral-200 via-neutral-300 to-neutral-200 dark:from-neutral-800 dark:via-neutral-700 dark:to-neutral-800 whitespace-nowrap">
             ObsidianUI
-          </h1>
+          </div>
         </motion.div>
 
         {/* Glass effect overlay */}

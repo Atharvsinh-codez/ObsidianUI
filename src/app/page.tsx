@@ -4,6 +4,7 @@ import { Sec1 } from "@/components/mine/landing-page/sec1";
 import { LandingPageGrid } from "@/components/mine/landing-page/landing-page-grid";
 import { VideoShowcaseGrid } from "@/components/mine/landing-page/video-showcase-grid";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
+import { FloatingTemplatesBadge } from "@/components/mine/landing-page/floating-templates-badge";
 
 const Page = () => {
     return (
@@ -22,6 +23,7 @@ const Page = () => {
                     />
 
                     <Sec1 />
+                    <FloatingTemplatesBadge />
                 </div>
             </SmoothScroll>
         </>

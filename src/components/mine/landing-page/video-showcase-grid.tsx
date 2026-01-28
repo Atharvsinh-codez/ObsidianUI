@@ -15,12 +15,12 @@ interface VideoDemo {
 }
 
 const videoDemos: VideoDemo[] = [
-    { id: 'apple-spotlight', name: 'Apple Spotlight', videoPath: '/demos/apple-spotlight.mp4', docPath: '/docs/apple-spotlight' },
-    { id: 'circle-menu', name: 'Circle Menu', videoPath: '/demos/circle-menu.mp4', docPath: '/docs/circle-menu' },
-    { id: 'eagle-vision', name: 'Eagle Vision', videoPath: '/demos/eagle-vision.mp4', docPath: '/docs/eagle-vision' },
-    { id: 'flip-scroll', name: 'Flip Scroll', videoPath: '/demos/flip-scroll.mp4', docPath: '/docs/flip-scroll' },
-    { id: 'leave-rating', name: 'Leave Rating', videoPath: '/demos/leave-rating.mp4', docPath: '/docs/leave-rating' },
-    { id: 'photo-gallery', name: 'Photo Gallery', videoPath: '/demos/photo-gallery.mp4', docPath: '/docs/photo-gallery' },
+    { id: 'apple-spotlight', name: 'Apple Spotlight', videoPath: 'https://cdn.obsidianui.dev/demos/apple-spotlight.mp4', docPath: '/docs/apple-spotlight' },
+    { id: 'circle-menu', name: 'Circle Menu', videoPath: 'https://cdn.obsidianui.dev/demos/circle-menu.mp4', docPath: '/docs/circle-menu' },
+    { id: 'eagle-vision', name: 'Eagle Vision', videoPath: 'https://cdn.obsidianui.dev/demos/eagle-vision.mp4', docPath: '/docs/eagle-vision' },
+    { id: 'flip-scroll', name: 'Flip Scroll', videoPath: 'https://cdn.obsidianui.dev/demos/flip-scroll.mp4', docPath: '/docs/flip-scroll' },
+    { id: 'leave-rating', name: 'Leave Rating', videoPath: 'https://cdn.obsidianui.dev/demos/leave-rating.mp4', docPath: '/docs/leave-rating' },
+    { id: 'photo-gallery', name: 'Photo Gallery', videoPath: 'https://cdn.obsidianui.dev/demos/photo-gallery.mp4', docPath: '/docs/photo-gallery' },
 ]
 
 export function VideoShowcaseGrid() {

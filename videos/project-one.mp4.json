@@ -1,0 +1,27 @@
+{
+    "status": "ready",
+    "originalFilePath": "videos\\project-one.mp4",
+    "provider": "mux",
+    "providerMetadata": {
+        "mux": {
+            "uploadId": "4gIYdSeS4qg00dD8mgtE32z015xeppyAiVpY02bgB4dNn00",
+            "assetId": "gkdenJtTXQNLAWNQF2BbGC7cShkEP3mpovgiCztAkeA",
+            "playbackId": "douTLfhlOThh95tbZdrKwYDGynkP2LG9lKiUbJ00X77Q"
+        }
+    },
+    "createdAt": 1768888840,
+    "duration": 41.192667,
+    "resolution": "1080p",
+    "aspectRatio": "16:9",
+    "sources": [
+        {
+            "src": "https://stream.mux.com/douTLfhlOThh95tbZdrKwYDGynkP2LG9lKiUbJ00X77Q.m3u8",
+            "type": "application/x-mpegURL"
+        },
+        {
+            "src": "https://image.mux.com/douTLfhlOThh95tbZdrKwYDGynkP2LG9lKiUbJ00X77Q/thumbnail.png?time=1",
+            "type": "image/png"
+        }
+    ],
+    "poster": "https://image.mux.com/douTLfhlOThh95tbZdrKwYDGynkP2LG9lKiUbJ00X77Q/thumbnail.png"
+}

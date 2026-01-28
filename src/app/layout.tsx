@@ -48,14 +48,7 @@ export const metadata: Metadata = {
   authors: [{ name: "ObsidianUI" }],
   creator: "ObsidianUI",
   publisher: "ObsidianUI",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/logo/bg-less.png", type: "image/png" },
-    ],
-    apple: "/logo/bg-less.png",
-    shortcut: "/logo/bg-less.png",
-  },
+
   manifest: "/manifest.json",
   openGraph: {
     type: "website",
