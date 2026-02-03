@@ -1,6 +1,8 @@
 "use client";
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { MaskedAvatars } from "@/components/ui/masked-avatars";
@@ -15,6 +17,14 @@ export const HeroSection = () => {
   // Removed state to prevent re-renders on every mouse move
   const lastUpdateRef = useRef<number>(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = mounted && resolvedTheme === "dark";
 
   const { count, loading } = useVisitorCount();
 
@@ -41,23 +51,26 @@ export const HeroSection = () => {
   ];
 
   return (
-    <div className="w-full flex justify-center items-center pt-2 md:pt-4 pb-8 md:pb-12 bg-[#f5f5f5] min-h-screen">
+    <div className="w-full flex justify-center items-center pt-2 md:pt-4 pb-8 md:pb-12 bg-[#f5f5f5] dark:bg-neutral-950 min-h-screen transition-colors duration-300">
       <div
         ref={containerRef}
         onMouseMove={handleMouseMove}
-        className="relative h-[calc(100vh-1rem)] md:h-[calc(100vh-2rem)] min-h-[550px] md:min-h-[600px] max-h-[900px] w-[96%] md:w-[98%] max-w-[1600px] flex flex-col items-center justify-center overflow-hidden rounded-[24px] md:rounded-[40px] transition-all duration-500 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+        className="relative h-[calc(100vh-1rem)] md:h-[calc(100vh-2rem)] min-h-[550px] md:min-h-[600px] max-h-[900px] w-[96%] md:w-[98%] max-w-[1600px] flex flex-col items-center justify-center overflow-hidden rounded-[24px] md:rounded-[40px] transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.3)]"
         style={{
-          background: `
-            radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 0, 0, 0.02), transparent 40%),
-            linear-gradient(to bottom, #ffffff 0%, #f9fafb 50%, #f6f7f9 100%)
-          `,
+          background: isDark
+            ? `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.03), transparent 40%),
+               linear-gradient(to bottom, #0a0a0a 0%, #0d0d0d 50%, #111111 100%)`
+            : `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 0, 0, 0.02), transparent 40%),
+               linear-gradient(to bottom, #ffffff 0%, #f9fafb 50%, #f6f7f9 100%)`,
         } as React.CSSProperties}
       >
         {/* Vertical Lines Pattern */}
         <div
-          className="absolute inset-0 opacity-[0.015] pointer-events-none"
+          className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03] pointer-events-none"
           style={{
-            backgroundImage: "linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)",
+            backgroundImage: isDark
+              ? "linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)"
+              : "linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)",
             backgroundSize: "80px 100%",
           }}
         />
@@ -77,7 +90,7 @@ export const HeroSection = () => {
             defaultActiveIndex={0}
             logo={
               <a href="/" className="flex items-center">
-                <img src="/logo/bg-less.png" alt="ObsidianUI" className="h-7 w-7 object-contain" />
+                <Image src="/logo/bg-less.png" alt="ObsidianUI" width={28} height={28} className="h-7 w-7 object-contain" />
               </a>
             }
           />
@@ -87,28 +100,28 @@ export const HeroSection = () => {
         <div className="absolute top-0 left-0 right-0 z-50 pt-4 px-4 flex md:hidden items-center justify-between">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
-            <img src="/logo/bg-less.png" alt="ObsidianUI" className="h-8 w-8 object-contain" />
-            <span className="font-semibold text-zinc-900 text-sm">ObsidianUI</span>
+            <Image src="/logo/bg-less.png" alt="ObsidianUI" width={32} height={32} className="h-8 w-8 object-contain" />
+            <span className="font-semibold text-zinc-900 dark:text-white text-sm">ObsidianUI</span>
           </a>
 
           {/* Hamburger Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-white/80 backdrop-blur-sm border border-zinc-200 shadow-sm"
+            className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm border border-zinc-200 dark:border-zinc-700 shadow-sm"
             aria-label="Toggle menu"
           >
             <div className="flex flex-col gap-1.5 items-center justify-center">
               <motion.span
                 animate={mobileMenuOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
-                className="w-5 h-0.5 bg-zinc-700 rounded-full block"
+                className="w-5 h-0.5 bg-zinc-700 dark:bg-zinc-300 rounded-full block"
               />
               <motion.span
                 animate={mobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-                className="w-5 h-0.5 bg-zinc-700 rounded-full block"
+                className="w-5 h-0.5 bg-zinc-700 dark:bg-zinc-300 rounded-full block"
               />
               <motion.span
                 animate={mobileMenuOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
-                className="w-5 h-0.5 bg-zinc-700 rounded-full block"
+                className="w-5 h-0.5 bg-zinc-700 dark:bg-zinc-300 rounded-full block"
               />
             </div>
           </button>
@@ -142,7 +155,7 @@ export const HeroSection = () => {
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 transition-colors font-medium"
                   >
-                    <img src="/logo/regem-logo.png" alt="Regem" className="w-5 h-5 object-contain" />
+                    <Image src="/logo/regem-logo.png" alt="Regem" width={20} height={20} className="w-5 h-5 object-contain" />
                     Regem
                   </a>
                   <a
@@ -167,7 +180,7 @@ export const HeroSection = () => {
           <a href="https://regem.in/" target="_blank" rel="noopener noreferrer" className="mt-1">
             <LiquidMetalButton
               size="xs"
-              icon={<div className="bg-white rounded-full p-0.5"><img src="/logo/regem-logo.png" alt="Regem" className="w-3.5 h-3.5 object-contain" /></div>}
+              icon={<div className="bg-white rounded-full p-0.5"><Image src="/logo/regem-logo.png" alt="Regem" width={14} height={14} className="w-3.5 h-3.5 object-contain" /></div>}
               metalConfig={{
                 colorBack: "#0066cc",
                 colorTint: "#66b3ff",
@@ -186,16 +199,16 @@ export const HeroSection = () => {
           {/* Left Column */}
           <div className="flex flex-col items-start justify-center w-full md:w-1/2 px-4 sm:px-6 py-8 md:p-12 md:pt-0 z-10 text-pretty">
             <div className="mb-4 md:mb-6">
-              <Badge variant="secondary" className="bg-zinc-100 text-zinc-900 hover:bg-zinc-200 border-zinc-200 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm backdrop-blur-md shadow-sm">
+              <Badge variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700 border-zinc-200 dark:border-zinc-700 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm backdrop-blur-md shadow-sm">
                 New Component every week
               </Badge>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 via-zinc-800 to-zinc-600 mb-4 md:mb-6 leading-[1.1]">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 via-zinc-800 to-zinc-600 dark:from-white dark:via-zinc-200 dark:to-zinc-400 mb-4 md:mb-6 leading-[1.1]">
               Design Less. <br /> Ship Better.
             </h1>
 
-            <h3 className="text-base sm:text-lg md:text-xl font-light tracking-tight md:hidden text-zinc-600 mb-6 md:mb-8 leading-relaxed">
+            <h3 className="text-base sm:text-lg md:text-xl font-light tracking-tight md:hidden text-zinc-600 dark:text-zinc-400 mb-6 md:mb-8 leading-relaxed">
               Spend less time designing and tweaking UI, and more time shipping reliable, visually refined interfaces.
             </h3>
 
@@ -223,7 +236,7 @@ export const HeroSection = () => {
                       <img
                         src={user.avatar}
                         alt={user.name}
-                        className="w-10 h-10 rounded-full border-2 border-white bg-white shadow-sm transform transition-transform duration-200 ease-out group-hover:-translate-y-2 group-hover:scale-110 group-hover:shadow-lg"
+                        className="w-10 h-10 rounded-full border-2 border-white dark:border-zinc-700 bg-white dark:bg-zinc-800 shadow-sm transform transition-transform duration-200 ease-out group-hover:-translate-y-2 group-hover:scale-110 group-hover:shadow-lg"
                         style={{ willChange: "transform" }}
                       />
                     </motion.div>
@@ -236,30 +249,30 @@ export const HeroSection = () => {
                   className="flex flex-col"
                 >
                   <div className="flex items-center gap-1">
-                    <span className="text-sm font-semibold text-zinc-900">
+                    <span className="text-sm font-semibold text-zinc-900 dark:text-white">
                       {loading ? (
-                        <span className="inline-block w-8 h-4 bg-zinc-200 animate-pulse rounded"></span>
+                        <span className="inline-block w-8 h-4 bg-zinc-200 dark:bg-zinc-700 animate-pulse rounded"></span>
                       ) : (
                         <span>{count > 0 ? count.toLocaleString() + "+" : "1000+"}</span>
                       )}
                     </span>
-                    <span className="text-sm text-zinc-600">developers</span>
+                    <span className="text-sm text-zinc-600 dark:text-zinc-400">developers</span>
                   </div>
-                  <span className="text-xs text-zinc-500 font-medium">trust ObsidianUI</span>
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">trust ObsidianUI</span>
                 </motion.div>
               </div>
 
-              <div className="flex items-center gap-3 text-xs text-zinc-500 font-medium border-t border-zinc-200 pt-3 mt-1">
+              <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 font-medium border-t border-zinc-200 dark:border-zinc-700 pt-3 mt-1">
                 <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
                   React
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
                   TypeScript
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500"></span>
                   Tailwind
                 </span>
               </div>
@@ -279,7 +292,7 @@ export const HeroSection = () => {
 
           {/* Right Column (Desktop) */}
           <div className="hidden md:flex flex-col items-start justify-center w-1/2 pl-0 p-12 z-10">
-            <h3 className="text-xl font-light tracking-tight text-zinc-600 mb-10 leading-relaxed max-w-lg">
+            <h3 className="text-xl font-light tracking-tight text-zinc-600 dark:text-zinc-400 mb-10 leading-relaxed max-w-lg">
               Spend less time designing and tweaking UI, and more time shipping reliable, visually refined interfaces.
             </h3>
             <div className="flex flex-col gap-8 w-full">
@@ -298,11 +311,11 @@ export const HeroSection = () => {
         {/* Large Background Text */}
         <div className="w-full h-[3vh] absolute md:bottom-12 bottom-2 sm:bottom-4 flex items-center justify-center pointer-events-none" aria-hidden="true">
           {/* Mobile version - smaller and hidden overflow */}
-          <span className="md:hidden text-[60px] sm:text-[100px] z-5 tracking-tighter text-center text-transparent bg-clip-text bg-gradient-to-r from-zinc-200/40 via-zinc-300/30 to-transparent select-none whitespace-nowrap">
+          <span className="md:hidden text-[60px] sm:text-[100px] z-5 tracking-tighter text-center text-transparent bg-clip-text bg-gradient-to-r from-zinc-200/40 via-zinc-300/30 to-transparent dark:from-zinc-700/50 dark:via-zinc-600/40 dark:to-transparent select-none whitespace-nowrap">
             ObsidianUI
           </span>
           {/* Desktop version - original styling */}
-          <span className="hidden md:block text-[230px] lg:text-[300px] z-5 tracking-tighter text-center text-transparent bg-clip-text bg-gradient-to-r from-zinc-200/40 via-zinc-300/30 to-transparent select-none">
+          <span className="hidden md:block text-[230px] lg:text-[300px] z-5 tracking-tighter text-center text-transparent bg-clip-text bg-gradient-to-r from-zinc-200/40 via-zinc-300/30 to-transparent dark:from-zinc-700/50 dark:via-zinc-600/40 dark:to-transparent select-none">
             ObsidianUI
           </span>
         </div>

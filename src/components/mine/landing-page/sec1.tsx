@@ -1,10 +1,20 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useTheme } from "next-themes";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal";
 
 export const Sec1 = () => {
   const { scrollYProgress } = useScroll();
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = mounted && resolvedTheme === "dark";
 
   // Parallax effect for background text
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
@@ -13,16 +23,20 @@ export const Sec1 = () => {
   return (
     <section className="w-full flex justify-center items-center py-12 bg-[#f5f5f5] dark:bg-neutral-950 min-h-screen">
       <div
-        className="relative h-[calc(100vh-6rem)] min-h-[600px] max-h-[900px] w-[98%] max-w-[1600px] flex flex-col items-center justify-center overflow-hidden rounded-[40px] transition-all duration-500 bg-white dark:bg-black shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+        className="relative h-[calc(100vh-6rem)] min-h-[600px] max-h-[900px] w-[98%] max-w-[1600px] flex flex-col items-center justify-center overflow-hidden rounded-[40px] transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.3)]"
         style={{
-          background: 'linear-gradient(to bottom, #ffffff 0%, #f9fafb 50%, #f6f7f9 100%)',
+          background: isDark
+            ? 'linear-gradient(to bottom, #0a0a0a 0%, #0d0d0d 50%, #111111 100%)'
+            : 'linear-gradient(to bottom, #ffffff 0%, #f9fafb 50%, #f6f7f9 100%)',
         }}
       >
         {/* Vertical Lines Pattern */}
         <div
-          className="absolute inset-0 opacity-[0.015] pointer-events-none"
+          className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03] pointer-events-none"
           style={{
-            backgroundImage: "linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)",
+            backgroundImage: isDark
+              ? "linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)"
+              : "linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px)",
             backgroundSize: "80px 100%",
           }}
         />
@@ -90,22 +104,37 @@ export const Sec1 = () => {
             transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            {/* Primary Button - Browse Components */}
+            {/* Primary Button - Browse Components with LiquidMetal effect in dark mode */}
             <Link href="/components">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="group relative overflow-hidden rounded-2xl bg-neutral-900 text-white px-8 py-4 font-semibold text-base transition-all duration-300 min-w-[220px] shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.3)]"
-              >
-                <span className="relative z-10">Browse Components</span>
-                {/* Shine effect on hover */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.6 }}
-                />
-              </motion.button>
+              {isDark ? (
+                <LiquidMetalButton
+                  size="md"
+                  metalConfig={{
+                    colorBack: "#ffffff",
+                    colorTint: "#e0e0e0",
+                    speed: 0.4,
+                    repetition: 4,
+                    distortion: 0.15,
+                  }}
+                >
+                  Browse Components
+                </LiquidMetalButton>
+              ) : (
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative overflow-hidden rounded-2xl bg-neutral-900 text-white px-8 py-4 font-semibold text-base transition-all duration-300 min-w-[220px] shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.3)]"
+                >
+                  <span className="relative z-10">Browse Components</span>
+                  {/* Shine effect on hover */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.6 }}
+                  />
+                </motion.button>
+              )}
             </Link>
 
             {/* Secondary Button - Docs */}

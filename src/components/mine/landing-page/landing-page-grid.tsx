@@ -297,7 +297,7 @@ export function LandingPageGrid({
             const middleColumnIndex = Math.floor(numColumns / 2)
 
             const columns: Element[][] = Array.from({ length: numColumns }, () => [])
-            gridFullItems.forEach((item: any, index: number) => {
+            gridFullItems.forEach((item: Element, index: number) => {
                 const columnIndex = index % numColumns
                 columns[columnIndex].push(item)
             })
@@ -361,7 +361,7 @@ export function LandingPageGrid({
     const gridItems = [...documentedComponents, ...documentedComponents].slice(0, 21)
 
     return (
-        <div className={cn("shadow relative overflow-hidden w-full", className)}
+        <div className={cn("shadow relative overflow-hidden w-full bg-white dark:bg-black", className)}
             style={{ '--grid-item-translate': '0px' } as React.CSSProperties}>
 
             {/* Center Text */}

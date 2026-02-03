@@ -1,7 +1,9 @@
 "use client"
 
-import { useState, useEffect, useCallback , useRef } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Home, User, Calendar, CreditCard, Menu, X, Sun, Moon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
@@ -75,7 +77,7 @@ const MobileThemeToggle = () => {
 }
 
 
-const Navbar = ({  className, ...props }: React.HTMLAttributes<HTMLElement> & { logo?: React.ReactNode }) => {
+const Navbar = ({ className, ...props }: React.HTMLAttributes<HTMLElement> & { logo?: React.ReactNode }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const navRef = useRef<HTMLElement | null>(null);
@@ -90,7 +92,7 @@ const Navbar = ({  className, ...props }: React.HTMLAttributes<HTMLElement> & { 
     right: [
       { label: "Playground", href: "/playground", icon: Calendar },
       // { label: "Pricing", href: "/pricing", icon: CreditCard }
-     
+
     ]
   }
 
@@ -143,9 +145,11 @@ const Navbar = ({  className, ...props }: React.HTMLAttributes<HTMLElement> & { 
               <div className="hidden md:flex shrink-0 items-center">
                 {props.logo || (
                   <Link href="/" className="transition-opacity hover:opacity-80">
-                    <img
+                    <Image
                       src="/logo/bg-less.png"
                       alt="Logo"
+                      width={32}
+                      height={32}
                       className="h-8 w-auto dark:invert rotate-180"
                     />
                   </Link>
@@ -165,9 +169,11 @@ const Navbar = ({  className, ...props }: React.HTMLAttributes<HTMLElement> & { 
               <div className="md:hidden flex justify-center shrink-0 mx-2 md:mx-4 mt-1">
                 {props.logo || (
                   <Link href="/" className="transition-opacity hover:opacity-80">
-                    <img
+                    <Image
                       src="/logo/bg-less.png"
                       alt="Logo"
+                      width={32}
+                      height={32}
                       className="h-8 w-auto dark:invert"
                     />
                   </Link>

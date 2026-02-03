@@ -20,15 +20,24 @@ export function ImagePile({ images, speed = 2 }: ImagePileProps) {
         return () => clearInterval(id);
     }, [images.length, speed]);
 
+    const [randomValues, setRandomValues] = useState<Array<{ x: number; y: number; rotation: number }>>([]);
+
+    useEffect(() => {
+        setRandomValues(images.map((_, i) => ({
+            x: Math.random() * 20,
+            y: Math.random() * 20,
+            rotation: i * (Math.random() * 1 + 2) - 2
+        })));
+    }, [images]);
+
     return (
         <div className="relative h-[200px] sm:h-[260px] md:h-[390px] lg:h-[450px] xl:h-[500px] w-[310px] sm:w-[500px] md:w-[725px] lg:w-[900px] xl:w-[1200px] overflow-visible">
             {images.map((image, i) => {
                 const isTop = topIndex === i;
                 const secondTopIndex = (topIndex + 2) % images.length;
                 const zIndex = isTop ? 100 : secondTopIndex ? 99 : images.length - i;
-                const y: number = Math.random() * 20;
-                const x: number = Math.random() * 20;
-                const rotation = i * (Math.random() * 1 + 2) - 2;
+                const values = randomValues[i] || { x: 0, y: 0, rotation: 0 };
+                const { x, y, rotation } = values;
 
                 return (
                     <motion.div

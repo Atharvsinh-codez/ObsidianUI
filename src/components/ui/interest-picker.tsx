@@ -247,7 +247,7 @@ const InterestPicker = ({
   showEmptySlot = false, // You can choose to show an empty slot for the selected interests
   onSubmit = async (interests: Interest[]) => {
     // You can pass your own onSubmit function here
-    console.log('Selected interests:', interests);
+
     await new Promise((resolve) => setTimeout(resolve, 4000));
   }
 }: {
