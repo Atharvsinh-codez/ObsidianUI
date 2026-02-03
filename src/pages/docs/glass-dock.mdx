@@ -19,10 +19,9 @@ A macOS-style dock with glassmorphism effect, smooth magnification animations, a
 
 <ComponentPreview
   component={
-    <div className="relative w-full h-[300px] rounded-lg overflow-hidden bg-white dark:bg-zinc-950 flex items-end justify-center pb-8">
-      <GlassDock items={demoItems} />
-    </div>
+    <GlassDock items={demoItems} />
   }
+  previewClassName="items-end pb-8"
   code={`import { GlassDock } from '@/components/ui/glass-dock'
 import { Home, Mail, Github, Linkedin, MapPin } from 'lucide-react'
 

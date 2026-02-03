@@ -28,9 +28,7 @@ Multiple logo sets that animate in/out while stacked on top of each other with a
 
 <ComponentPreview
   component={
-    <div className="relative w-full h-[300px] rounded-lg overflow-hidden bg-white dark:bg-zinc-950 flex items-center justify-center">
-      <StackedLogos logoGroups={demoLogoGroups} duration={10} />
-    </div>
+    <StackedLogos logoGroups={demoLogoGroups} logoWidth="60px" />
   }
   code={`import StackedLogos from '@/components/ui/stacked-logos'
 

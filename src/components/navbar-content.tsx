@@ -5,6 +5,7 @@ import { SpotlightNavbar } from "@/components/ui/spotlight-navbar";
 import { CommandMenu } from "@/components/command-menu";
 import { ModeToggle } from "@/components/mode-toggle";
 import { GitHubStarCounter } from "@/components/github-star-counter";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -85,16 +86,15 @@ export function NavbarContent({ activeIndex }: NavbarContentProps) {
                                     key={item.label}
                                     href={item.href}
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors font-medium ${
-                                        activeIndex === index 
-                                        ? "bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white" 
+                                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors font-medium ${activeIndex === index
+                                        ? "bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white"
                                         : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-neutral-800 hover:text-zinc-900 dark:hover:text-white"
-                                    }`}
+                                        }`}
                                 >
                                     {item.label}
                                 </Link>
                             ))}
-                            
+
                             <div className="border-t border-neutral-200 dark:border-neutral-800 mt-2 pt-3 flex flex-col gap-3">
                                 <div className="flex items-center justify-between px-4">
                                     <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Theme</span>
@@ -105,7 +105,7 @@ export function NavbarContent({ activeIndex }: NavbarContentProps) {
                                     <CommandMenu />
                                 </div>
                                 <div className="px-4 flex justify-center">
-                                     <GitHubStarCounter />
+                                    <GitHubStarCounter />
                                 </div>
                             </div>
                         </nav>
@@ -114,7 +114,21 @@ export function NavbarContent({ activeIndex }: NavbarContentProps) {
             </AnimatePresence>
 
             {/* Search, GitHub Stars & Theme Toggle - fixed top right (Desktop Only) */}
-            <div className="fixed top-4 right-4 hidden md:flex items-center gap-2 z-50">
+            <div className="fixed top-4 right-4 hidden md:flex items-center gap-3 z-50">
+                <a href="https://regem.in/" target="_blank" rel="noopener noreferrer" className="mt-1">
+                    <LiquidMetalButton
+                        size="xs"
+                        icon={<img src="/logo/regem-logo.png" alt="Regem" className="w-4 h-4 object-contain" />}
+                        metalConfig={{
+                            colorBack: "#0066cc",
+                            colorTint: "#66b3ff",
+                            speed: 0.5,
+                            distortion: 0.2
+                        }}
+                    >
+                        Regem
+                    </LiquidMetalButton>
+                </a>
                 <GitHubStarCounter />
                 <CommandMenu />
                 <ModeToggle />

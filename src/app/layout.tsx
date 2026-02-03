@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { Inter_Tight, Pixelify_Sans, Playfair_Display } from "next/font/google";
+import { Inter_Tight, Pixelify_Sans, Playfair_Display, Outfit, Six_Caps } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import Footer from "@/components/mine/landing-page/footer";
@@ -11,6 +11,19 @@ const interTight = Inter_Tight({
   variable: "--font-inter-tight",
   subsets: ["latin"],
   weight: ["400", "500", "700"],
+});
+
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700", "900"],
+});
+
+// Ultra-condensed font for animated text
+const sixCaps = Six_Caps({
+  variable: "--font-sixcaps",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 // Special font for headings
@@ -163,13 +176,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body
-        className={`${interTight.variable} ${pixelify.variable} ${playfair.variable} antialiased`}
+        className={`${interTight.variable} ${pixelify.variable} ${playfair.variable} ${outfit.variable} ${sixCaps.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ClickSpark

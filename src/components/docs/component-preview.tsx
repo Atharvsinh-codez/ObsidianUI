@@ -88,13 +88,13 @@ export function ComponentPreview({
 
             <div className="flex items-center justify-between gap-4">
                 {/* Tabs */}
-                <div className="relative inline-flex p-[4px] gap-1 rounded-lg bg-zinc-100/50 dark:bg-zinc-800/50 border border-zinc-200/50 dark:border-zinc-700/50 shadow-xs">
+                <div className="relative inline-flex p-1 gap-1 rounded-full bg-zinc-100/80 dark:bg-zinc-800/80 border border-zinc-200/50 dark:border-zinc-700/50 backdrop-blur-md">
                     {["preview", "code"].map((tab) => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab as "preview" | "code")}
                             className={cn(
-                                "relative flex items-center justify-center min-w-[80px] px-4 py-1.5 text-xs font-bold rounded-md transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] z-10 capitalize cursor-pointer",
+                                "relative flex items-center justify-center min-w-[80px] px-4 py-1.5 text-xs font-bold rounded-full transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] z-10 capitalize cursor-pointer",
                                 activeTab === tab
                                     ? "text-zinc-900 dark:text-zinc-100"
                                     : "text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
@@ -104,7 +104,7 @@ export function ComponentPreview({
                             {activeTab === tab && (
                                 <motion.div
                                     layoutId={`previewActiveTab-${uniqueId}`}
-                                    className="absolute inset-0 bg-white dark:bg-zinc-700/80 rounded-md -z-10 shadow-sm"
+                                    className="absolute inset-0 bg-white dark:bg-zinc-700/80 rounded-full -z-10 shadow-sm"
                                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                 />
                             )}
@@ -155,9 +155,9 @@ export function ComponentPreview({
                 </div>
             </div>
 
-            <div className="relative min-h-[450px] flex bg-zinc-50/50 dark:bg-zinc-900/20 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 transition-all">
-                {/* Grid Pattern Background */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808006_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+            <div className="relative min-h-[450px] flex bg-zinc-50/50 dark:bg-zinc-900/20 overflow-hidden rounded-3xl border border-white/20 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] transition-all duration-300">
+                {/* Refined Grid Pattern Background */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808006_1px,transparent_1px),linear-gradient(to_bottom,#80808006_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
                 <AnimatePresence mode="wait">
                     {activeTab === "preview" ? (

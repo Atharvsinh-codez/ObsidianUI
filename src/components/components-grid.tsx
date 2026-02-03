@@ -145,32 +145,34 @@ const sampleCarouselImages = [
 // Live component preview wrappers
 const LivePreviews: Record<string, React.ReactNode> = {
     "animated-tab-bar": (
-        <div className="w-full scale-[0.6] origin-center">
-            <AnimatedTabBar />
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="scale-[0.6] origin-center">
+                <AnimatedTabBar />
+            </div>
         </div>
     ),
     "creepy-button": (
-        <div className="scale-75">
+        <div className="w-full h-full flex items-center justify-center">
             <CreepyButton>Hover Me</CreepyButton>
         </div>
     ),
     "flip-text": (
-        <div className="scale-90">
+        <div className="w-full h-full flex items-center justify-center">
             <FlipText>ObsidianUI</FlipText>
         </div>
     ),
     "flip-fade-text": (
-        <div className="scale-75">
+        <div className="w-full h-full flex items-center justify-center">
             <FlipFadeText />
         </div>
     ),
     "glitch-text": (
-        <div className="bg-black p-4 rounded-lg">
-            <GlitchText className="text-xl">GLITCH</GlitchText>
+        <div className="w-full h-full flex items-center justify-center bg-black rounded-lg">
+            <GlitchText className="text-2xl">GLITCH</GlitchText>
         </div>
     ),
     "jelly-loader": (
-        <div className="scale-75">
+        <div className="w-full h-full flex items-center justify-center">
             <JellyLoader />
         </div>
     ),
@@ -185,32 +187,38 @@ const LivePreviews: Record<string, React.ReactNode> = {
         </div>
     ),
     "social-flip-button": (
-        <div className="scale-90">
+        <div className="w-full h-full flex items-center justify-center">
             <SocialFlipButton />
         </div>
     ),
     "masked-avatars": (
-        <div className="scale-50">
-            <MaskedAvatars />
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="scale-[0.6]">
+                <MaskedAvatars />
+            </div>
         </div>
     ),
     "spotlight-navbar": (
-        <div className="w-full scale-[0.5] origin-center">
-            <SpotlightNavbar items={[
-                { label: "Home", href: "/" },
-                { label: "Alerts", href: "/alerts" },
-                { label: "Profile", href: "/profile" },
-            ]} />
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="scale-[0.55] origin-center">
+                <SpotlightNavbar items={[
+                    { label: "Home", href: "/" },
+                    { label: "Alerts", href: "/alerts" },
+                    { label: "Profile", href: "/profile" },
+                ]} />
+            </div>
         </div>
     ),
     "glow-border-card": (
-        <div className="scale-[0.4] w-[280px]">
-            <GlowBorderCard>
-                <div className="p-6 text-center">
-                    <h3 className="font-bold text-lg">Glow Card</h3>
-                    <p className="text-sm opacity-70">Hover me</p>
-                </div>
-            </GlowBorderCard>
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="scale-[0.5]">
+                <GlowBorderCard>
+                    <div className="p-6 text-center">
+                        <h3 className="font-bold text-lg">Glow Card</h3>
+                        <p className="text-sm opacity-70">Hover me</p>
+                    </div>
+                </GlowBorderCard>
+            </div>
         </div>
     ),
     "liquid-ocean": (
@@ -219,18 +227,22 @@ const LivePreviews: Record<string, React.ReactNode> = {
         </div>
     ),
     "icon-wheel": (
-        <div className="scale-[0.4] w-full h-full flex items-center justify-center">
-            <IconWheel icons={sampleIcons} radius={100} />
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="scale-[0.5]">
+                <IconWheel icons={sampleIcons} radius={100} />
+            </div>
         </div>
     ),
     "stacked-logos": (
-        <div className="scale-75 w-full flex items-center justify-center">
+        <div className="w-full h-full flex items-center justify-center">
             <StackedLogos logoGroups={sampleLogoGroups} logoWidth="60px" />
         </div>
     ),
     "testimonials-card": (
-        <div className="scale-[0.5] w-full flex items-center justify-center">
-            <TestimonialsCard items={sampleTestimonials} width={280} showNavigation={false} />
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="scale-[0.55]">
+                <TestimonialsCard items={sampleTestimonials} width={280} showNavigation={false} />
+            </div>
         </div>
     ),
     "infinite-moving-cards": (
@@ -239,13 +251,17 @@ const LivePreviews: Record<string, React.ReactNode> = {
         </div>
     ),
     "interactive-book": (
-        <div className="scale-[0.4] flex items-center justify-center">
-            <InteractiveBook coverImage="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=200&h=300&fit=crop" pages={bookPages} />
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="scale-[0.45]">
+                <InteractiveBook coverImage="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=200&h=300&fit=crop" pages={bookPages} />
+            </div>
         </div>
     ),
     "glass-dock": (
-        <div className="w-full flex items-center justify-center scale-[0.6]">
-            <GlassDock items={dockItems} />
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="scale-[0.65]">
+                <GlassDock items={dockItems} />
+            </div>
         </div>
     ),
     "liquid-text": (
@@ -254,13 +270,13 @@ const LivePreviews: Record<string, React.ReactNode> = {
         </div>
     ),
     "pixelated-carousel": (
-        <div className="w-full h-full">
+        <div className="w-full h-full flex items-center justify-center overflow-hidden rounded-lg">
             <PixelatedCarousel images={sampleCarouselImages} pixelSize={50} />
         </div>
     ),
     "pixelated-image-trail": (
-        <div className="w-full h-full">
-            <PixelatedImageTrail className="h-full" />
+        <div className="w-full h-full flex items-center justify-center">
+            <PixelatedImageTrail className="h-full w-full" />
         </div>
     ),
     "staggered-grid": (
@@ -299,6 +315,7 @@ const allComponents = [
     { title: "Interactive Folder", href: "/docs/folder-preview", video: "https://cdn.obsidianui.dev/demos/interactive-folder.mp4", livePreview: null },
     { title: "Trading Cards", href: "/docs/testimonials-card", video: "https://cdn.obsidianui.dev/demos/trading-cards.mp4", livePreview: null },
     { title: "Glowing Scroll", href: "/docs/glowing-scroll-indicator", video: "https://cdn.obsidianui.dev/demos/glowing-dot-scroll-indicator.mp4", livePreview: null },
+    { title: "AI Input", href: "/docs/ai-input", video: "https://cdn.obsidianui.dev/demos/ai-input.mp4", livePreview: null },
     { title: "Stack Scroll", href: "/docs/scroll-effect", video: "https://cdn.obsidianui.dev/demos/stack-scroll.mp4", livePreview: null },
     // Page 2 - Live preview components
     { title: "Animated Tab Bar", href: "/docs/animated-tab-bar", video: null, livePreview: "animated-tab-bar" },

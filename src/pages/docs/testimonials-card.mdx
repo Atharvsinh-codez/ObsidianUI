@@ -15,10 +15,14 @@ export const demoItems = [
 An animated testimonial card stack with smooth 3D transitions between testimonials.
 
 <ComponentPreview
+  previewClassName="relative w-full h-[500px] rounded-lg overflow-hidden bg-white dark:bg-zinc-950 flex items-center justify-center"
   component={
-    <div className="relative w-full h-[500px] rounded-lg overflow-hidden bg-white dark:bg-zinc-950 flex items-center justify-center">
-      <TestimonialsCard items={demoItems} width={500} />
-    </div>
+    <TestimonialsCard
+      width={300}
+      showNavigation={false}
+      showCounter={false}
+      items={demoItems}
+    />
   }
   code={`import TestimonialsCard from '@/components/ui/testimonials-card'
 

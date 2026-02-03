@@ -7,6 +7,7 @@ import { MaskedAvatars } from "@/components/ui/masked-avatars";
 import GlassSearchBar from "@/components/mine/landing-page/glass-search-bar";
 import { SpotlightNavbar } from "@/components/ui/spotlight-navbar";
 import { GithubButton } from "@/components/github-button";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal";
 import { useVisitorCount } from "@/hooks/use-visitor-count";
 
 export const HeroSection = () => {
@@ -136,6 +137,15 @@ export const HeroSection = () => {
                 ))}
                 <div className="border-t border-zinc-200 mt-2 pt-3">
                   <a
+                    href="https://regem.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 transition-colors font-medium"
+                  >
+                    <img src="/logo/regem-logo.png" alt="Regem" className="w-5 h-5 object-contain" />
+                    Regem
+                  </a>
+                  <a
                     href="https://github.com/Atharvsinh-codez/ObsidianUI"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -152,8 +162,22 @@ export const HeroSection = () => {
           )}
         </AnimatePresence>
 
-        {/* GitHub Button - Top Right Inside Hero (Desktop only) */}
-        <div className="absolute top-6 right-6 z-50 hidden md:block">
+        {/* Regem & GitHub Buttons - Top Right Inside Hero (Desktop only) */}
+        <div className="absolute top-6 right-6 z-50 hidden md:flex items-center gap-3">
+          <a href="https://regem.in/" target="_blank" rel="noopener noreferrer" className="mt-1">
+            <LiquidMetalButton
+              size="xs"
+              icon={<img src="/logo/regem-logo.png" alt="Regem" className="w-4 h-4 object-contain" />}
+              metalConfig={{
+                colorBack: "#0066cc",
+                colorTint: "#66b3ff",
+                speed: 0.5,
+                distortion: 0.2
+              }}
+            >
+              Regem
+            </LiquidMetalButton>
+          </a>
           <GithubButton />
         </div>
 

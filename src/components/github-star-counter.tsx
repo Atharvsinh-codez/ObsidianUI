@@ -23,7 +23,7 @@ export function GitHubStarCounter() {
             href="https://github.com/Atharvsinh-codez/ObsidianUI"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 text-neutral-700 dark:text-neutral-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm transition-all cursor-pointer"
         >
             {/* GitHub Logo */}
             <svg
