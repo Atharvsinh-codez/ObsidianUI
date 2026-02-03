@@ -118,7 +118,7 @@ export function NavbarContent({ activeIndex }: NavbarContentProps) {
                 <a href="https://regem.in/" target="_blank" rel="noopener noreferrer" className="mt-1">
                     <LiquidMetalButton
                         size="xs"
-                        icon={<img src="/logo/regem-logo.png" alt="Regem" className="w-4 h-4 object-contain" />}
+                        icon={<div className="bg-white rounded-full p-0.5"><img src="/logo/regem-logo.png" alt="Regem" className="w-3.5 h-3.5 object-contain" /></div>}
                         metalConfig={{
                             colorBack: "#0066cc",
                             colorTint: "#66b3ff",
