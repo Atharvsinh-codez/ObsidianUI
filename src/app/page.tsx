@@ -5,10 +5,12 @@ import { LandingPageGrid } from "@/components/mine/landing-page/landing-page-gri
 import { VideoShowcaseGrid } from "@/components/mine/landing-page/video-showcase-grid";
 import { SmoothScroll } from "@/components/ui/smooth-scroll";
 import { FloatingTemplatesBadge } from "@/components/mine/landing-page/floating-templates-badge";
+import { MobileNotification } from "@/components/mine/landing-page/mobile-notification";
 
 const Page = () => {
     return (
         <>
+            <MobileNotification />
             <SmoothScroll>
                 <div className="overflow-hidden noScrollbar">
                     <HeroSection />

@@ -10,6 +10,57 @@ import { SpotlightNavbar } from "@/components/ui/spotlight-navbar";
 import { GithubButton } from "@/components/github-button";
 import { LiquidMetalButton } from "@/components/ui/liquid-metal";
 import { useVisitorCount } from "@/hooks/use-visitor-count";
+import { Sun, Moon } from "lucide-react";
+
+// Theme Toggle Button for Mobile Menu
+const ThemeToggleButton = () => {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const isDark = resolvedTheme === "dark";
+
+  return (
+    <button
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className="flex items-center justify-between w-full px-4 py-3 rounded-xl text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group"
+    >
+      <span className="font-medium text-sm group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors">
+        {isDark ? "Dark Appearance" : "Light Appearance"}
+      </span>
+
+      {/* Minimal Switch */}
+      <div className={`relative w-12 h-7 rounded-full transition-colors duration-300 ease-in-out ${isDark ? "bg-zinc-800 border border-zinc-700" : "bg-zinc-200 border border-zinc-200"}`}>
+        <motion.div
+          className="absolute top-0.5 bottom-0.5 left-0.5 w-6 h-6 rounded-full bg-white dark:bg-zinc-900 shadow-sm flex items-center justify-center z-10"
+          animate={{ x: isDark ? 20 : 0 }}
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={isDark ? "moon" : "sun"}
+              initial={{ scale: 0.5, rotate: -45, opacity: 0 }}
+              animate={{ scale: 1, rotate: 0, opacity: 1 }}
+              exit={{ scale: 0.5, rotate: 45, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {isDark ? (
+                <Moon className="w-3.5 h-3.5 text-zinc-400" />
+              ) : (
+                <Sun className="w-3.5 h-3.5 text-zinc-500" />
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </button>
+  );
+};
 
 export const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -134,7 +185,7 @@ export const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute top-16 left-4 right-4 z-50 md:hidden bg-white/95 backdrop-blur-xl rounded-2xl border border-zinc-200 shadow-xl overflow-hidden"
+              className="absolute top-16 left-4 right-4 z-50 md:hidden bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-xl overflow-hidden"
             >
               <nav className="flex flex-col p-4 gap-1">
                 {navItems.map((item, index) => (
@@ -142,32 +193,38 @@ export const HeroSection = () => {
                     key={item.label}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 transition-colors font-medium"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors font-medium"
                   >
                     {item.label}
                   </Link>
                 ))}
-                <div className="border-t border-zinc-200 mt-2 pt-3">
+                <div className="border-t border-zinc-200 dark:border-zinc-700 mt-2 pt-3">
                   <a
                     href="https://regem.in/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 transition-colors font-medium"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors font-medium"
                   >
-                    <img src="/logo/regem-logo.png" alt="Regem" className="w-5 h-5 object-contain" />
+                    <div className="bg-white rounded-md p-0.5">
+                      <img src="/logo/regem-logo.png" alt="Regem" className="w-5 h-5 object-contain" />
+                    </div>
                     Regem
                   </a>
                   <a
                     href="https://github.com/Atharvsinh-codez/ObsidianUI"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 transition-colors font-medium"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors font-medium"
                   >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-zinc-700 dark:text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
                     </svg>
                     GitHub
                   </a>
+                </div>
+                {/* Theme Toggle */}
+                <div className="border-t border-zinc-200 dark:border-zinc-700 mt-2 pt-3">
+                  <ThemeToggleButton />
                 </div>
               </nav>
             </motion.div>

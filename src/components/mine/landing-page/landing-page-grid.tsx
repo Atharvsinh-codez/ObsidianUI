@@ -44,7 +44,7 @@ const documentedComponents: ComponentPreview[] = [
                 <CreepyButton>Click Me</CreepyButton>
             </div>
         ),
-        docPath: '/docs/creepy-button'
+        docPath: '/components'
     },
     {
         id: 'flip-text',
@@ -57,7 +57,7 @@ const documentedComponents: ComponentPreview[] = [
                 </FlipText>
             </div>
         ),
-        docPath: '/docs/flip-text'
+        docPath: '/components'
     },
     {
         id: 'glass-dock',
@@ -75,7 +75,7 @@ const documentedComponents: ComponentPreview[] = [
                 />
             </div>
         ),
-        docPath: '/docs/glass-dock'
+        docPath: '/components'
     },
     {
         id: 'liquid-text',
@@ -86,7 +86,7 @@ const documentedComponents: ComponentPreview[] = [
                 <LiquidText text="Liquid" className="text-lg" />
             </div>
         ),
-        docPath: '/docs/liquid-text'
+        docPath: '/components'
     },
     {
         id: 'perspective-grid',
@@ -97,7 +97,7 @@ const documentedComponents: ComponentPreview[] = [
                 <PerspectiveGrid />
             </div>
         ),
-        docPath: '/docs/perspective-grid'
+        docPath: '/components'
     },
     {
         id: 'social-flip-button',
@@ -108,7 +108,7 @@ const documentedComponents: ComponentPreview[] = [
                 <SocialFlipButton />
             </div>
         ),
-        docPath: '/docs/social-flip-button'
+        docPath: '/components'
     },
     {
         id: 'spotlight-navbar',
@@ -125,7 +125,7 @@ const documentedComponents: ComponentPreview[] = [
                 />
             </div>
         ),
-        docPath: '/docs/spotlight-navbar'
+        docPath: '/components'
     },
     {
         id: 'masked-avatars',
@@ -136,7 +136,7 @@ const documentedComponents: ComponentPreview[] = [
                 <MaskedAvatars size={50} />
             </div>
         ),
-        docPath: '/docs/masked-avatars'
+        docPath: '/components'
     },
     {
         id: 'interactive-book',
@@ -157,14 +157,14 @@ const documentedComponents: ComponentPreview[] = [
                 />
             </div>
         ),
-        docPath: '/docs/interactive-book'
+        docPath: '/components'
     },
     // These components are complex, show icons instead
     {
         id: 'expandable-bento',
         name: 'Bento Grid',
         icon: <Grid3X3 className="w-8 h-8" />,
-        docPath: '/docs/expandable-bento-grid'
+        docPath: '/components'
     },
     {
         id: 'testimonials-card',
@@ -187,25 +187,25 @@ const documentedComponents: ComponentPreview[] = [
                 />
             </div>
         ),
-        docPath: '/docs/testimonials-card'
+        docPath: '/components'
     },
     {
         id: 'staggered-grid',
         name: 'Staggered Grid',
         icon: <Grid3X3 className="w-8 h-8" />,
-        docPath: '/docs/staggered-grid'
+        docPath: '/components'
     },
     {
         id: 'animated-hero',
         name: 'Animated Hero',
         icon: <Sparkles className="w-8 h-8" />,
-        docPath: '/docs/animated-hero'
+        docPath: '/components'
     },
     {
         id: 'pixelated-image-trail',
         name: 'Image Trail',
         icon: <MousePointerClick className="w-8 h-8" />,
-        docPath: '/docs/pixelated-image-trail'
+        docPath: '/components'
     },
 ]
 
