@@ -2,7 +2,6 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { MaskedAvatars } from "@/components/ui/masked-avatars";
@@ -90,7 +89,7 @@ export const HeroSection = () => {
             defaultActiveIndex={0}
             logo={
               <a href="/" className="flex items-center">
-                <Image src="/logo/bg-less.png" alt="ObsidianUI" width={28} height={28} className="h-7 w-7 object-contain" />
+                <img src="/logo/bg-less.png" alt="ObsidianUI" className="h-7 w-7 object-contain" />
               </a>
             }
           />
@@ -100,7 +99,7 @@ export const HeroSection = () => {
         <div className="absolute top-0 left-0 right-0 z-50 pt-4 px-4 flex md:hidden items-center justify-between">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
-            <Image src="/logo/bg-less.png" alt="ObsidianUI" width={32} height={32} className="h-8 w-8 object-contain" />
+            <img src="/logo/bg-less.png" alt="ObsidianUI" className="h-8 w-8 object-contain" />
             <span className="font-semibold text-zinc-900 dark:text-white text-sm">ObsidianUI</span>
           </a>
 
@@ -155,7 +154,7 @@ export const HeroSection = () => {
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 transition-colors font-medium"
                   >
-                    <Image src="/logo/regem-logo.png" alt="Regem" width={20} height={20} className="w-5 h-5 object-contain" />
+                    <img src="/logo/regem-logo.png" alt="Regem" className="w-5 h-5 object-contain" />
                     Regem
                   </a>
                   <a
@@ -180,7 +179,7 @@ export const HeroSection = () => {
           <a href="https://regem.in/" target="_blank" rel="noopener noreferrer" className="mt-1">
             <LiquidMetalButton
               size="xs"
-              icon={<div className="bg-white rounded-full p-0.5"><Image src="/logo/regem-logo.png" alt="Regem" width={14} height={14} className="w-3.5 h-3.5 object-contain" /></div>}
+              icon={<div className="bg-white rounded-full p-0.5"><img src="/logo/regem-logo.png" alt="Regem" className="w-3.5 h-3.5 object-contain" /></div>}
               metalConfig={{
                 colorBack: "#0066cc",
                 colorTint: "#66b3ff",

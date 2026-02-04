@@ -459,7 +459,7 @@ const FileInput = ({
       }
     }
 
-
+    console.log('file', file);
 
     setState('loading');
     try {
@@ -491,7 +491,7 @@ const FileInput = ({
       }
     }
 
-
+    console.log('file', file);
 
     setState('loading');
     try {

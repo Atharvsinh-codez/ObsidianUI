@@ -371,10 +371,8 @@ const ArdraFolder: React.FC<{
     sizes: typeof sizeConfig.md;
     label?: string;
 }> = ({ images, isHovered, colors, sizes, label }) => {
-    const [randomPositions, setRandomPositions] = React.useState<{ x: number; y: number; rotate: number }[]>([]);
-
-    React.useEffect(() => {
-        setRandomPositions(images.map((_, i) => {
+    const [randomPositions] = React.useState(() =>
+        images.map((_, i) => {
             const radius = 60 + Math.random() * 20;
             const angle = (2 * (i + 1) * Math.PI) / images.length;
             return {
@@ -382,8 +380,8 @@ const ArdraFolder: React.FC<{
                 y: Math.round(radius * Math.sin(angle)),
                 rotate: Math.random() * 6 - 3,
             };
-        }));
-    }, [images]);
+        })
+    );
 
     return (
         <div className="relative">

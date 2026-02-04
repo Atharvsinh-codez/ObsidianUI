@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { Github, Twitter } from "lucide-react";
 import { VisitorCount } from "@/components/ui/visitor-count";
 
@@ -13,11 +12,9 @@ const Footer = () => {
           <div className="flex flex-col gap-6">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2">
-              <Image
+              <img
                 src="/logo/bg-less.png"
                 alt="ObsidianUI"
-                width={32}
-                height={32}
                 className="h-8 w-8 object-contain"
               />
               <span className="text-xl font-bold text-neutral-900 dark:text-white">
@@ -56,11 +53,9 @@ const Footer = () => {
             <div className="flex flex-col items-start gap-2 mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-800">
               <Link href="https://regem.in" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                 <div className="bg-white rounded-md p-1">
-                  <Image
+                  <img
                     src="/logo/regem-logo.png"
                     alt="Regem"
-                    width={24}
-                    height={24}
                     className="h-6 w-6 object-contain"
                   />
                 </div>

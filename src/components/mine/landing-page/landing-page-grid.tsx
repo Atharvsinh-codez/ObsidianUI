@@ -297,7 +297,7 @@ export function LandingPageGrid({
             const middleColumnIndex = Math.floor(numColumns / 2)
 
             const columns: Element[][] = Array.from({ length: numColumns }, () => [])
-            gridFullItems.forEach((item: Element, index: number) => {
+            gridFullItems.forEach((item: any, index: number) => {
                 const columnIndex = index % numColumns
                 columns[columnIndex].push(item)
             })
