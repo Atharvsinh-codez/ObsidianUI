@@ -28,6 +28,7 @@ import PixelatedImageTrail from '@/components/ui/pixelated-image-trail'
 import { InfiniteMovingCards } from '@/components/ui/infinite-moving-cards'
 import InteractiveBook from '@/components/ui/interactive-book'
 import { GlassDock } from '@/components/ui/glass-dock'
+import { HoverImg } from '@/components/ui/hover-img'
 import { Home, Bookmark, Mail, Github } from 'lucide-react'
 
 // Lazy Video preview component with Intersection Observer
@@ -293,6 +294,22 @@ const LivePreviews: Record<string, React.ReactNode> = {
             </div>
         </div>
     ),
+    "hover-img": (
+        <div className="w-full h-full overflow-hidden rounded-lg flex items-center justify-center bg-zinc-950 relative">
+            <div className="w-full h-full flex items-center">
+                <HoverImg
+                    projects={[
+                        { title: "Shree Krishna", label: "Divine", imageSrc: "/hover-img/image-1.jpg" },
+                        { title: "Radha Krishna", label: "Love", imageSrc: "/hover-img/image-2.jpg" },
+                        { title: "Divine Love", label: "Eternal", imageSrc: "/hover-img/image-3.jpg" },
+                    ]}
+                    compact={true}
+                    isContained={true}
+                    className="!bg-transparent w-full"
+                />
+            </div>
+        </div>
+    ),
 }
 
 // All components with video previews or live components
@@ -300,7 +317,7 @@ const allComponents = [
     // Page 1 - Video components
     { title: "Apple Spotlight", href: "/docs/apple-spotlight", video: "https://cdn.obsidianui.dev/demos/apple-spotlight.mp4", livePreview: null },
     { title: "Circle Menu", href: "/docs/circle-menu", video: "https://cdn.obsidianui.dev/demos/circle-menu.mp4", livePreview: null },
-    { title: "Eagle Vision", href: "/docs/eagle-vision", video: "https://cdn.obsidianui.dev/demos/eagle-vision.mp4", livePreview: null },
+    { title: "Hover Image", href: "/docs/hover-img", video: null, livePreview: "hover-img" },
     { title: "Flip Scroll", href: "/docs/flip-scroll", video: "https://cdn.obsidianui.dev/demos/flip-scroll.mp4", livePreview: null },
     { title: "Flow Scroll", href: "/docs/flow-scroll", video: "https://cdn.obsidianui.dev/demos/flow-scroll.mp4", livePreview: null },
     { title: "Horizontal Scroll", href: "/docs/horizontal-scroll", video: "https://cdn.obsidianui.dev/demos/horizontal-scroll.mp4", livePreview: null },
@@ -335,6 +352,7 @@ const allComponents = [
     { title: "Infinite Moving Cards", href: "/docs/infinite-moving-cards", video: null, livePreview: "infinite-moving-cards" },
     { title: "Interactive Book", href: "/docs/interactive-book", video: null, livePreview: "interactive-book" },
     { title: "Staggered Grid", href: "/docs/staggered-grid", video: null, livePreview: "staggered-grid" },
+    { title: "Eagle Vision", href: "/docs/eagle-vision", video: "https://cdn.obsidianui.dev/demos/eagle-vision.mp4", livePreview: null },
 
     // Page 3 - More components with live previews
     { title: "Pixelated Carousel", href: "/docs/pixelated-carousel", video: null, livePreview: "pixelated-carousel" },
