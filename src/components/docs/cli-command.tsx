@@ -70,7 +70,7 @@ export function CLICommand({ componentName, className }: CLICommandProps) {
 
     const config = packageManagerConfig[activeTab];
 
-    // Parse command for syntax highlighting
+    // Parse command for syntax highlighting 
     const renderHighlightedCommand = () => {
         const command = config.command;
         const parts = command.split(" ");
