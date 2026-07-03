@@ -200,15 +200,15 @@ export const HeroSection = () => {
                 ))}
                 <div className="border-t border-zinc-200 dark:border-zinc-700 mt-2 pt-3">
                   <a
-                    href="https://regem.in/"
+                    href="https://seorun.tech/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors font-medium"
                   >
                     <div className="bg-white rounded-md p-0.5">
-                      <img src="/logo/regem-logo.png" alt="Regem" className="w-5 h-5 object-contain" />
+                      <img src="/logo/seorun.png" alt="seorun" className="w-5 h-5 object-contain" />
                     </div>
-                    Regem
+                    SeoRUN
                   </a>
                   <a
                     href="https://github.com/Atharvsinh-codez/ObsidianUI"
@@ -231,12 +231,12 @@ export const HeroSection = () => {
           )}
         </AnimatePresence>
 
-        {/* Regem & GitHub Buttons - Top Right Inside Hero (Desktop only) */}
+        {/* SeoRUN & GitHub Buttons - Top Right Inside Hero (Desktop only) */}
         <div className="absolute top-6 right-6 z-50 hidden md:flex items-center gap-3">
-          <a href="https://regem.in/" target="_blank" rel="noopener noreferrer" className="mt-1">
+          <a href="https://seorun.tech/" target="_blank" rel="noopener noreferrer" className="mt-1">
             <LiquidMetalButton
               size="xs"
-              icon={<div className="bg-white rounded-full p-0.5"><img src="/logo/regem-logo.png" alt="Regem" className="w-3.5 h-3.5 object-contain" /></div>}
+              icon={<div className="bg-white rounded-full p-0.5"><img src="/logo/seorun.png" alt="seorun" className="w-3.5 h-3.5 object-contain" /></div>}
               metalConfig={{
                 colorBack: "#0066cc",
                 colorTint: "#66b3ff",
@@ -244,7 +244,7 @@ export const HeroSection = () => {
                 distortion: 0.2
               }}
             >
-              Regem
+              SeoRUN
             </LiquidMetalButton>
           </a>
           <GithubButton />
