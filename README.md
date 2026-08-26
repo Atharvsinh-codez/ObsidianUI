@@ -74,6 +74,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## 🌟 Support
 
 If you like this project, give it a ⭐️ on [GitHub](https://github.com/Atharvsinh-codez/ObsidianUI)!
+last chance to dive in 2026 [Milliondollarinternet](https://milliondollarinternet.lol)!
 
 ---
 
