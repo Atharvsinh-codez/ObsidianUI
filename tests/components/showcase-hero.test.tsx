@@ -28,13 +28,14 @@ vi.mock("@/components/catalog/effect-preview", () => ({
 }));
 
 vi.mock("@/components/catalog/dashboard-shell-preview", () => ({ DashboardShellPreview: () => <div data-effect-preview="dashboard-shell" /> }));
+vi.mock("@/components/catalog/analytics-dashboard-preview", () => ({ AnalyticsDashboardPreview: () => <div data-effect-preview="analytics-dashboard" /> }));
 vi.mock("@/components/catalog/active-sessions-preview", () => ({ ActiveSessionsPreview: () => <div data-effect-preview="active-sessions" /> }));
 vi.mock("@/components/catalog/status-bars-preview", () => ({ StatusBarsPreview: () => <div data-effect-preview="status-bars" /> }));
 vi.mock("@/components/block/discover-button", () => ({ DiscoverButton: () => <div data-effect-preview="discover-button" /> }));
 
 import { ShowcaseHero } from "@/components/catalog/showcase-hero";
 
-const tour = ["dashboard-shell", "art-gallery", "active-sessions", "discover-button", "status-bars", "draggable-marquee", "text-stream"];
+const tour = ["dashboard-shell", "analytics-dashboard", "art-gallery", "active-sessions", "discover-button", "status-bars", "draggable-marquee", "text-stream"];
 
 describe("showcase component tour", () => {
   beforeEach(() => {
@@ -56,7 +57,7 @@ describe("showcase component tour", () => {
     expect(screen.queryByRole("link", { name: "Star on GitHub" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Explore Dashboard Shell" })).toHaveAttribute("href", "/docs/dashboard-shell");
     act(() => vi.advanceTimersByTime(7000));
-    expect(screen.getByRole("link", { name: "Explore Art Gallery" })).toHaveAttribute("href", "/docs/art-gallery");
+    expect(screen.getByRole("link", { name: "Explore Analytics Dashboard" })).toHaveAttribute("href", "/docs/analytics-dashboard");
   });
 
   it("shows the cards in tour order", () => {
@@ -86,7 +87,7 @@ describe("showcase component tour", () => {
     state.inView = true;
     rerender(<ShowcaseHero />);
     act(() => vi.advanceTimersByTime(7000));
-    expect(screen.getByRole("link", { name: "Explore Art Gallery" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Explore Analytics Dashboard" })).toBeInTheDocument();
   });
 
   it("keeps rotating while the showcase is hovered or its documentation link is focused", () => {
@@ -94,12 +95,12 @@ describe("showcase component tour", () => {
     const stage = container.querySelector(".showcase-stage-wrap")!;
     fireEvent.pointerEnter(stage);
     act(() => vi.advanceTimersByTime(7000));
-    const explore = screen.getByRole("link", { name: "Explore Art Gallery" });
+    const explore = screen.getByRole("link", { name: "Explore Analytics Dashboard" });
     expect(explore).toBeInTheDocument();
 
     fireEvent.focus(explore);
     act(() => vi.advanceTimersByTime(7000));
-    expect(screen.getByRole("link", { name: "Explore Active Sessions" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Explore Art Gallery" })).toBeInTheDocument();
   });
 
   it("does not advance through cards with reduced motion", () => {

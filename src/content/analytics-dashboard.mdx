@@ -1,0 +1,188 @@
+import { Dependencies } from '@/components/docs/component-installation'
+import { CLICommand } from '@/components/docs/cli-command'
+import { PropsTable } from '@/components/docs/props-table'
+import { ComponentPreview } from '@/components/docs/component-preview'
+import { AnalyticsDashboardPreview } from '@/components/catalog/analytics-dashboard-preview'
+
+# Analytics Dashboard
+
+A complete engineering analytics app in one component. It has an overview with metric cards, a commit chart, and top contributors, a searchable repository grid, a code review queue with status filters, and a settings page. Selecting a pull request opens a details panel with an assistant you can ask about it.
+
+Open the preview full screen to see the docked details panel. In containers narrower than 1180px the panel slides over the content, and below 760px the sidebar floats over the page.
+
+<ComponentPreview
+  className="analytics-dashboard-docs-preview"
+  expandable
+  frameClassName="h-[640px] overflow-hidden rounded-xl border"
+  component={<AnalyticsDashboardPreview />}
+  code={`'use client'
+
+import { AnalyticsDashboard } from '@/components/block/analytics-dashboard'
+
+export function Demo() {
+  return (
+    <div className="h-dvh">
+      <AnalyticsDashboard />
+    </div>
+  )
+}`}
+  previewClassName="p-0 sm:p-0"
+/>
+
+## Install using CLI
+
+<CLICommand componentName="analytics-dashboard" />
+
+## Usage
+
+```tsx copy
+import { AnalyticsDashboard } from '@/components/block/analytics-dashboard'
+
+<div className="h-dvh">
+  <AnalyticsDashboard />
+</div>
+```
+
+The dashboard fills its parent, so give the parent a height, such as `h-dvh` for a full page. Without a `data` prop it shows demo data, so you can see every page before connecting your own.
+
+## Your data
+
+Pass your team, metrics, repositories, and pull requests through `data`. Pull requests and activity refer to people by `handle`, and each person brings an avatar and a chart color:
+
+```tsx copy
+import { AnalyticsDashboard, type AnalyticsDashboardData } from '@/components/block/analytics-dashboard'
+
+const data: AnalyticsDashboardData = {
+  people: [
+    { handle: 'maya', avatar: '/avatars/maya.webp', color: '#f08a3c', role: 'Frontend' },
+    { handle: 'leo', avatar: '/avatars/leo.webp', color: '#9d8df5', role: 'Platform' },
+  ],
+  ranges: [
+    { id: 'week', label: 'Week', caption: 'Apr 13 – Apr 17, 2026' },
+    { id: 'month', label: 'Month', caption: 'March 20 – April 17, 2026' },
+  ],
+  kpis: {
+    week: [
+      { id: 'commits', label: 'Commits', icon: 'commit', value: '91', delta: 12, spark: [8, 11, 9, 14, 12, 16] },
+      { id: 'review', label: 'Avg. Review Time', icon: 'clock', value: '3.4h', delta: -18, lowerIsBetter: true, spark: [5.2, 4.9, 4.4, 3.8, 3.4] },
+    ],
+    month: [],
+  },
+  activity: {
+    week: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+      series: { maya: [7, 11, 9, 13, 10], leo: [5, 8, 4, 9, 5] },
+      lines: { maya: { added: 3400, removed: 2300 }, leo: { added: 2100, removed: 1400 } },
+    },
+    month: { labels: [], series: {}, lines: {} },
+  },
+  repositories: [],
+  pullRequests: [],
+}
+
+<AnalyticsDashboard
+  data={data}
+  brand={{ name: 'Acme Engineering' }}
+  user={{ name: 'maya', email: 'maya@acme.dev', avatar: '/avatars/maya.webp', role: 'Frontend · Admin' }}
+/>
+```
+
+`kpis` and `activity` are keyed by range id, so the range switcher on the overview swaps both. A metric's `value` is shown as written, so it can carry a unit like `3.4h`, and its digits roll up like a slot machine. Set `lowerIsBetter` on metrics such as review time, so a drop shows in green.
+
+Start from `analyticsDashboardDemoData`, exported from the same file, when you only need to change part of the data.
+
+## Assistant answers
+
+The composer in the details panel sends questions to `onAsk` with the selected pull request. Return the answer as a string or a promise. While it waits, the panel shows a "thinking" shimmer:
+
+```tsx copy
+<AnalyticsDashboard
+  assistantName="Claude"
+  onAsk={async (question, pullRequest) => {
+    const response = await fetch('/api/ask', {
+      method: 'POST',
+      body: JSON.stringify({ question, pullRequest: pullRequest.number }),
+    })
+    return response.text()
+  }}
+/>
+```
+
+Without `onAsk`, the panel replies with a short summary of the pull request.
+
+## Pages
+
+The sidebar switches between Overview, Repositories, Code review, and Settings without leaving the page. Track the page with `page` and `onPageChange`, for example to keep it in the URL, or set the first page with `defaultPage`.
+
+## Background and fonts
+
+The window sits on a plain color, `#0b0b0c` by default. Change it with `background`:
+
+```tsx copy
+<AnalyticsDashboard background="#1c1c1f" />
+```
+
+The dashboard uses Inter for text and JetBrains Mono for code, through the `--font-inter` and `--font-jetbrains-mono` variables. In Next.js, load both with `next/font` and add their variables to a parent element:
+
+```tsx copy
+import { Inter, JetBrains_Mono } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono' })
+
+<html lang="en" className={`${inter.variable} ${mono.variable}`}>
+```
+
+Without them, it falls back to the system fonts.
+
+## Behavior
+
+- The layout responds to the width of the dashboard, not the window, so it also works inside a panel or a preview. The details panel docks from 1180px, and the sidebar floats over the page below 760px.
+- Escape closes the details panel or the floating sidebar, then returns focus to the button that opened it.
+- Settings → Appearance changes the accent color of buttons, selections, and charts right away. Set the first accent with `defaultAccent`.
+- With reduced motion, entrances fade in place, and the numbers, charts, and panels skip their movement.
+
+## Install manually
+
+<Dependencies step={1} title="Copy the source code" source="analytics-dashboard">
+  <p className="mt-2 text-sm text-muted-foreground">Add the registry source to <code>components/block/analytics-dashboard.tsx</code> with its stylesheet, and the supporting files to <code>components/analytics-dashboard/</code>. It uses <code>motion</code> for the rolling numbers. Install the listed dependencies from the registry item.</p>
+</Dependencies>
+
+## Props
+
+<PropsTable
+  data={[
+    { prop: 'data', type: 'AnalyticsDashboardData', defaultValue: 'Demo data', description: 'People, metrics, activity, repositories, and pull requests.' },
+    { prop: 'brand', type: '{ name: string; logo?: ReactNode }', defaultValue: "{ name: 'PR Dashboard' }", description: 'Product name and logo at the top of the sidebar.' },
+    { prop: 'user', type: '{ name: string; email: string; avatar: string; role?: string }', defaultValue: 'Demo user', description: 'Signed-in account in the sidebar and on the Settings page.' },
+    { prop: 'page', type: "'overview' | 'repositories' | 'reviews' | 'settings'", defaultValue: '-', description: 'Controlled page.' },
+    { prop: 'defaultPage', type: 'AnalyticsDashboardPage', defaultValue: "'overview'", description: 'First page when uncontrolled.' },
+    { prop: 'onPageChange', type: '(page: AnalyticsDashboardPage) => void', defaultValue: '-', description: 'Called when the sidebar changes the page.' },
+    { prop: 'defaultAccent', type: "'blue' | 'violet' | 'teal' | 'amber'", defaultValue: "'blue'", description: 'First accent color.' },
+    { prop: 'onAccentChange', type: '(accent: AnalyticsDashboardAccent) => void', defaultValue: '-', description: 'Called when Settings changes the accent.' },
+    { prop: 'assistantName', type: 'string', defaultValue: "'Claude'", description: 'Assistant name in the details panel.' },
+    { prop: 'onAsk', type: '(question: string, pullRequest: AnalyticsPullRequest) => string | Promise<string>', defaultValue: '-', description: 'Answers questions about the selected pull request.' },
+    { prop: 'background', type: 'string', defaultValue: "'#0b0b0c'", description: 'Plain color behind the window.' },
+    { prop: 'className', type: 'string', defaultValue: '-', description: 'Additional classes for the root element.' },
+  ]}
+/>
+
+## Pull request fields
+
+<PropsTable
+  data={[
+    { prop: 'number', type: 'number', defaultValue: '-', description: 'Unique pull request number.' },
+    { prop: 'title', type: 'string', defaultValue: '-', description: 'Title. Text in backticks shows as code in the details panel.' },
+    { prop: 'author', type: 'string', defaultValue: '-', description: 'Handle of a person in people.' },
+    { prop: 'status', type: "{ kind: 'merged' | 'review' | 'open'; label: string }", defaultValue: '-', description: 'Status pill, icon, and the label in the details panel.' },
+    { prop: 'repository', type: 'string', defaultValue: '-', description: 'Repository name.' },
+    { prop: 'opened', type: 'string', defaultValue: '-', description: 'Opening time in the details panel.' },
+    { prop: 'age', type: 'string', defaultValue: '-', description: 'Short relative time in the review queue, such as 2h.' },
+    { prop: 'today', type: 'boolean', defaultValue: '-', description: 'Lists the pull request under Today PRs on the overview.' },
+    { prop: 'additions', type: 'number', defaultValue: '-', description: 'Added lines.' },
+    { prop: 'deletions', type: 'number', defaultValue: '-', description: 'Removed lines.' },
+    { prop: 'comments', type: 'number', defaultValue: '-', description: 'Comment count.' },
+    { prop: 'problem', type: 'string[]', defaultValue: '-', description: 'Paragraphs for the Problem section.' },
+    { prop: 'approach', type: 'string[]', defaultValue: '-', description: 'Paragraphs for the Approach section.' },
+  ]}
+/>

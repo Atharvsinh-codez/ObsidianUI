@@ -25,6 +25,7 @@ vi.mock('@/components/block/hover-img', () => ({
 
 vi.mock('@/components/catalog/status-bars-preview', () => ({ StatusBarsPreview: () => <div>Status Bars preview</div> }))
 vi.mock('@/components/catalog/active-sessions-preview', () => ({ ActiveSessionsPreview: () => <div>Active Sessions preview</div> }))
+vi.mock('@/components/catalog/analytics-dashboard-preview', () => ({ AnalyticsDashboardPreview: () => <div>Analytics Dashboard preview</div> }))
 vi.mock('@/components/catalog/dashboard-shell-preview', () => ({ DashboardShellPreview: () => <div>Dashboard Shell preview</div> }))
 
 import { ComponentsShowcase } from '@/components/landing/components-showcase'
@@ -69,7 +70,7 @@ describe('landing featured components', () => {
             .toHaveAttribute('href', '/docs/v-prism')
         const links = container.querySelectorAll('.component-showcase-grid a[aria-label$=" documentation"]')
         expect([...links].map(link => link.getAttribute('href'))).toEqual([
-            '/docs/dashboard-shell', '/docs/active-sessions', '/docs/status-bars', '/docs/discover-button', '/docs/split-showcase', '/docs/art-gallery', '/docs/hover-img',
+            '/docs/analytics-dashboard', '/docs/dashboard-shell', '/docs/active-sessions', '/docs/status-bars', '/docs/discover-button', '/docs/split-showcase', '/docs/art-gallery', '/docs/hover-img',
             '/docs/draggable-marquee', '/docs/text-stream', '/docs/flip-text',
         ])
     })
@@ -78,7 +79,7 @@ describe('landing featured components', () => {
         const { container } = render(<ComponentsGrid />)
         const badged = [...container.querySelectorAll('.component-showcase-grid .component-showcase-badge')]
             .map(badge => badge.closest('article')?.querySelector('a[aria-label]')?.getAttribute('href'))
-        expect(badged).toEqual(['/docs/dashboard-shell', '/docs/active-sessions', '/docs/status-bars', '/docs/discover-button'])
+        expect(badged).toEqual(['/docs/analytics-dashboard', '/docs/dashboard-shell', '/docs/active-sessions', '/docs/status-bars', '/docs/discover-button'])
         expect(container.querySelector('.component-showcase-featured .component-showcase-badge')).toBeNull()
     })
 })

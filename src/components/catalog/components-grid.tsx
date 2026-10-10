@@ -10,6 +10,7 @@ import { r2 } from '@/lib/r2'
 import { EffectPreview } from './effect-preview'
 import { newEffects } from './new-effects'
 import { ActiveSessionsPreview } from './active-sessions-preview'
+import { AnalyticsDashboardPreview } from './analytics-dashboard-preview'
 import { DashboardShellPreview } from './dashboard-shell-preview'
 import { StatusBarsPreview } from './status-bars-preview'
 import './components-grid.css'
@@ -38,6 +39,20 @@ const effectSizes: Partial<Record<string, ShowcaseSize>> = { 'draggable-marquee'
 const allComponents: ShowcaseItem[] = [
     { title: 'v-prism', href: '/docs/v-prism', preview: <EffectPreview slug="v-prism" compact /> },
     {
+        title: 'Analytics Dashboard',
+        href: '/docs/analytics-dashboard',
+        size: 'tall',
+        isNew: true,
+        // Rendered wider than the 1180px overlay breakpoint so the details panel stays docked, then scaled down.
+        preview: (
+            <div className="relative h-full w-full overflow-hidden">
+                <div className="absolute left-5 top-12 h-[820px] w-[1240px] origin-top-left scale-[0.42] overflow-hidden rounded-[28px] border border-black/10 shadow-[0_24px_60px_rgb(0_0_0/0.18)] dark:border-white/10">
+                    <AnalyticsDashboardPreview />
+                </div>
+            </div>
+        ),
+    },
+    {
         title: 'Dashboard Shell',
         href: '/docs/dashboard-shell',
         size: 'tall',
@@ -61,6 +76,7 @@ const allComponents: ShowcaseItem[] = [
     {
         title: 'Status Bars',
         href: '/docs/status-bars',
+        size: 'short',
         isNew: true,
         preview: <div className="flex h-full w-full items-center justify-center px-6 pb-16 pt-12"><StatusBarsPreview className="max-w-[560px]" /></div>,
     },
@@ -74,6 +90,7 @@ const allComponents: ShowcaseItem[] = [
     {
         title: 'Split Showcase',
         href: '/docs/split-showcase',
+        size: 'tall',
         preview: (
             <div className="flex h-full w-full items-center justify-center overflow-hidden p-2">
                 <div className="w-full max-w-[720px] select-none">
@@ -85,7 +102,7 @@ const allComponents: ShowcaseItem[] = [
             </div>
         ),
     },
-    { title: 'Art Gallery', href: '/docs/art-gallery', size: 'tall', preview: <EffectPreview slug="art-gallery" compact /> },
+    { title: 'Art Gallery', href: '/docs/art-gallery', size: 'short', preview: <EffectPreview slug="art-gallery" compact /> },
     {
         title: 'Hover Image',
         href: '/docs/hover-img',

@@ -43,6 +43,7 @@ Request any published page with Accept: text/markdown or read its direct Markdow
 - [Status Bars](https://www.obsidianui.dev/markdown/docs/status-bars.md): [download all source files](https://www.obsidianui.dev/r/status-bars.json) and [interactive preview](https://www.obsidianui.dev/docs/status-bars).
 - [Text reel](https://www.obsidianui.dev/markdown/docs/text-stream.md): [download all source files](https://www.obsidianui.dev/r/text-stream.json) and [interactive preview](https://www.obsidianui.dev/docs/text-stream).
 - [v-prism](https://www.obsidianui.dev/markdown/docs/v-prism.md): [download all source files](https://www.obsidianui.dev/r/v-prism.json) and [interactive preview](https://www.obsidianui.dev/docs/v-prism).
+- [Analytics Dashboard](https://www.obsidianui.dev/markdown/docs/analytics-dashboard.md): [download all source files](https://www.obsidianui.dev/r/analytics-dashboard.json) and [interactive preview](https://www.obsidianui.dev/docs/analytics-dashboard).
 - [Dashboard Shell](https://www.obsidianui.dev/markdown/docs/dashboard-shell.md): [download all source files](https://www.obsidianui.dev/r/dashboard-shell.json) and [interactive preview](https://www.obsidianui.dev/docs/dashboard-shell).
 
 ## Site pages

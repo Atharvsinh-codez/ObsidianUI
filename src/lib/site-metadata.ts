@@ -12,6 +12,7 @@ export const docsDescriptions: Record<string, string> = {
   "hover-img": "Preview images that follow the cursor when visitors hover over titles. Explore the Hover Image React component and copy its source.",
   "v-prism": "Explore v-prism, an interactive glass prism that splits a movable light beam into a spectrum. View its settings and React source.",
   "dashboard-shell": "Free React admin dashboard layout for Tailwind CSS and shadcn/ui: resizable sidebar, header actions, animated tabs, filter toolbar, and a mobile drawer.",
+  "analytics-dashboard": "Free React analytics dashboard block: pull request overview, KPI charts, repositories, review queue, settings, and a details panel with an assistant composer.",
   "active-sessions": "Preview Active Sessions, a React list of signed-in devices that fold away when you sign them out, one at a time or all at once.",
   "discover-button": "Preview Discover Button, a pill-shaped React button whose arrow circle expands across the label on hover.",
   "status-bars": "Preview Status Bars, a daily uptime strip for React with incident tooltips, keyboard navigation, and an animated uptime total.",

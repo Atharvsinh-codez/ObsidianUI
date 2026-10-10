@@ -14,6 +14,7 @@ import "./showcase-hero.css";
 
 import { DiscoverButton } from "@/components/block/discover-button";
 import { ActiveSessionsPreview } from "./active-sessions-preview";
+import { AnalyticsDashboardPreview } from "./analytics-dashboard-preview";
 import { DashboardShellPreview } from "./dashboard-shell-preview";
 import { EffectPreview } from "./effect-preview";
 import { StatusBarsPreview } from "./status-bars-preview";
@@ -39,21 +40,30 @@ const CARDS: StageCard[] = [
       </div>
     ),
   },
-  { slug: "art-gallery", title: "Art Gallery", x: 500, y: 20, aspect: 1264 / 964, preview: <EffectPreview slug="art-gallery" compact /> },
   {
-    slug: "active-sessions", title: "Active Sessions", x: 40, y: 412, aspect: 1.2,
+    slug: "analytics-dashboard", title: "Analytics Dashboard", x: 500, y: 20, aspect: 1240 / 820,
+    // Wider than the dashboard's 1180px overlay breakpoint so the details panel stays docked.
+    preview: (
+      <div className="absolute left-0 top-0 h-[820px] w-[1240px] origin-top-left scale-[0.3274]">
+        <AnalyticsDashboardPreview />
+      </div>
+    ),
+  },
+  { slug: "art-gallery", title: "Art Gallery", x: 40, y: 412, aspect: 1264 / 964, preview: <EffectPreview slug="art-gallery" compact /> },
+  {
+    slug: "active-sessions", title: "Active Sessions", x: 500, y: 371, aspect: 1.2,
     preview: <div className="flex h-full w-full items-center justify-center overflow-hidden px-4"><ActiveSessionsPreview compact className="max-w-[380px]" /></div>,
   },
   {
-    slug: "discover-button", title: "Discover Button", x: 500, y: 412, aspect: 2,
+    slug: "discover-button", title: "Discover Button", x: 40, y: 804, aspect: 2,
     preview: <div className="flex h-full w-full items-center justify-center bg-[#191715]"><DiscoverButton /></div>,
   },
   {
-    slug: "status-bars", title: "Status Bars", x: 40, y: 832, aspect: 1.5,
+    slug: "status-bars", title: "Status Bars", x: 500, y: 791, aspect: 1.5,
     preview: <div className="flex h-full w-full items-center justify-center px-5"><StatusBarsPreview className="max-w-[380px]" /></div>,
   },
-  { slug: "draggable-marquee", title: "Draggable Marquee", x: 500, y: 697, aspect: 2034 / 1252, preview: <EffectPreview slug="draggable-marquee" compact /> },
-  { slug: "text-stream", title: "Text reel", x: 40, y: 1185, aspect: 1492 / 1266, preview: <EffectPreview slug="text-stream" compact /> },
+  { slug: "draggable-marquee", title: "Draggable Marquee", x: 40, y: 1089, aspect: 2034 / 1252, preview: <EffectPreview slug="draggable-marquee" compact /> },
+  { slug: "text-stream", title: "Text reel", x: 500, y: 1144, aspect: 1492 / 1266, preview: <EffectPreview slug="text-stream" compact /> },
 ];
 
 const CARD_WIDTH = 420;

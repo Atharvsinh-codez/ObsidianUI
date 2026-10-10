@@ -1,0 +1,19 @@
+.root { position: relative; display: inline-block; font-variant-numeric: tabular-nums; line-height: 1.15; white-space: nowrap; vertical-align: bottom; }
+.reels { display: inline-flex; height: 1.15em; align-items: flex-start; }
+
+/* Each slot holds one character. Its width follows the character on a spring, so the word never resizes in one frame. */
+.slot { position: relative; display: inline-block; height: 1.15em; flex: none; overflow: visible; }
+.sizer { display: inline-block; visibility: hidden; white-space: pre; pointer-events: none; }
+
+/* The window reaches a little past the line so glyphs fade at the edges instead of being cut. */
+.window {
+  position: absolute;
+  inset: -.22em -.08em;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 .24em, #000 calc(100% - .24em), transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 .24em, #000 calc(100% - .24em), transparent);
+}
+.strip { position: absolute; top: calc(.22em - .225em); right: .08em; left: .08em; display: flex; flex-direction: column; align-items: center; will-change: transform; }
+.cell { display: block; height: 1.6em; padding-top: .225em; box-sizing: border-box; line-height: 1.15; white-space: pre; }
+
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

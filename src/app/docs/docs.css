@@ -91,6 +91,7 @@
 .docs-document article:has(.split-showcase-preview) { max-width: 840px; }
 /* Wide enough for the shell to dock its sidebar, which needs a 672px container. */
 .docs-document article:has(.dashboard-shell-docs-preview) { max-width: 960px; }
+.docs-document article:has(.analytics-dashboard-docs-preview) { max-width: 960px; }
 .docs-document .nextra-breadcrumb { display: none; }
 .docs-code-block .nextra-code { margin-top: 0; }
 .docs-code-card .nextra-code pre { margin: 0; border: 1px solid var(--border); border-radius: 12px; background: var(--background); box-shadow: none; }

@@ -16,4 +16,5 @@ Installation guides and complete component source.
 - [Status Bars](https://www.obsidianui.dev/markdown/docs/status-bars.md)
 - [Text reel](https://www.obsidianui.dev/markdown/docs/text-stream.md)
 - [v-prism](https://www.obsidianui.dev/markdown/docs/v-prism.md)
+- [Analytics Dashboard](https://www.obsidianui.dev/markdown/docs/analytics-dashboard.md)
 - [Dashboard Shell](https://www.obsidianui.dev/markdown/docs/dashboard-shell.md)

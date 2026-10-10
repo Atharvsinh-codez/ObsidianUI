@@ -33,6 +33,7 @@ const meta = {
         "type": "separator",
         "title": "Blocks"
     },
+    "analytics-dashboard": "Analytics Dashboard",
     "dashboard-shell": "Dashboard Shell",
 };
 
