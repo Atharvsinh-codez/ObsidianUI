@@ -52,9 +52,17 @@
   .site-brand img { width: 24px; height: 24px; }
   .site-header-navigation { flex: 0 0 32px; padding: 0; gap: 0; }
   .site-header-actions { align-self: center; height: auto; gap: 2px; padding: 0; }
-  .site-templates { min-height: 40px; padding: 0 6px; font-size: 12px; }
+  /* Matches the brand text's 3px offset so the links sit on the same line as "ObsidianUI". */
+  .site-templates { min-height: 40px; padding: 0 6px; font-size: 12px; line-height: 1; translate: 0 3px; }
   .site-header-search button { width: 32px; }
   .site-header-search button, .site-header-actions > button { height: 40px; }
+}
+/* Below ~400px the full row no longer fits and the brand text slides under the search icon.
+   Templates stays reachable from the menu. */
+@media (max-width: 419px) {
+  .site-header { padding-inline: 10px; gap: 2px; }
+  .site-templates { padding: 0 4px; }
+  .site-templates[href="/templates"] { display: none; }
 }
 @media (max-width: 359px) {
   .site-brand img { display: none; }
