@@ -49,10 +49,12 @@
   .site-header { padding-inline: 12px; border-bottom: 1px solid var(--border); gap: 4px; }
   .site-header-panel, .site-header-left-join, .site-header-curve, .site-header-github, .site-header-divider, .site-builder { display: none; }
   .site-brand { flex: 1; min-width: 0; width: auto; padding: 0; gap: 6px; font-size: 20px; }
-  .site-brand img { width: 24px; height: 24px; }
+  /* The desktop offsets line the brand up with the curved panel, which is hidden here. */
+  .site-brand img { width: 24px; height: 24px; translate: none; }
+  .site-brand > span { translate: none; }
   .site-header-navigation { flex: 0 0 32px; padding: 0; gap: 0; }
   .site-header-actions { align-self: center; height: auto; gap: 2px; padding: 0; }
-  .site-templates { min-height: 40px; padding: 0 6px; font-size: 12px; }
+  .site-templates { min-height: 40px; padding: 0 6px; font-size: 12px; line-height: 1; translate: 0 1px; }
   .site-header-search button { width: 32px; }
   .site-header-search button, .site-header-actions > button { height: 40px; }
 }
