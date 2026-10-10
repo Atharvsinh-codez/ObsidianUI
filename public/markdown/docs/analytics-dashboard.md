@@ -3093,8 +3093,19 @@ Installation target: `@components/block/analytics-dashboard.css`
 }
 
 @container analytics-dashboard (max-width: 520px) {
+  .obsidian-analytics-dashboard .page-content {
+    padding: 18px 12px 24px 14px;
+  }
+
   .obsidian-analytics-dashboard .page-title {
-    font-size: 28px;
+    font-size: 26px;
+  }
+
+  .obsidian-analytics-dashboard .btn-details {
+    width: auto;
+    height: 32px;
+    padding: 0 12px;
+    font-size: 13.5px;
   }
 }
 
@@ -4743,13 +4754,49 @@ Installation target: `@components/block/analytics-dashboard.css`
 }
 
 @container analytics-dashboard (max-width: 520px) {
+  /* The filter keeps equal tabs and scrolls sideways instead of squeezing labels into each other. */
+  .obsidian-analytics-dashboard .toolbar:has(.seg-wide) {
+    margin-inline: -14px -12px;
+    padding: 2px 12px 2px 14px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .obsidian-analytics-dashboard .toolbar:has(.seg-wide)::-webkit-scrollbar {
+    display: none;
+  }
   .obsidian-analytics-dashboard .seg-wide {
-    width: 100%;
+    min-width: 100%;
+    grid-template-columns: repeat(var(--n), 1fr);
   }
   .obsidian-analytics-dashboard .seg-wide .seg-btn {
-    padding: 0 6px;
+    gap: 5px;
+    padding: 0 10px;
+  }
+  .obsidian-analytics-dashboard .review-row {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px 12px;
+    padding: 12px;
   }
   .obsidian-analytics-dashboard .review-row .status-dot {
+    display: none;
+  }
+  .obsidian-analytics-dashboard .review-main {
+    flex-basis: 0;
+  }
+  .obsidian-analytics-dashboard .review-row .btn-details {
+    flex-basis: 100%;
+    width: 100%;
+  }
+  .obsidian-analytics-dashboard .review-repo {
+    flex-basis: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .obsidian-analytics-dashboard .review-repo + [aria-hidden="true"] {
     display: none;
   }
 }
