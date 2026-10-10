@@ -111,9 +111,17 @@ Without `onAsk`, the panel replies with a short summary of the pull request.
 
 The sidebar switches between Overview, Repositories, Code review, and Settings without leaving the page. Track the page with `page` and `onPageChange`, for example to keep it in the URL, or set the first page with `defaultPage`.
 
+## Light and dark mode
+
+The dashboard has a light and a dark palette. It is light by default and switches to dark when a parent element has the `dark` class, the convention next-themes and shadcn/ui use. Add `dark` to the dashboard's own `className` to keep it dark on a light page.
+
+```tsx
+<AnalyticsDashboard className="dark" />
+```
+
 ## Background and fonts
 
-The window sits on a plain color, `#0b0b0c` by default. Change it with `background`:
+The window sits on a plain color: `#f6f6f7` in light mode and `#0b0b0c` in dark mode. Change it with `background`:
 
 ```tsx
 <AnalyticsDashboard background="#1c1c1f" />
@@ -2231,8 +2239,8 @@ Installation target: `@components/block/analytics-dashboard.css`
  */
 .obsidian-analytics-dashboard {
   /* Plain color behind the window. The `background` prop overrides it. */
-  --obsidian-analytics-dashboard-background: #0b0b0c;
-  --obsidian-analytics-dashboard-window: #121213;
+  --obsidian-analytics-dashboard-background: var(--ad-stage);
+  --obsidian-analytics-dashboard-window: var(--ad-window);
   --obsidian-analytics-dashboard-inset: 24px;
   --obsidian-analytics-dashboard-font-sans: var(--font-inter, "Inter"), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --obsidian-analytics-dashboard-font-mono: var(--font-jetbrains-mono, "JetBrains Mono"), ui-monospace, "SF Mono", Menlo, monospace;
@@ -2245,7 +2253,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   padding: var(--obsidian-analytics-dashboard-inset);
   overflow: hidden;
   isolation: isolate;
-  color-scheme: dark;
+  color-scheme: light;
   background: var(--obsidian-analytics-dashboard-background);
   font-family: var(--obsidian-analytics-dashboard-font-sans);
   font-size: 14.5px;
@@ -2281,7 +2289,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 }
 
 .obsidian-analytics-dashboard .avatar-empty {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgb(var(--ad-ink) / 0.1);
 }
 
 /* Design tokens: motion, surfaces, data colors and layout sizes. */
@@ -2295,29 +2303,43 @@ Installation target: `@components/block/analytics-dashboard.css`
   --ease-ui: cubic-bezier(0.2, 0, 0, 1);
   --digit-ease: cubic-bezier(0.34, 1.45, 0.64, 1);
 
-  /* Text and fills on dark glass */
-  --text: rgba(255, 255, 255, 0.92);
-  --text-2: rgba(255, 255, 255, 0.62);
-  --text-3: rgba(255, 255, 255, 0.42);
-  --fill-1: rgba(255, 255, 255, 0.055);
-  --fill-2: rgba(255, 255, 255, 0.08);
-  --ring: 0 0 0 1px rgba(255, 255, 255, 0.075);
-  --ring-strong: 0 0 0 1px rgba(255, 255, 255, 0.12);
+  /* Light palette. Text, borders and fills are --ad-ink at different strengths. */
+  --ad-ink: 24 24 27;
+  --ad-shadow: 0.28;
+  --ad-stage: #f6f6f7;
+  --ad-window: #eeeef0;
+  --ad-main: #ffffff;
+  --ad-surface: #ffffff;
+  --ad-rail-float: rgb(238 238 240 / 0.97);
+  --ad-composer: rgb(24 24 27 / 0.045);
+  --ad-composer-focus: rgb(24 24 27 / 0.065);
+  --ad-overlay: rgb(255 255 255 / 0.94);
+  --ad-save-bar: rgb(255 255 255 / 0.9);
+
+  --text: rgb(var(--ad-ink) / 0.92);
+  --text-2: rgb(var(--ad-ink) / 0.62);
+  --text-3: rgb(var(--ad-ink) / 0.42);
+  --fill-1: rgb(var(--ad-ink) / 0.055);
+  --fill-2: rgb(var(--ad-ink) / 0.08);
+  --ring: 0 0 0 1px rgb(var(--ad-ink) / 0.075);
+  --ring-strong: 0 0 0 1px rgb(var(--ad-ink) / 0.12);
 
   /* Overridden at runtime from Settings → Appearance */
   --accent: #4c9bff;
 
-  /* Data colors */
-  --orange: #f08a3c;
-  --purple: #9d8df5;
-  --green: #2fd06f;
-  --add-fg: #3ddc7a;
-  --add-bg: rgba(46, 204, 113, 0.12);
-  --del-fg: #f04b4b;
-  --del-bg: rgba(240, 75, 75, 0.12);
-  --merged: #34d27b;
-  --review: #f2b54a;
-  --open: #5aa9ff;
+  /* Data colors, darkened enough to read on white */
+  --orange: #ea6a1c;
+  --purple: #7c5cf0;
+  --green: #16a34a;
+  --add-fg: #16a34a;
+  --add-bg: rgba(22, 163, 74, 0.1);
+  --del-fg: #dc2626;
+  --del-bg: rgba(220, 38, 38, 0.1);
+  --merged: #16a34a;
+  --review: #d97706;
+  --open: #2563eb;
+  --bad: #dc2626;
+  --star: #d99a06;
 
   /* Layout */
   --rail-step: 40px;
@@ -2328,6 +2350,36 @@ Installation target: `@components/block/analytics-dashboard.css`
   /* Page entrance stagger; shortened once the window has landed */
   --enter-base: 180ms;
   --enter-step: 90ms;
+}
+
+/* Dark palette: follows a `dark` class on any ancestor, like the rest of the site. */
+.dark .obsidian-analytics-dashboard,
+.obsidian-analytics-dashboard.dark {
+  color-scheme: dark;
+  --ad-ink: 255 255 255;
+  --ad-shadow: 1;
+  --ad-stage: #0b0b0c;
+  --ad-window: #121213;
+  --ad-main: linear-gradient(100deg, #1b1a17 0%, #181816 48%, #16181b 100%);
+  --ad-surface: #1a1a18;
+  --ad-rail-float: rgba(22, 22, 24, 0.97);
+  --ad-composer: rgba(52, 52, 52, 0.62);
+  --ad-composer-focus: rgba(58, 58, 58, 0.7);
+  --ad-overlay: rgba(14, 20, 32, 0.9);
+  --ad-save-bar: rgba(32, 32, 30, 0.86);
+
+  --orange: #f08a3c;
+  --purple: #9d8df5;
+  --green: #2fd06f;
+  --add-fg: #3ddc7a;
+  --add-bg: rgba(46, 204, 113, 0.12);
+  --del-fg: #f04b4b;
+  --del-bg: rgba(240, 75, 75, 0.12);
+  --merged: #34d27b;
+  --review: #f2b54a;
+  --open: #5aa9ff;
+  --bad: #f07a6a;
+  --star: #f5c451;
 }
 
 @property --obsidian-analytics-dashboard-fade-top {
@@ -2466,11 +2518,11 @@ Installation target: `@components/block/analytics-dashboard.css`
 .obsidian-analytics-dashboard .shimmer {
   background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.38) 0%,
-      rgba(255, 255, 255, 0.38) 40%,
-      #fff 50%,
-      rgba(255, 255, 255, 0.38) 60%,
-      rgba(255, 255, 255, 0.38) 100%
+      rgb(var(--ad-ink) / 0.38) 0%,
+      rgb(var(--ad-ink) / 0.38) 40%,
+      rgb(var(--ad-ink)) 50%,
+      rgb(var(--ad-ink) / 0.38) 60%,
+      rgb(var(--ad-ink) / 0.38) 100%
     )
     0 0 / 400% 100%;
   -webkit-background-clip: text;
@@ -2512,11 +2564,11 @@ Installation target: `@components/block/analytics-dashboard.css`
   overflow: clip;
   background: var(--obsidian-analytics-dashboard-window);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
-    0 0 0 1px rgba(0, 0, 0, 0.28),
-    0 40px 90px -24px rgba(0, 0, 0, 0.6),
-    0 14px 28px -14px rgba(0, 0, 0, 0.45);
+    inset 0 1px 0 rgb(var(--ad-ink) / 0.1),
+    inset 0 0 0 1px rgb(var(--ad-ink) / 0.07),
+    0 0 0 1px rgb(0 0 0 / calc(0.28 * var(--ad-shadow))),
+    0 40px 90px -24px rgb(0 0 0 / calc(0.6 * var(--ad-shadow))),
+    0 14px 28px -14px rgb(0 0 0 / calc(0.45 * var(--ad-shadow)));
   transition: grid-template-columns 300ms var(--ease-smooth-out);
 }
 
@@ -2613,7 +2665,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 .obsidian-analytics-dashboard .rail-brand-name {
   font-weight: 600;
   letter-spacing: -0.005em;
-  color: #fff;
+  color: rgb(var(--ad-ink));
 }
 
 .obsidian-analytics-dashboard .rail-logo {
@@ -2667,8 +2719,8 @@ Installation target: `@components/block/analytics-dashboard.css`
   right: 2px;
   height: 36px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.075);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  background: rgb(var(--ad-ink) / 0.075);
+  box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.05);
   transform: translateY(calc(var(--active, 0) * var(--rail-step)));
   transition:
     transform var(--duration-fast) var(--ease-smooth-out),
@@ -2684,7 +2736,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   position: relative;
   height: var(--rail-step);
   border-radius: 10px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(var(--ad-ink) / 0.5);
   transition:
     color var(--duration-quick) ease,
     background-color var(--duration-quick) ease,
@@ -2692,7 +2744,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 }
 
 .obsidian-analytics-dashboard .rail-btn[data-active="true"] {
-  color: #fff;
+  color: rgb(var(--ad-ink));
 }
 
 .obsidian-analytics-dashboard .rail-account {
@@ -2726,11 +2778,11 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .rail-btn:hover {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgb(var(--ad-ink) / 0.9);
   }
   .obsidian-analytics-dashboard .rail[data-expanded="true"] .rail-btn:not([data-active="true"]):hover,
   .obsidian-analytics-dashboard .rail[data-expanded="true"] .rail-account:hover {
-    background-color: rgba(255, 255, 255, 0.04);
+    background-color: rgb(var(--ad-ink) / 0.04);
   }
 }
 
@@ -2850,10 +2902,10 @@ Installation target: `@components/block/analytics-dashboard.css`
   border: 1px solid transparent;
   border-radius: 15px;
   overflow: hidden;
-  background: linear-gradient(100deg, #1b1a17 0%, #181816 48%, #16181b 100%);
+  background: var(--ad-main);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.055),
-    0 10px 30px -12px rgba(0, 0, 0, 0.55);
+    0 0 0 1px rgb(var(--ad-ink) / 0.055),
+    0 10px 30px -12px rgb(0 0 0 / calc(0.55 * var(--ad-shadow)));
   transition: margin 300ms var(--ease-smooth-out);
 }
 
@@ -2918,7 +2970,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 .obsidian-analytics-dashboard .main-bar-title {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgb(var(--ad-ink) / 0.82);
 }
 
 .obsidian-analytics-dashboard .icon-btn {
@@ -2927,7 +2979,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgb(var(--ad-ink) / 0.6);
   transition:
     background-color var(--duration-quick) ease,
     color var(--duration-quick) ease,
@@ -2936,8 +2988,8 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .icon-btn:hover {
-    background-color: rgba(255, 255, 255, 0.06);
-    color: #fff;
+    background-color: rgb(var(--ad-ink) / 0.06);
+    color: rgb(var(--ad-ink));
   }
 }
 
@@ -2947,7 +2999,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+  scrollbar-color: rgb(var(--ad-ink) / 0.12) transparent;
 }
 
 /* ───────── Page frame (every route renders inside .page) ───────── */
@@ -2974,7 +3026,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.022em;
-  color: #fff;
+  color: rgb(var(--ad-ink));
 }
 
 .obsidian-analytics-dashboard .page-sub {
@@ -3000,7 +3052,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-size: 14.5px;
   font-weight: 600;
   line-height: 20px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(var(--ad-ink) / 0.5);
 }
 
 .obsidian-analytics-dashboard .toolbar {
@@ -3032,7 +3084,7 @@ Installation target: `@components/block/analytics-dashboard.css`
     position: absolute;
     inset: 0;
     z-index: 5;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgb(0 0 0 / calc(0.3 * var(--ad-shadow)));
     opacity: 0;
     pointer-events: none;
     cursor: default;
@@ -3076,10 +3128,10 @@ Installation target: `@components/block/analytics-dashboard.css`
 
   .obsidian-analytics-dashboard .rail[data-expanded="true"] {
     width: var(--rail-w-open);
-    background-color: rgba(22, 22, 24, 0.97);
+    background-color: var(--ad-rail-float);
     box-shadow:
-      1px 0 0 rgba(255, 255, 255, 0.07),
-      24px 0 48px -16px rgba(0, 0, 0, 0.6);
+      1px 0 0 rgb(var(--ad-ink) / 0.07),
+      24px 0 48px -16px rgb(0 0 0 / calc(0.6 * var(--ad-shadow)));
   }
 
   .obsidian-analytics-dashboard .page-content {
@@ -3117,7 +3169,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   border: 1px solid transparent;
   border-radius: 14px;
   background-color: var(--fill-1);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+  box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.025);
 }
 
 .obsidian-analytics-dashboard .card-head {
@@ -3132,7 +3184,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-size: 14.5px;
   font-weight: 600;
   line-height: 20px;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgb(var(--ad-ink) / 0.78);
 }
 
 /* ───────── Segmented control (sliding thumb) ───────── */
@@ -3144,8 +3196,8 @@ Installation target: `@components/block/analytics-dashboard.css`
   grid-template-columns: repeat(var(--n), minmax(0, 1fr));
   padding: 3px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.045);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  background: rgb(var(--ad-ink) / 0.045);
+  box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.06);
 }
 
 .obsidian-analytics-dashboard .seg-thumb {
@@ -3155,10 +3207,10 @@ Installation target: `@components/block/analytics-dashboard.css`
   left: 3px;
   width: calc((100% - 6px) / var(--n));
   border-radius: 7px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgb(var(--ad-ink) / 0.1);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 1px 3px rgba(0, 0, 0, 0.3);
+    inset 0 0 0 1px rgb(var(--ad-ink) / 0.06),
+    0 1px 3px rgb(0 0 0 / calc(0.3 * var(--ad-shadow)));
   transform: translateX(calc(var(--idx) * 100%));
   transition: transform var(--duration-fast) var(--ease-smooth-out);
   pointer-events: none;
@@ -3176,17 +3228,17 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-size: 13.5px;
   font-weight: 500;
   white-space: nowrap;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(var(--ad-ink) / 0.5);
   transition: color var(--duration-quick) ease;
 }
 
 .obsidian-analytics-dashboard .seg-btn[aria-checked="true"] {
-  color: #fff;
+  color: rgb(var(--ad-ink));
 }
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .seg-btn[aria-checked="false"]:hover {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgb(var(--ad-ink) / 0.8);
   }
 }
 
@@ -3197,12 +3249,12 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-size: 11.5px;
   line-height: 17px;
   font-variant-numeric: tabular-nums;
-  color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.07);
+  color: rgb(var(--ad-ink) / 0.6);
+  background: rgb(var(--ad-ink) / 0.07);
 }
 
 .obsidian-analytics-dashboard .seg-btn[aria-checked="true"] .seg-count {
-  color: #fff;
+  color: rgb(var(--ad-ink));
   background: color-mix(in oklab, var(--accent) 32%, transparent);
 }
 
@@ -3214,8 +3266,8 @@ Installation target: `@components/block/analytics-dashboard.css`
   width: 36px;
   height: 21px;
   border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.13);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  background-color: rgb(var(--ad-ink) / 0.13);
+  box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.05);
   transition: background-color 200ms var(--ease-ui);
 }
 
@@ -3231,7 +3283,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   height: 16px;
   border-radius: 999px;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 1px 3px rgb(0 0 0 / calc(0.35 * var(--ad-shadow)));
   transition:
     transform 250ms var(--ease-smooth-out),
     width 150ms var(--ease-ui);
@@ -3337,8 +3389,8 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-size: 11.5px;
   font-weight: 500;
   line-height: 20px;
-  color: rgba(255, 255, 255, 0.55);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  color: rgb(var(--ad-ink) / 0.55);
+  box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.1);
 }
 
 /* ───────── Avatars ───────── */
@@ -3381,7 +3433,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-size: 14px;
   font-weight: 500;
   color: var(--text);
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: rgb(var(--ad-ink) / 0.04);
   box-shadow: var(--ring);
   transition:
     background-color var(--duration-quick) ease,
@@ -3396,7 +3448,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .btn:not(:disabled):hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgb(var(--ad-ink) / 0.08);
     box-shadow: var(--ring-strong);
   }
 }
@@ -3434,7 +3486,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-size: 14.5px;
   font-weight: 450;
   color: var(--text);
-  background-color: rgba(255, 255, 255, 0.025);
+  background-color: rgb(var(--ad-ink) / 0.025);
   box-shadow: var(--ring);
   transition:
     background-color var(--duration-quick) ease,
@@ -3448,7 +3500,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .btn-details:hover {
-    background-color: rgba(255, 255, 255, 0.07);
+    background-color: rgb(var(--ad-ink) / 0.07);
     box-shadow: var(--ring-strong);
   }
 }
@@ -3463,7 +3515,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   border-radius: 7px;
   font-size: 13.5px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgb(var(--ad-ink) / 0.55);
   transition:
     color var(--duration-quick) ease,
     background-color var(--duration-quick) ease;
@@ -3475,8 +3527,8 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .link-more:hover {
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.05);
+    color: rgb(var(--ad-ink));
+    background-color: rgb(var(--ad-ink) / 0.05);
   }
   .obsidian-analytics-dashboard .link-more:hover svg {
     transform: translateX(2px);
@@ -3496,7 +3548,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 .obsidian-analytics-dashboard .search-icon {
   position: absolute;
   left: 11px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgb(var(--ad-ink) / 0.4);
   pointer-events: none;
 }
 
@@ -3508,15 +3560,15 @@ Installation target: `@components/block/analytics-dashboard.css`
   border-radius: 10px;
   outline: none;
   font-size: 14px;
-  background: rgba(255, 255, 255, 0.045);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  background: rgb(var(--ad-ink) / 0.045);
+  box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.06);
   transition:
     box-shadow var(--duration-quick) ease,
     background-color var(--duration-quick) ease;
 }
 
 .obsidian-analytics-dashboard .search input::placeholder {
-  color: rgba(255, 255, 255, 0.38);
+  color: rgb(var(--ad-ink) / 0.38);
 }
 
 .obsidian-analytics-dashboard .search input:focus-visible {
@@ -3533,8 +3585,8 @@ Installation target: `@components/block/analytics-dashboard.css`
   padding: 48px 20px;
   border-radius: 14px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  background: rgb(var(--ad-ink) / 0.03);
+  box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.05);
 }
 
 .obsidian-analytics-dashboard .empty-title {
@@ -3559,7 +3611,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 }
 
 .obsidian-analytics-dashboard .spark[data-tone="bad"] {
-  color: #f07a6a;
+  color: var(--bad);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -3602,7 +3654,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .pr-row:hover {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: rgb(var(--ad-ink) / 0.03);
   }
 }
 
@@ -3614,7 +3666,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 .obsidian-analytics-dashboard .pr-title {
   font-size: 15px;
   line-height: 21px;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgb(var(--ad-ink) / 0.88);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3679,7 +3731,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   min-width: 0;
   font-size: 15px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgb(var(--ad-ink) / 0.55);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3699,8 +3751,8 @@ Installation target: `@components/block/analytics-dashboard.css`
     transparent 0,
     #000 var(--obsidian-analytics-dashboard-fade-top),
     #000 calc(100% - 158px),
-    rgba(0, 0, 0, 0.36) calc(100% - 124px),
-    rgba(0, 0, 0, 0.14) calc(100% - 104px),
+    rgb(0 0 0 / calc(0.36 * var(--ad-shadow))) calc(100% - 124px),
+    rgb(0 0 0 / calc(0.14 * var(--ad-shadow))) calc(100% - 104px),
     transparent calc(100% - 96px)
   );
   mask-image: linear-gradient(
@@ -3708,8 +3760,8 @@ Installation target: `@components/block/analytics-dashboard.css`
     transparent 0,
     #000 var(--obsidian-analytics-dashboard-fade-top),
     #000 calc(100% - 158px),
-    rgba(0, 0, 0, 0.36) calc(100% - 124px),
-    rgba(0, 0, 0, 0.14) calc(100% - 104px),
+    rgb(0 0 0 / calc(0.36 * var(--ad-shadow))) calc(100% - 124px),
+    rgb(0 0 0 / calc(0.14 * var(--ad-shadow))) calc(100% - 104px),
     transparent calc(100% - 96px)
   );
   transition: --obsidian-analytics-dashboard-fade-top 200ms ease;
@@ -3786,7 +3838,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-weight: 500;
   line-height: 24px;
   letter-spacing: -0.01em;
-  color: #fff;
+  color: rgb(var(--ad-ink));
   text-wrap: pretty;
 }
 
@@ -3814,7 +3866,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   align-items: center;
   gap: 8px;
   font-size: 14.5px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgb(var(--ad-ink) / 0.9);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -3836,19 +3888,19 @@ Installation target: `@components/block/analytics-dashboard.css`
   height: 24px;
   font-size: 14.5px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(var(--ad-ink) / 0.5);
   border-radius: 6px;
   transition: color var(--duration-quick) ease;
 }
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .acc-head:hover {
-    color: rgba(255, 255, 255, 0.78);
+    color: rgb(var(--ad-ink) / 0.78);
   }
 }
 
 .obsidian-analytics-dashboard .acc-tri {
-  color: rgba(255, 255, 255, 0.45);
+  color: rgb(var(--ad-ink) / 0.45);
   transform: rotate(0deg);
   transition: transform 250ms var(--ease-smooth-out);
 }
@@ -3885,7 +3937,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   padding-right: 8px;
   font-size: 14.5px;
   line-height: 20.5px;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgb(var(--ad-ink) / 0.88);
   text-wrap: pretty;
 }
 
@@ -3902,8 +3954,8 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-size: 12.5px;
   padding: 2px 6px;
   border-radius: 6px;
-  color: rgba(255, 255, 255, 0.72);
-  background: rgba(255, 255, 255, 0.08);
+  color: rgb(var(--ad-ink) / 0.72);
+  background: rgb(var(--ad-ink) / 0.08);
   white-space: nowrap;
 }
 
@@ -3940,12 +3992,12 @@ Installation target: `@components/block/analytics-dashboard.css`
   max-width: 85%;
   padding: 8px 12px;
   border-radius: 14px 14px 4px 14px;
-  background: rgba(255, 255, 255, 0.09);
-  color: #fff;
+  background: rgb(var(--ad-ink) / 0.09);
+  color: rgb(var(--ad-ink));
 }
 
 .obsidian-analytics-dashboard .msg-assistant {
-  color: rgba(255, 255, 255, 0.86);
+  color: rgb(var(--ad-ink) / 0.86);
 }
 
 /* ───────── Composer ───────── */
@@ -3964,8 +4016,8 @@ Installation target: `@components/block/analytics-dashboard.css`
   padding: 12px 10px 10px;
   border: 1px solid transparent;
   border-radius: 16px;
-  background-color: rgba(52, 52, 52, 0.62);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  background-color: var(--ad-composer);
+  box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.05);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   transition:
@@ -3974,10 +4026,10 @@ Installation target: `@components/block/analytics-dashboard.css`
 }
 
 .obsidian-analytics-dashboard .composer:focus-within {
-  background-color: rgba(58, 58, 58, 0.7);
+  background-color: var(--ad-composer-focus);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
-    0 8px 24px -8px rgba(0, 0, 0, 0.45);
+    inset 0 0 0 1px rgb(var(--ad-ink) / 0.14),
+    0 8px 24px -8px rgb(0 0 0 / calc(0.45 * var(--ad-shadow)));
 }
 
 .obsidian-analytics-dashboard .composer-input {
@@ -3992,13 +4044,13 @@ Installation target: `@components/block/analytics-dashboard.css`
   outline: none;
   font-size: 14.5px;
   line-height: 22px;
-  color: #fff;
+  color: rgb(var(--ad-ink));
   field-sizing: content;
   scrollbar-width: none;
 }
 
 .obsidian-analytics-dashboard .composer-input::placeholder {
-  color: rgba(255, 255, 255, 0.52);
+  color: rgb(var(--ad-ink) / 0.52);
 }
 
 .obsidian-analytics-dashboard .composer-row {
@@ -4015,8 +4067,8 @@ Installation target: `@components/block/analytics-dashboard.css`
   padding: 0 12px 0 10px;
   border-radius: 999px;
   font-size: 14.5px;
-  color: rgba(255, 255, 255, 0.75);
-  background-color: rgba(255, 255, 255, 0.07);
+  color: rgb(var(--ad-ink) / 0.75);
+  background-color: rgb(var(--ad-ink) / 0.07);
   transition:
     background-color var(--duration-quick) ease,
     color var(--duration-quick) ease,
@@ -4025,8 +4077,8 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .chip:hover {
-    background-color: rgba(255, 255, 255, 0.11);
-    color: #fff;
+    background-color: rgb(var(--ad-ink) / 0.11);
+    color: rgb(var(--ad-ink));
   }
 }
 
@@ -4047,8 +4099,8 @@ Installation target: `@components/block/analytics-dashboard.css`
   width: 29px;
   height: 29px;
   border-radius: 50%;
-  color: #121212;
-  background-color: #fff;
+  color: var(--ad-window);
+  background-color: rgb(var(--ad-ink));
   transition:
     opacity 200ms var(--ease-ui),
     transform 200ms var(--ease-ui),
@@ -4086,12 +4138,12 @@ Installation target: `@components/block/analytics-dashboard.css`
     width: min(380px, calc(100% - 68px));
     border: 1px solid transparent;
     border-radius: 15px;
-    background: rgba(14, 20, 32, 0.9);
+    background: var(--ad-overlay);
     backdrop-filter: blur(30px) saturate(160%);
     -webkit-backdrop-filter: blur(30px) saturate(160%);
     box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.08),
-      0 24px 60px -12px rgba(0, 0, 0, 0.6);
+      0 0 0 1px rgb(var(--ad-ink) / 0.08),
+      0 24px 60px -12px rgb(0 0 0 / calc(0.6 * var(--ad-shadow)));
     opacity: 0;
     transform: translateX(calc(100% + 16px));
     visibility: hidden;
@@ -4143,7 +4195,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   border: 1px solid transparent;
   border-radius: 12px;
   background-color: var(--fill-1);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+  box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.025);
   transition:
     background-color var(--duration-quick) ease,
     box-shadow var(--duration-quick) ease;
@@ -4151,11 +4203,11 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .stat:hover {
-    background-color: rgba(255, 255, 255, 0.075);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    background-color: rgb(var(--ad-ink) / 0.075);
+    box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.05);
   }
   .obsidian-analytics-dashboard .stat:hover .stat-icon {
-    color: rgba(255, 255, 255, 0.85);
+    color: rgb(var(--ad-ink) / 0.85);
   }
 }
 
@@ -4174,7 +4226,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   min-width: 0;
   font-size: 14px;
   line-height: 20px;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgb(var(--ad-ink) / 0.55);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -4182,7 +4234,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 .obsidian-analytics-dashboard .stat-icon {
   flex: none;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(var(--ad-ink) / 0.5);
   transition: color var(--duration-quick) ease;
 }
 
@@ -4205,7 +4257,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 }
 
 .obsidian-analytics-dashboard .delta[data-good="false"] {
-  color: #f07a6a;
+  color: var(--bad);
   background: rgba(240, 122, 106, 0.12);
 }
 
@@ -4215,7 +4267,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-weight: 500;
   line-height: 30px;
   letter-spacing: -0.015em;
-  color: #fff;
+  color: rgb(var(--ad-ink));
   font-variant-numeric: tabular-nums;
 }
 
@@ -4238,7 +4290,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   justify-content: flex-end;
   gap: 4px 12px;
   font-size: 12.5px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(var(--ad-ink) / 0.5);
 }
 
 .obsidian-analytics-dashboard .legend li {
@@ -4272,7 +4324,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 .obsidian-analytics-dashboard .chart-grid span {
   position: relative;
   height: 0;
-  border-top: 1px dashed rgba(255, 255, 255, 0.07);
+  border-top: 1px dashed rgb(var(--ad-ink) / 0.07);
 }
 
 .obsidian-analytics-dashboard .chart-grid span::before {
@@ -4282,7 +4334,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   top: 0;
   transform: translateY(-50%);
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.32);
+  color: rgb(var(--ad-ink) / 0.32);
   font-variant-numeric: tabular-nums;
 }
 
@@ -4330,7 +4382,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-size: 11.5px;
   line-height: 18px;
   text-align: center;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgb(var(--ad-ink) / 0.4);
   white-space: nowrap;
 }
 
@@ -4391,7 +4443,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 .obsidian-analytics-dashboard .leader-count {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgb(var(--ad-ink) / 0.55);
   font-variant-numeric: tabular-nums;
 }
 
@@ -4399,7 +4451,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   height: 5px;
   margin: 7px 0 8px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgb(var(--ad-ink) / 0.06);
   overflow: hidden;
 }
 
@@ -4436,7 +4488,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 .obsidian-analytics-dashboard .leader-pct {
   margin-left: auto;
   font-size: 12.5px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgb(var(--ad-ink) / 0.4);
   white-space: nowrap;
 }
 
@@ -4479,8 +4531,8 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .repo:hover {
-    background-color: rgba(255, 255, 255, 0.07);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    background-color: rgb(var(--ad-ink) / 0.07);
+    box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.06);
   }
 }
 
@@ -4493,7 +4545,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 .obsidian-analytics-dashboard .repo-vis-icon {
   flex: none;
-  color: rgba(255, 255, 255, 0.42);
+  color: rgb(var(--ad-ink) / 0.42);
 }
 
 .obsidian-analytics-dashboard .repo-name {
@@ -4501,7 +4553,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   font-size: 15.5px;
   font-weight: 600;
   line-height: 22px;
-  color: #fff;
+  color: rgb(var(--ad-ink));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -4509,7 +4561,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 .obsidian-analytics-dashboard .repo-org {
   font-weight: 450;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(var(--ad-ink) / 0.5);
 }
 
 .obsidian-analytics-dashboard .star-btn {
@@ -4520,7 +4572,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   height: 30px;
   margin: -4px -6px -4px auto;
   border-radius: 8px;
-  color: rgba(255, 255, 255, 0.42);
+  color: rgb(var(--ad-ink) / 0.42);
   transition:
     color var(--duration-quick) ease,
     background-color var(--duration-quick) ease,
@@ -4529,13 +4581,13 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .star-btn:hover {
-    color: rgba(255, 255, 255, 0.85);
-    background-color: rgba(255, 255, 255, 0.06);
+    color: rgb(var(--ad-ink) / 0.85);
+    background-color: rgb(var(--ad-ink) / 0.06);
   }
 }
 
 .obsidian-analytics-dashboard .star-btn[aria-pressed="true"] {
-  color: #f5c451;
+  color: var(--star);
 }
 
 .obsidian-analytics-dashboard .star-btn[aria-pressed="true"] svg {
@@ -4561,7 +4613,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   min-height: 40px;
   font-size: 14px;
   line-height: 20px;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgb(var(--ad-ink) / 0.55);
   text-wrap: pretty;
 }
 
@@ -4600,7 +4652,7 @@ Installation target: `@components/block/analytics-dashboard.css`
   align-items: center;
   gap: 6px 14px;
   font-size: 12.5px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(var(--ad-ink) / 0.5);
 }
 
 .obsidian-analytics-dashboard .repo-lang,
@@ -4652,8 +4704,8 @@ Installation target: `@components/block/analytics-dashboard.css`
   padding: 12px 14px;
   border: 1px solid transparent;
   border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.035);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  background-color: rgb(var(--ad-ink) / 0.035);
+  box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.03);
   transition:
     background-color var(--duration-quick) ease,
     box-shadow var(--duration-quick) ease;
@@ -4661,7 +4713,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 @media (hover: hover) {
   .obsidian-analytics-dashboard .review-row:hover {
-    background-color: rgba(255, 255, 255, 0.055);
+    background-color: rgb(var(--ad-ink) / 0.055);
   }
 }
 
@@ -4682,13 +4734,13 @@ Installation target: `@components/block/analytics-dashboard.css`
   margin-top: 4px;
   font-size: 13px;
   line-height: 20px;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgb(var(--ad-ink) / 0.45);
 }
 
 .obsidian-analytics-dashboard .review-repo {
   font-family: var(--obsidian-analytics-dashboard-font-mono), ui-monospace, "SF Mono", Menlo, monospace;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgb(var(--ad-ink) / 0.6);
 }
 
 .obsidian-analytics-dashboard .review-author,
@@ -4828,7 +4880,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 .obsidian-analytics-dashboard .profile-name {
   font-size: 15px;
   font-weight: 500;
-  color: #fff;
+  color: rgb(var(--ad-ink));
 }
 
 .obsidian-analytics-dashboard .profile-role {
@@ -4852,7 +4904,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 .obsidian-analytics-dashboard .field-label {
   font-size: 13px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgb(var(--ad-ink) / 0.55);
 }
 
 .obsidian-analytics-dashboard .field input {
@@ -4862,8 +4914,8 @@ Installation target: `@components/block/analytics-dashboard.css`
   border-radius: 9px;
   outline: none;
   font-size: 14.5px;
-  background: rgba(255, 255, 255, 0.045);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+  background: rgb(var(--ad-ink) / 0.045);
+  box-shadow: inset 0 0 0 1px rgb(var(--ad-ink) / 0.07);
   transition:
     box-shadow var(--duration-quick) ease,
     background-color var(--duration-quick) ease;
@@ -4880,7 +4932,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 
 .obsidian-analytics-dashboard .field-hint {
   font-size: 12.5px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgb(var(--ad-ink) / 0.4);
 }
 
 .obsidian-analytics-dashboard .field-hint[data-error="true"] {
@@ -4901,7 +4953,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 }
 
 .obsidian-analytics-dashboard .setting-list > li + li {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgb(var(--ad-ink) / 0.05);
 }
 
 .obsidian-analytics-dashboard .setting-title {
@@ -4950,7 +5002,7 @@ Installation target: `@components/block/analytics-dashboard.css`
 .obsidian-analytics-dashboard .swatch[aria-checked="true"] {
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.2),
-    0 0 0 2px #1a1a18,
+    0 0 0 2px var(--ad-surface),
     0 0 0 4px var(--swatch);
 }
 
@@ -4972,19 +5024,19 @@ Installation target: `@components/block/analytics-dashboard.css`
   padding: 8px 8px 8px 16px;
   border: 1px solid transparent;
   border-radius: 14px;
-  background: rgba(32, 32, 30, 0.86);
+  background: var(--ad-save-bar);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
-    0 12px 30px -10px rgba(0, 0, 0, 0.6);
+    inset 0 0 0 1px rgb(var(--ad-ink) / 0.07),
+    0 12px 30px -10px rgb(0 0 0 / calc(0.6 * var(--ad-shadow)));
 }
 
 .obsidian-analytics-dashboard .save-note {
   flex: 1;
   min-width: 0;
   font-size: 13.5px;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgb(var(--ad-ink) / 0.55);
 }
 
 @container analytics-dashboard (max-width: 760px) {
@@ -5418,7 +5470,7 @@ export function cn(...inputs: ClassValue[]) {
 | onAccentChange | (accent: AnalyticsDashboardAccent) => void | - | Called when Settings changes the accent. |
 | assistantName | string | 'Claude' | Assistant name in the details panel. |
 | onAsk | (question: string, pullRequest: AnalyticsPullRequest) => string \| Promise<string> | - | Answers questions about the selected pull request. |
-| background | string | '#0b0b0c' | Plain color behind the window. |
+| background | string | '#f6f6f7' light, '#0b0b0c' dark | Plain color behind the window, in both modes. |
 | className | string | - | Additional classes for the root element. |
 
 ## Pull request fields

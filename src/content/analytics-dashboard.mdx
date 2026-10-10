@@ -114,9 +114,17 @@ Without `onAsk`, the panel replies with a short summary of the pull request.
 
 The sidebar switches between Overview, Repositories, Code review, and Settings without leaving the page. Track the page with `page` and `onPageChange`, for example to keep it in the URL, or set the first page with `defaultPage`.
 
+## Light and dark mode
+
+The dashboard has a light and a dark palette. It is light by default and switches to dark when a parent element has the `dark` class, the convention next-themes and shadcn/ui use. Add `dark` to the dashboard's own `className` to keep it dark on a light page.
+
+```tsx copy
+<AnalyticsDashboard className="dark" />
+```
+
 ## Background and fonts
 
-The window sits on a plain color, `#0b0b0c` by default. Change it with `background`:
+The window sits on a plain color: `#f6f6f7` in light mode and `#0b0b0c` in dark mode. Change it with `background`:
 
 ```tsx copy
 <AnalyticsDashboard background="#1c1c1f" />
@@ -162,7 +170,7 @@ Without them, it falls back to the system fonts.
     { prop: 'onAccentChange', type: '(accent: AnalyticsDashboardAccent) => void', defaultValue: '-', description: 'Called when Settings changes the accent.' },
     { prop: 'assistantName', type: 'string', defaultValue: "'Claude'", description: 'Assistant name in the details panel.' },
     { prop: 'onAsk', type: '(question: string, pullRequest: AnalyticsPullRequest) => string | Promise<string>', defaultValue: '-', description: 'Answers questions about the selected pull request.' },
-    { prop: 'background', type: 'string', defaultValue: "'#0b0b0c'", description: 'Plain color behind the window.' },
+    { prop: 'background', type: 'string', defaultValue: "'#f6f6f7' light, '#0b0b0c' dark", description: 'Plain color behind the window, in both modes.' },
     { prop: 'className', type: 'string', defaultValue: '-', description: 'Additional classes for the root element.' },
   ]}
 />
