@@ -17,8 +17,8 @@ The project now uses **Next.js 16.3.4**, **React 19**, **Tailwind CSS v4**, **Ne
 | `src/components/landing/`, `site/`, `catalog/`, `pages/` | Home sections, site chrome, gallery, and route features |
 | `src/components/media/`, `providers/` | Shared video previews, theme, and motion behavior |
 | `src/components/docs/` | Installation controls, code previews, and client demo boundaries |
-| `src/hooks/`, `src/lib/` | Shared browser behavior and utilities; database code lives in `lib/server/` |
-| `scripts/`, `tests/` | Registry/MCP/database tools and regression suites |
+| `src/hooks/`, `src/lib/` | Shared browser behavior and utilities; server-only docs helpers live in `lib/server/` |
+| `scripts/`, `tests/` | Registry/MCP tools and regression suites |
 | `public/r/` | Generated installation manifests and standard catalogs |
 
 Following the requested removal of 33 components, the generated catalog contains **80 entries**: 50 primitives and 30 custom blocks. Their removed documentation pages, demos, search entries, and registry exports are no longer published. The component gallery has 17 cards, and the home page has three component cards and four video previews. The main site navigation is maintained privately under `components/site`.
@@ -74,9 +74,13 @@ The **36 passing regressions** exercise selected failures and interactions. They
 ## Remaining limitations
 
 - Registry files support text content. SVGs are included; binary demo media uses the canonical public host. Consumers need network access for these defaults or must supply their own media. Live CDN availability and a complete fresh-consumer installation have not been verified.
-- Components that call application APIs declare those endpoint requirements in their manifests. Installing UI does not provision a backend. The optional visitor database has not been initialized or exercised against a live service during this work.
+- Components that call application APIs declare those endpoint requirements in their manifests. Installing UI does not provision a backend.
 - No measured contrast, Core Web Vitals, screen-reader audit, screenshot fidelity, or exhaustive GPU/audio lifecycle result is claimed.
 - Handwritten examples are corrected where reviewed, but every code string has not been compiled inside an independent consumer application.
 - The scoped Zod override remains a maintenance item until the upstream Nextra fix is published and verified here.
 
 Nextra emits Git timestamp warnings for newly moved, uncommitted content files; these do not prevent the build. No deployment or live database migration was performed.
+
+## Visitor database and Vercel Analytics removal
+
+Updated 2026-10-18. The site no longer uses a database. The Neon visitor counter (`/api/visitors`, its hook, browser identity helper, `visitor-count` block, `db:init` script, and tests) and Vercel Analytics were removed, along with the `@neondatabase/serverless` and `@vercel/analytics` packages. Tracwell remains the only analytics, covering page views and copy events. The Terms of Service privacy section no longer describes a visitor count. Rows above that mention the visitor API or database describe earlier work.

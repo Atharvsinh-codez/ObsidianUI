@@ -10,7 +10,7 @@ export const openapi = {
   info: {
     title: "ObsidianUI Component and Documentation API",
     version: "1.0.0",
-    description: "Public read-only access to component source and documentation. No authentication is required. Download every files entry and resolve installation aliases using your project's components.json. The local stdio MCP server is documented at /mcp; there is no hosted HTTP MCP transport. Website visitor analytics is outside this integration API.",
+    description: "Public read-only access to component source and documentation. No authentication is required. Download every files entry and resolve installation aliases using your project's components.json. The local stdio MCP server is documented at /mcp; there is no hosted HTTP MCP transport.",
     license: { name: "MIT", identifier: "MIT" },
     contact: { name: "ObsidianUI", url: `${ORIGIN}/developers` },
   },

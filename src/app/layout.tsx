@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react";
 import { Inter, Geist, Inter_Tight, Pixelify_Sans, Playfair_Display, Six_Caps } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -214,7 +213,6 @@ export default function RootLayout({
           <SiteHeader />
           {children}
           <Footer />
-          <Analytics />
           <TracwellAnalytics />
         </ThemeProvider>
       </body>

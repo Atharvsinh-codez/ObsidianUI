@@ -38,8 +38,6 @@ curl -fsS https://www.obsidianui.dev/docs/hover-img.md
 
 No API key, account, or cookie is required for public documentation and registry downloads. This API supplies source code and documentation; it does not host your application, run agents, or provide a remote MCP transport.
 
-The website's visitor analytics endpoint is not part of the component integration API. Agents should not submit synthetic visits.
-
 [Authentication documentation](https://www.obsidianui.dev/authentication)
 
 [Local MCP setup](https://www.obsidianui.dev/mcp)

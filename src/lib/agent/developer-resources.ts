@@ -65,7 +65,7 @@ export const developerResources: Record<string, DeveloperResource> = {
       },
       {
         id: "access", title: "Access and scope",
-        paragraphs: ["No API key, account, or cookie is required for public documentation and registry downloads. This API supplies source code and documentation; it does not host your application, run agents, or provide a remote MCP transport.", "The website's visitor analytics endpoint is not part of the component integration API. Agents should not submit synthetic visits."],
+        paragraphs: ["No API key, account, or cookie is required for public documentation and registry downloads. This API supplies source code and documentation; it does not host your application, run agents, or provide a remote MCP transport."],
         links: [{ title: "Authentication documentation", href: "/authentication" }, { title: "Local MCP setup", href: "/mcp" }],
       },
     ],

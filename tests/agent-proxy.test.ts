@@ -100,7 +100,7 @@ test("write methods, API routes, registries and static assets keep existing hand
   for (const method of ["POST", "PUT", "PATCH", "DELETE", "OPTIONS"]) {
     assert.equal(proxy(request("/components", "text/markdown", { method })).headers.get("x-middleware-next"), "1");
   }
-  for (const pathname of ["/api/visitors", "/api/docs/installation/markdown", "/r/art-gallery.json", "/_next/static/chunk.js", "/_next/image", "/_pagefind/pagefind.js", "/markdown/index.md", "/logo.svg", "/effects/demo.png", "/openapi.json", "/robots.txt", "/llms.txt", "/agent-instructions.md", "/.well-known/example"]) {
+  for (const pathname of ["/api/docs/installation/markdown", "/r/art-gallery.json", "/_next/static/chunk.js", "/_next/image", "/_pagefind/pagefind.js", "/markdown/index.md", "/logo.svg", "/effects/demo.png", "/openapi.json", "/robots.txt", "/llms.txt", "/agent-instructions.md", "/.well-known/example"]) {
     const response = proxy(request(pathname, "text/markdown"));
     assert.equal(response.headers.get("x-middleware-next"), "1", pathname);
     assert.equal(response.headers.get("vary"), null);

@@ -2,7 +2,7 @@ import { sponsorContact, sponsorTiers } from "./sponsors";
 
 const repository = "https://github.com/Atharvsinh-codez/ObsidianUI";
 
-export const termsUpdated = { iso: "2026-10-13", label: "October 13, 2026" } as const;
+export const termsUpdated = { iso: "2026-10-18", label: "October 18, 2026" } as const;
 
 /** Inline text supports **bold** and [label](href); the page and the Markdown export share it. */
 export type TermsBlock =
@@ -224,7 +224,7 @@ export const termsSections: readonly TermsSection[] = [
     id: "third-parties",
     title: "Third-party services and links",
     blocks: [
-      { type: "paragraph", text: "The Website relies on third-party services, including Vercel for hosting, Cloudflare for media delivery, Vercel Analytics and Tracwell for analytics, Dodo Payments for checkout, and GitHub, X, and Telegram for code and communication. Each is governed by its own terms and policies, and we aren’t responsible for their availability or actions." },
+      { type: "paragraph", text: "The Website relies on third-party services, including Vercel for hosting, Cloudflare for media delivery, Tracwell for analytics, Dodo Payments for checkout, and GitHub, X, and Telegram for code and communication. Each is governed by its own terms and policies, and we aren’t responsible for their availability or actions." },
       { type: "paragraph", text: "Links to other websites, including sponsor links, are there for convenience. We don’t control those sites and aren’t responsible for their content or practices." },
     ],
   },
@@ -236,8 +236,7 @@ export const termsSections: readonly TermsSection[] = [
       {
         type: "list",
         items: [
-          "**Visitor count.** To count unique visitors, your browser stores a random visitor ID in local storage and sends it to us. If that isn’t possible, we use a one-way hash of your IP address and browser user agent instead. We don’t use either to identify you.",
-          "**Analytics.** Vercel Analytics and Tracwell tell us which pages people use, in aggregate.",
+          "**Analytics.** Tracwell tells us which pages people use and which code they copy, in aggregate.",
           "**Sponsors.** Dodo Payments shares the details we need to manage your subscription, such as your name and email address. We also keep the Sponsor Materials you send us.",
           "**Messages.** If you email or DM us, we keep the conversation so we can reply and manage your sponsorship.",
         ],
