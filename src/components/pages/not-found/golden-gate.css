@@ -1,0 +1,157 @@
+/*
+ * The Anatomy kit's drawing tokens and the bridge palette, switched by the site theme.
+ * Cars, boats and trees are <use> clones, and Chrome matches selectors for those clones inside
+ * the use element's shadow tree, where `.gg-scene` and `.dark` are not ancestors. So every theme
+ * value is a custom property set on `.gg-scene` (properties do inherit into the clones), and the
+ * drawing rules below use the kit's bare class names.
+ */
+.gg-scene {
+  --anatomy-paper: #fbfbfa; --anatomy-face: #ffffff; --anatomy-top: #ffffff;
+  --anatomy-shade-0: #dcdcd9; --anatomy-shade-1: #e5e5e2; --anatomy-shade-2: #ededea; --anatomy-shade-3: #f4f4f1;
+  --anatomy-lit-top: #ffffff; --anatomy-lit-shade: #eeeeeb;
+  --anatomy-hi: #26262a; --anatomy-mid: #8a8a8f; --anatomy-lo: #b4b4b8; --anatomy-faint: #d4d4d6; --anatomy-lit: #000000;
+  --anatomy-halo: #8a8a80; --anatomy-halo-opacity: .32; --anatomy-dot: #3a3a3e;
+  --anatomy-weight: .6px;
+  --anatomy-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --gg-water: #e6e6e3;
+  --gg-land-top: #fafaf8; --gg-land-0: #b9b9b5; --gg-land-1: #c9c9c5; --gg-land-2: #d8d8d4; --gg-land-3: #e8e8e5;
+  --gg-steel-top: #f3875a; --gg-steel-0: #b4461d; --gg-steel-1: #c95528; --gg-steel-2: #dc6534; --gg-steel-3: #e97441;
+  --gg-cable-body: #e06a38; --gg-cable-shine: #f6996f; --gg-cable-shade: #b4461d;
+  --gg-car-top: #ffffff; --gg-car-0: #8f979f; --gg-car-1: #a7aeb6; --gg-car-2: #bfc6cc; --gg-car-3: #d2d8dd;
+  --gg-paint-dim: 0%;
+
+  position: relative;
+  overflow: hidden;
+  background: var(--background);
+}
+
+.dark .gg-scene {
+  --anatomy-paper: #131313; --anatomy-face: #1b1b1b; --anatomy-top: #1c1c1c;
+  --anatomy-shade-0: #0f0f0f; --anatomy-shade-1: #121212; --anatomy-shade-2: #151515; --anatomy-shade-3: #181818;
+  --anatomy-lit-top: #262626; --anatomy-lit-shade: #1d1d1d;
+  --anatomy-hi: #d4d4d4; --anatomy-mid: #6a6a6a; --anatomy-lo: #3e3e3e; --anatomy-faint: #2a2a2a; --anatomy-lit: #ffffff;
+  --anatomy-halo: #050505; --anatomy-halo-opacity: .9; --anatomy-dot: #e6e6e6;
+
+  --gg-water: #0b0b0b;
+  --gg-land-top: #363636; --gg-land-0: #111111; --gg-land-1: #1a1a1a; --gg-land-2: #232323; --gg-land-3: #2c2c2c;
+  --gg-steel-top: #cc5a2c; --gg-steel-0: #4a1d0c; --gg-steel-1: #6b2a11; --gg-steel-2: #8c3816; --gg-steel-3: #ab461e;
+  --gg-cable-body: #9d3f19; --gg-cable-shine: #d0602f; --gg-cable-shade: #4a1d0c;
+  --gg-car-top: #4a525c; --gg-car-0: #1c2127; --gg-car-1: #272d35; --gg-car-2: #333b44; --gg-car-3: #3d4650;
+  --gg-paint-dim: 18%;
+}
+
+.gg-scene-host {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gg-scene[data-ready] .gg-scene-host { opacity: 1; }
+
+/* The figure is split into stacked roots (see live.ts); only cars take the pointer. */
+.gg-scene-host > svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Traffic, fog and near-side boats move every frame; on their own layer they re-raster alone. */
+.gg-scene-host > svg[data-moving] { will-change: transform; }
+.gg-car { pointer-events: visiblePainted; }
+
+/* Strokes are in scene units, so they thicken with the zoom like the reference recording. */
+.iso-fill { fill: var(--anatomy-paper); stroke: none; }
+.iso-solid[data-lit] > .iso-fill { fill: var(--anatomy-face); }
+.iso-shade, .iso-top { stroke: none; }
+.iso-shade[data-shade="0"] { fill: var(--anatomy-shade-0); }
+.iso-shade[data-shade="1"] { fill: var(--anatomy-shade-1); }
+.iso-shade[data-shade="2"] { fill: var(--anatomy-shade-2); }
+.iso-shade[data-shade="3"] { fill: var(--anatomy-shade-3); }
+.iso-top { fill: var(--anatomy-top); }
+.iso-solid[data-lit] > .iso-top { fill: var(--anatomy-lit-top); }
+.iso-solid[data-lit] > .iso-shade { fill: var(--anatomy-lit-shade); }
+.iso-solid[data-seamless] > .iso-shade, .iso-solid[data-seamless] > .iso-top { stroke-width: .4; stroke-linejoin: round; }
+.iso-solid[data-seamless] > .iso-shade[data-shade="0"] { stroke: var(--anatomy-shade-0); }
+.iso-solid[data-seamless] > .iso-shade[data-shade="1"] { stroke: var(--anatomy-shade-1); }
+.iso-solid[data-seamless] > .iso-shade[data-shade="2"] { stroke: var(--anatomy-shade-2); }
+.iso-solid[data-seamless] > .iso-shade[data-shade="3"] { stroke: var(--anatomy-shade-3); }
+.iso-solid[data-seamless] > .iso-top { stroke: var(--anatomy-top); }
+.iso-solid[data-seamless][data-lit] > .iso-top { stroke: var(--anatomy-lit-top); }
+.iso-solid[data-seamless][data-lit] > .iso-shade { stroke: var(--anatomy-lit-shade); }
+.iso-solid[data-lit] > .iso-edge { stroke: var(--anatomy-lit); }
+.iso-halo { fill: var(--anatomy-halo); stroke: none; filter: blur(9px); opacity: var(--anatomy-halo-opacity); transform: translateY(3px); }
+.iso-line { fill: none; stroke: var(--anatomy-lo); stroke-width: var(--anatomy-weight); stroke-linecap: round; stroke-linejoin: round; }
+.iso-line[data-tone="hi"] { stroke: var(--anatomy-hi); }
+.iso-line[data-tone="mid"] { stroke: var(--anatomy-mid); }
+.iso-line[data-tone="lo"] { stroke: var(--anatomy-lo); }
+.iso-line[data-tone="faint"] { stroke: var(--anatomy-faint); }
+.iso-line[data-tone="lit"] { stroke: var(--anatomy-lit); }
+.iso-line[data-dotted] { stroke-dasharray: .01 3.5; stroke-width: 1; }
+.iso-line[data-dashed] { stroke-dasharray: 3 3; }
+.iso-dots circle { fill: var(--anatomy-dot); stroke: none; opacity: .32; }
+.iso-dots[data-tone="hi"] circle { opacity: .85; }
+.iso-dots[data-tone="mid"] circle { opacity: .45; }
+.iso-dots[data-tone="lo"] circle { opacity: .22; }
+.iso-dots[data-tone="faint"] circle { opacity: .12; }
+.iso-face-text { fill: var(--anatomy-mid); font-family: var(--anatomy-mono); letter-spacing: .04em; }
+.iso-face-text[data-tone="hi"] { fill: var(--anatomy-hi); }
+.iso-face-text[data-tone="lo"] { fill: var(--anatomy-lo); }
+.iso-face-text[data-tone="faint"] { fill: var(--anatomy-faint); }
+.tb-body { fill: var(--anatomy-shade-2); stroke: none; }
+.tb-shine { fill: var(--anatomy-top); stroke: none; }
+.tb-shade { fill: var(--anatomy-shade-0); stroke: none; }
+.tb-ring { fill: none; stroke: var(--anatomy-lo); stroke-width: .45; stroke-linecap: butt; stroke-linejoin: round; }
+.tb-ring[data-tone="mid"] { stroke: var(--anatomy-mid); }
+.tb-ring[data-tone="faint"] { stroke: var(--anatomy-faint); }
+.tb-ring[data-tone="hi"] { stroke: var(--anatomy-hi); }
+
+/* The bridge: land, water, International Orange steel, traffic, lamps and the bay. */
+.gg-water { fill: var(--gg-water); stroke: none; }
+.gg-land { --anatomy-top: var(--gg-land-top); --anatomy-shade-0: var(--gg-land-0); --anatomy-shade-1: var(--gg-land-1); --anatomy-shade-2: var(--gg-land-2); --anatomy-shade-3: var(--gg-land-3); --anatomy-paper: var(--gg-land-2); }
+.gg-steel { --anatomy-top: var(--gg-steel-top); --anatomy-shade-0: var(--gg-steel-0); --anatomy-shade-1: var(--gg-steel-1); --anatomy-shade-2: var(--gg-steel-2); --anatomy-shade-3: var(--gg-steel-3); --anatomy-paper: var(--gg-steel-2); }
+.gg-cable .tb-body { fill: var(--gg-cable-body); }
+.gg-cable .tb-shine { fill: var(--gg-cable-shine); }
+.gg-cable .tb-shade { fill: var(--gg-cable-shade); }
+/*
+ * Vehicles are grey; the one under the pointer fades to its own paint (--gg-paint, set per
+ * vehicle by live.ts). --gg-mix is registered so the change can transition.
+ */
+@property --gg-mix { syntax: "<number>"; inherits: true; initial-value: 0; }
+.gg-car {
+  --gg-paint: #8f979f;
+  --gg-mix: 0;
+  --gg-coat: color-mix(in oklab, var(--gg-paint), black var(--gg-paint-dim));
+  --anatomy-top: color-mix(in oklab, color-mix(in oklab, var(--gg-coat), white 42%) calc(var(--gg-mix) * 100%), var(--gg-car-top));
+  --anatomy-shade-0: color-mix(in oklab, color-mix(in oklab, var(--gg-coat), black 40%) calc(var(--gg-mix) * 100%), var(--gg-car-0));
+  --anatomy-shade-1: color-mix(in oklab, color-mix(in oklab, var(--gg-coat), black 24%) calc(var(--gg-mix) * 100%), var(--gg-car-1));
+  --anatomy-shade-2: color-mix(in oklab, var(--gg-coat) calc(var(--gg-mix) * 100%), var(--gg-car-2));
+  --anatomy-shade-3: color-mix(in oklab, color-mix(in oklab, var(--gg-coat), white 16%) calc(var(--gg-mix) * 100%), var(--gg-car-3));
+  --anatomy-paper: var(--anatomy-shade-2);
+  transition: --gg-mix 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gg-car[data-lit] { --gg-mix: 1; }
+
+/*
+ * Lamps live in the page's own tree, so theme and dusk selectors reach them directly. Lit lamps
+ * use bright faces only: a blur filter on each would be re-run every time traffic repaints them.
+ */
+.gg-lamp { --anatomy-top: #f4f4f2; --anatomy-shade-0: #b9b9b6; --anatomy-shade-1: #cdcdca; --anatomy-shade-2: #dededb; --anatomy-shade-3: #ebebe8; --anatomy-paper: #dededb; }
+.gg-lamp[data-on],
+.gg-scene[data-night] .gg-lamp,
+.dark .gg-scene .gg-lamp { --anatomy-top: #fffbe8; --anatomy-shade-0: #f2ead0; --anatomy-shade-1: #f6efd8; --anatomy-shade-2: #faf4e0; --anatomy-shade-3: #fdf8e8; --anatomy-paper: #f6efd8; }
+
+.gg-wake path { stroke-dasharray: 2.6 3.4; animation: gg-wake 1.3s linear infinite; }
+@keyframes gg-wake { to { stroke-dashoffset: -6; } }
+.gg-fog { opacity: .75; }
+.gg-gull { fill: var(--anatomy-mid); stroke: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gg-scene-host, .gg-car { transition: none; }
+  .gg-wake path { animation: none; }
+}

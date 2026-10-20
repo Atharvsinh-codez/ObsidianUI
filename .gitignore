@@ -49,3 +49,8 @@ UK1Sb-ZRte2Iv3pphsfge-files*
 
 # Local launch video project
 /videos/obsidianui-launch/
+
+# Local agent skills, never committed
+/.agents/
+/skills-lock.json
+/skills/design-to-code/

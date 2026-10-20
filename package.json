@@ -16,6 +16,7 @@
     "test:components": "vitest run",
     "registry:build": "tsx scripts/build-registry.ts",
     "agent:build": "tsx scripts/build-agent-docs.ts",
+    "golden-gate:build": "tsx scripts/build-golden-gate.ts",
     "verify:agents": "tsx scripts/verify-agent-endpoints.ts",
     "mcp": "tsx scripts/mcp-server.ts",
     "check": "npm run lint && npm run typecheck && npm test && npm run build",

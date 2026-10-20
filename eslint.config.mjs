@@ -12,6 +12,7 @@ export default defineConfig([
     "public/r/**",
     "public/_pagefind/**",
     "skills/**",
+    ".agents/**",
     "v-prism-recreate-by-athrix/**",
     "UK1Sb-ZRte2Iv3pphsfge-files (1)/**",
     "next-env.d.ts",
