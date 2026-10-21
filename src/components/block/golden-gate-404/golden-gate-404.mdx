@@ -1,0 +1,55 @@
+---
+title: Golden Gate 404
+description: A full-screen not-found page on the Golden Gate's north tower, with live traffic, boats and fog in light and dark themes.
+---
+
+# Golden Gate 404
+
+A full-screen not-found page set on the Golden Gate's north tower. Cars, trucks and buses cross the deck, boats and a container ship work the bay, and fog drifts past the tower. Hover a car to see its paint; on touch screens, tap it. The deck lamps follow dusk in San Francisco, and the dark theme keeps them lit.
+
+## Install
+
+```bash
+npx shadcn@latest add "https://www.obsidianui.dev/r/golden-gate-404.json"
+```
+
+The item adds the block and its helpers, the `raised-button` primitive, and the pre-built scene at `public/golden-gate/north-tower.svg`. It needs `lucide-react` and a Next.js App Router project, since it uses `next/link` and loads Instrument Serif through `next/font`.
+
+## Usage
+
+```tsx
+// app/not-found.tsx
+import { GoldenGate404 } from "@/components/block/golden-gate-404";
+
+export default function NotFound() {
+  return (
+    <main>
+      <GoldenGate404 />
+    </main>
+  );
+}
+```
+
+The block fills the viewport and stops page scrolling while it is mounted. When a fixed header sits above it, set the header's height on any ancestor so the card fits underneath, and hide anything below the fold, such as a footer:
+
+```css
+.site-main { --obsidianui-404-offset: 56px; }
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| code | string | "404" | The status code drawn over the bay. |
+| title | string | "page not found" | Read after the code by screen readers, so the heading names the page. |
+| message | string | "This page drifted out past the Golden Gate." | The line under the code. |
+| href | string | "/" | Where the button leads. |
+| linkLabel | string | "Back home" | The button label. |
+| className | string | none | Extra classes on the root element. |
+
+## Behavior
+
+- The theme follows a `.dark` class on an ancestor, as in shadcn themes.
+- Wide screens and phones held sideways put the copy beside the tower; other screens put it below.
+- With reduced motion, the scene holds still and the text appears without its entrance animation.
+- Only the part of the figure inside the frame is laid out and animated, and the animation pauses while the block is off screen.

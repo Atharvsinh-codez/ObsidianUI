@@ -9,7 +9,8 @@ const server = new Server({ name: 'obsidian-ui', version: '0.1.0' }, { capabilit
 server.setRequestHandler(ListResourcesRequestSchema, async () => {
     try {
         return { resources: readRegistryCatalog(projectRoot).items.map(item => ({
-            uri: `obsidian://${item.name}`, name: item.name, mimeType: 'application/json', description: `Component: ${item.name}`,
+            uri: `obsidian://${item.name}`, name: item.name, ...(item.title ? { title: item.title } : {}),
+            mimeType: 'application/json', description: item.description ?? `Component: ${item.name}`,
         })) };
     } catch (error) {
         throw new McpError(ErrorCode.InternalError, error instanceof Error ? error.message : 'Registry unavailable');

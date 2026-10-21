@@ -70,6 +70,8 @@ export const openapi = {
           $schema: { type: "string", format: "uri" },
           name: { type: "string", pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
           type: { type: "string", enum: ["registry:ui", "registry:block", "registry:hook", "registry:lib", "registry:file"] },
+          title: { type: "string", description: "Display name, when the component ships a guide." },
+          description: { type: "string", description: "One-sentence summary, when the component ships a guide." },
           dependencies: { type: "array", items: { type: "string" }, description: "npm package dependencies. React, ReactDOM, and Next.js are framework prerequisites where used." },
           files: { type: "array", minItems: 1, items: { $ref: "#/components/schemas/RegistryFile" } },
           docs: { type: "string", description: "Installation notes and integration requirements." },

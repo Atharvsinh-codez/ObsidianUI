@@ -11,6 +11,8 @@ export interface RegistryItem {
     $schema: string;
     name: string;
     type: FileType;
+    title?: string;
+    description?: string;
     dependencies: string[];
     files: RegistryFile[];
     docs?: string;
@@ -67,11 +69,32 @@ function describeFile(sourceRoot: string, filename: string): Omit<RegistryFile, 
     return { path: relative, target: group[1] + relative.slice(group[0].length), type: /\.(?:css|svg|json)$/.test(filename) ? 'registry:file' : group[2] };
 }
 
+/**
+ * A component's optional guide: `<name>/<name>.mdx` beside its entrypoint, written as plain
+ * Markdown under `title` and `description` front matter. It is not a documentation page; it
+ * travels with the registry item so CLI and MCP clients can read it.
+ */
+function readGuide(entrypoint: string, name: string): { title?: string; description?: string; body: string } | undefined {
+    const filename = path.join(path.dirname(entrypoint), name, `${name}.mdx`);
+    if (!fs.existsSync(filename)) return undefined;
+    const source = fs.readFileSync(filename, 'utf8').replace(/\r\n/g, '\n');
+    const frontMatter = /^---\n([\s\S]*?)\n---\n/.exec(source);
+    const field = (key: string) => {
+        const value = frontMatter && new RegExp(`^${key}:[ \\t]*(.+)$`, 'm').exec(frontMatter[1])?.[1].trim();
+        return value ? value.replace(/^(["'])(.*)\1$/, '$2') : undefined;
+    };
+    return { title: field('title'), description: field('description'), body: source.slice(frontMatter?.[0].length ?? 0).trim() };
+}
+
 /** Build in memory first: broken imports must not leave partially generated manifests. */
 export function buildRegistry(projectRoot: string, origin = REGISTRY_ORIGIN): Registry {
     const sourceRoot = path.resolve(projectRoot, 'src');
     const publicRoot = path.resolve(projectRoot, 'public');
-    const entrypoints = ['ui', 'block'].flatMap(folder => walk(path.join(sourceRoot, 'components', folder))).filter(filename => /\.[jt]sx$/.test(filename));
+    // Components are the top-level files; a folder named after one holds its private helpers.
+    const entrypoints = ['ui', 'block'].flatMap(folder => {
+        const directory = path.join(sourceRoot, 'components', folder);
+        return walk(directory).filter(filename => path.dirname(filename) === directory);
+    }).filter(filename => /\.[jt]sx$/.test(filename));
     const names = new Set<string>();
     const items = entrypoints.map(entrypoint => {
         const name = path.basename(entrypoint, path.extname(entrypoint));
@@ -150,13 +173,16 @@ export function buildRegistry(projectRoot: string, origin = REGISTRY_ORIGIN): Re
             }
         };
         visit(entrypoint);
-        const notes = [];
+        const guide = readGuide(entrypoint, name);
+        const notes = guide?.body ? [guide.body] : [];
         if (remoteAssets.size) notes.push('Default demo media loads from ObsidianUI. Replace these URLs with your own assets for offline use.');
         if (requiredEndpoints.size) notes.push(`Provide these application API endpoints before using this component: ${[...requiredEndpoints].join(', ')}.`);
         return {
             $schema: 'https://ui.shadcn.com/schema/registry-item.json', name, type: describeFile(sourceRoot, entrypoint).type,
+            ...(guide?.title ? { title: guide.title } : {}), ...(guide?.description ? { description: guide.description } : {}),
             dependencies: [...dependencies].sort(), files: [...files.values()].sort((a, b) => a.path.localeCompare(b.path)),
-            ...(notes.length ? { docs: notes.join('\n\n'), meta: {
+            ...(notes.length ? { docs: notes.join('\n\n') } : {}),
+            ...(remoteAssets.size || requiredEndpoints.size ? { meta: {
                 ...(remoteAssets.size ? { remoteAssets: [...remoteAssets].sort() } : {}),
                 ...(requiredEndpoints.size ? { requiredEndpoints: [...requiredEndpoints].sort() } : {}),
             } } : {}),

@@ -2,10 +2,10 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 // The figure comes from github.com/Atharvsinh-codez/-GoldenGate-Bridge-SF (Anatomy kit, framework-free SVG).
 import { buildScene, fitCamera, HOME, MODEL } from "./golden-gate/scene.mjs";
-import { reachableArea, SCENE_SIZE, type ViewBox } from "../src/components/pages/not-found/framing";
+import { reachableArea, SCENE_SIZE, type ViewBox } from "../src/components/block/golden-gate-404/framing";
 
 const SVG_OUT = "public/golden-gate/north-tower.svg";
-const MODEL_OUT = "src/lib/generated/golden-gate.json";
+const MODEL_OUT = "src/components/block/golden-gate-404/model.json";
 // Halos and lamp glows blur a few units past their paths.
 const MARGIN = 14;
 

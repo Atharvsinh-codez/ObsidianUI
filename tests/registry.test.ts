@@ -64,6 +64,25 @@ test('JSX effects package JavaScript helpers and reject names shared with TSX co
     assert.throws(() => buildRegistry(root), /duplicate registry name/);
 });
 
+test('a helper folder stays inside its component and its guide becomes the item title, description, and docs', t => {
+    const { root, put } = fixture(t);
+    put('src/components/block/scene-page.tsx', `import { Scene } from './scene-page/scene'; import './scene-page/scene-page.css'; export const ScenePage = () => <Scene />;`);
+    put('src/components/block/scene-page/scene.tsx', `import model from './model.json'; export const Scene = () => <svg data-size={model.size} />;`);
+    put('src/components/block/scene-page/model.json', '{ "size": 4 }');
+    put('src/components/block/scene-page/scene-page.css', '.scene-page { height: 100dvh; }');
+    put('src/components/block/scene-page/scene-page.mdx', '---\r\ntitle: Scene Page\r\ndescription: "A page with a scene."\r\n---\r\n\r\n# Scene Page\r\n\r\nUse it on a not-found route.\r\n');
+    const registry = buildRegistry(root);
+    assert.deepEqual(registry.items.map(item => item.name), ['scene-page']);
+    const [item] = registry.items;
+    assert.equal(item.title, 'Scene Page');
+    assert.equal(item.description, 'A page with a scene.');
+    assert.equal(item.docs, '# Scene Page\n\nUse it on a not-found route.');
+    assert.equal(item.meta, undefined);
+    assert.deepEqual(item.files.map(file => file.target).sort(), [
+        '@components/block/scene-page.tsx', '@components/block/scene-page/model.json', '@components/block/scene-page/scene-page.css', '@components/block/scene-page/scene.tsx',
+    ]);
+});
+
 test('binary demo media gets explicit hosted URLs and backend requirements are documented', t => {
     const { root, put } = fixture(t);
     put('src/components/block/demo.tsx', `const image = '/demo.png'; fetch('/api/demo'); export default image;`);

@@ -1,4 +1,5 @@
-import model from "@/lib/generated/golden-gate.json";
+// Generated with the scene by `npm run golden-gate:build`.
+import model from "./model.json";
 import type { ViewBox } from "./framing";
 import { iso, pathOf, translateAlong, type Projection, type WorldPoint } from "./projection";
 
