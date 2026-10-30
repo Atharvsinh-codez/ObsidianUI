@@ -34,11 +34,11 @@ export interface ParallaxSliderProps {
 }
 
 export const defaultParallaxSlides: ParallaxSlide[] = [
-  { title: "Missing Piece", image: "/effects/parallax-slider/missing-piece.webp", alt: "A hand placing the last puzzle piece into its gap", focus: "50% 75%" },
-  { title: "Enter", image: "/effects/parallax-slider/enter.webp", alt: "A finger pressing the Enter key", focus: "66% 75%" },
-  { title: "Opening Move", image: "/effects/parallax-slider/opening-move.webp", alt: "Two hands moving a king and a pawn across a chessboard", focus: "34% 60%" },
-  { title: "Hand Off", image: "/effects/parallax-slider/hand-off.webp", alt: "One hand passing a glowing sphere to another", focus: "50% 50%" },
-  { title: "Fine Tune", image: "/effects/parallax-slider/fine-tune.webp", alt: "A hand turning a large control dial", focus: "55% 70%" },
+  { title: "Missing Piece", image: "/parallax-slider-images/missing-piece.webp", alt: "A hand placing the last puzzle piece into its gap", focus: "50% 75%" },
+  { title: "Enter", image: "/parallax-slider-images/enter.webp", alt: "A finger pressing the Enter key", focus: "66% 75%" },
+  { title: "Opening Move", image: "/parallax-slider-images/opening-move.webp", alt: "Two hands moving a king and a pawn across a chessboard", focus: "34% 60%" },
+  { title: "Hand Off", image: "/parallax-slider-images/hand-off.webp", alt: "One hand passing a glowing sphere to another", focus: "50% 50%" },
+  { title: "Fine Tune", image: "/parallax-slider-images/fine-tune.webp", alt: "A hand turning a large control dial", focus: "55% 70%" },
 ];
 
 const LERP = 0.05;

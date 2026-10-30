@@ -4572,11 +4572,11 @@ export interface ParallaxSliderProps {
 }
 
 export const defaultParallaxSlides: ParallaxSlide[] = [
-  { title: "Missing Piece", image: "https://www.obsidianui.dev/effects/parallax-slider/missing-piece.webp", alt: "A hand placing the last puzzle piece into its gap", focus: "50% 75%" },
-  { title: "Enter", image: "https://www.obsidianui.dev/effects/parallax-slider/enter.webp", alt: "A finger pressing the Enter key", focus: "66% 75%" },
-  { title: "Opening Move", image: "https://www.obsidianui.dev/effects/parallax-slider/opening-move.webp", alt: "Two hands moving a king and a pawn across a chessboard", focus: "34% 60%" },
-  { title: "Hand Off", image: "https://www.obsidianui.dev/effects/parallax-slider/hand-off.webp", alt: "One hand passing a glowing sphere to another", focus: "50% 50%" },
-  { title: "Fine Tune", image: "https://www.obsidianui.dev/effects/parallax-slider/fine-tune.webp", alt: "A hand turning a large control dial", focus: "55% 70%" },
+  { title: "Missing Piece", image: "https://www.obsidianui.dev/parallax-slider-images/missing-piece.webp", alt: "A hand placing the last puzzle piece into its gap", focus: "50% 75%" },
+  { title: "Enter", image: "https://www.obsidianui.dev/parallax-slider-images/enter.webp", alt: "A finger pressing the Enter key", focus: "66% 75%" },
+  { title: "Opening Move", image: "https://www.obsidianui.dev/parallax-slider-images/opening-move.webp", alt: "Two hands moving a king and a pawn across a chessboard", focus: "34% 60%" },
+  { title: "Hand Off", image: "https://www.obsidianui.dev/parallax-slider-images/hand-off.webp", alt: "One hand passing a glowing sphere to another", focus: "50% 50%" },
+  { title: "Fine Tune", image: "https://www.obsidianui.dev/parallax-slider-images/fine-tune.webp", alt: "A hand turning a large control dial", focus: "55% 70%" },
 ];
 
 const LERP = 0.05;
