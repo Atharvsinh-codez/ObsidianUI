@@ -64,10 +64,10 @@ describe('ParallaxSlider', () => {
         expect(second).not.toHaveAttribute('data-focus')
     })
 
-    it('ships demo slides served from the public parallax-slider-images folder', () => {
+    it('ships demo slides served from the ObsidianUI CDN', () => {
         expect(defaultParallaxSlides).toHaveLength(5)
         for (const slide of defaultParallaxSlides) {
-            expect(slide.image).toMatch(/^\/parallax-slider-images\/[a-z-]+\.webp$/)
+            expect(slide.image).toMatch(/^https:\/\/cdn-new\.obsidianui\.dev\/parallax-slider-images\/[a-z-]+\.webp$/)
             expect(slide.alt).toBeTruthy()
         }
     })
