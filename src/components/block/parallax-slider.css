@@ -1,23 +1,34 @@
+/* Colors derive from the inherited text color, so the slider matches light and dark themes
+   without theme selectors. Set --obsidian-parallax-foreground to pin a text color. */
 .obsidian-parallax-slider {
-  --obsidian-parallax-background: #080808;
-  --obsidian-parallax-foreground: #f2f2f2;
-  --obsidian-parallax-muted: #6b6b6b;
-  --obsidian-parallax-caption: rgb(255 255 255 / 0.6);
-  --obsidian-parallax-frame: rgb(255 255 255 / 0.04);
-  --obsidian-parallax-slide-width: 350px;
-  --obsidian-parallax-slide-height: 480px;
-  --obsidian-parallax-gap: 32px;
+  --obsidian-parallax-muted: color-mix(in oklab, currentColor 55%, transparent);
+  --obsidian-parallax-caption: color-mix(in oklab, currentColor 72%, transparent);
+  --obsidian-parallax-frame: color-mix(in oklab, currentColor 6%, transparent);
+  /* Sizes come from the orientation and the container width. The public variables are left
+     unset so a value set on the root wins over all of them. */
+  --obsidian-parallax-default-width: 270px;
+  --obsidian-parallax-default-height: 480px;
+  --obsidian-parallax-default-gap: 20px;
+  --obsidian-parallax-default-fade: 4rem;
+  --obsidian-parallax-space: clamp(2.5rem, 7cqi, 6rem);
   --obsidian-parallax-mono: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
   container-type: inline-size;
   position: relative;
   width: 100%;
   overflow: hidden;
-  background: var(--obsidian-parallax-background);
+  background: var(--obsidian-parallax-background, transparent);
+  /* Unset by default, which leaves color inherited from the page. */
   color: var(--obsidian-parallax-foreground);
 }
 
+.obsidian-parallax-slider[data-orientation="landscape"] {
+  --obsidian-parallax-default-width: 360px;
+  --obsidian-parallax-default-height: 225px;
+}
+
+/* The bottom space is shorter because the captions already sit below the slides. */
 .obsidian-parallax-slider__inner {
-  padding-block: 6rem;
+  padding-block: var(--obsidian-parallax-space) calc(var(--obsidian-parallax-space) - 1.5rem);
 }
 
 .obsidian-parallax-slider__header {
@@ -71,8 +82,12 @@
 }
 
 .obsidian-parallax-slider__viewport {
+  --obsidian-parallax-width: var(--obsidian-parallax-slide-width, var(--obsidian-parallax-default-width));
+  --obsidian-parallax-height: var(--obsidian-parallax-slide-height, var(--obsidian-parallax-default-height));
+  --obsidian-parallax-spacing: var(--obsidian-parallax-gap, var(--obsidian-parallax-default-gap));
+  --obsidian-parallax-edge: var(--obsidian-parallax-fade, var(--obsidian-parallax-default-fade));
   position: relative;
-  height: calc(var(--obsidian-parallax-slide-height) + 3rem);
+  height: calc(var(--obsidian-parallax-height) + 3rem);
   overflow: hidden;
   overflow: clip;
   cursor: grab;
@@ -80,6 +95,8 @@
   user-select: none;
   -webkit-user-select: none;
   outline: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--obsidian-parallax-edge), #000 calc(100% - var(--obsidian-parallax-edge)), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--obsidian-parallax-edge), #000 calc(100% - var(--obsidian-parallax-edge)), transparent);
 }
 
 .obsidian-parallax-slider[data-dragging="true"] .obsidian-parallax-slider__viewport {
@@ -87,6 +104,8 @@
 }
 
 .obsidian-parallax-slider__viewport:focus-visible {
+  -webkit-mask-image: none;
+  mask-image: none;
   box-shadow: inset 0 0 0 2px var(--obsidian-parallax-caption);
 }
 
@@ -94,16 +113,16 @@
   display: flex;
   width: max-content;
   height: 100%;
-  gap: var(--obsidian-parallax-gap);
-  padding-inline-start: calc(var(--obsidian-parallax-gap) / 2);
+  gap: var(--obsidian-parallax-spacing);
+  padding-inline-start: calc(var(--obsidian-parallax-spacing) / 2);
   will-change: transform;
 }
 
 .obsidian-parallax-slider__slide {
   position: relative;
   flex: none;
-  width: var(--obsidian-parallax-slide-width);
-  height: var(--obsidian-parallax-slide-height);
+  width: var(--obsidian-parallax-width);
+  height: var(--obsidian-parallax-height);
 }
 
 .obsidian-parallax-slider__link {
@@ -116,21 +135,29 @@
 }
 
 .obsidian-parallax-slider__frame {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  border-radius: var(--obsidian-parallax-radius, 10px);
   background: var(--obsidian-parallax-frame);
 }
 
 .obsidian-parallax-slider__link:focus-visible .obsidian-parallax-slider__frame {
-  box-shadow: inset 0 0 0 2px var(--obsidian-parallax-foreground);
+  box-shadow: inset 0 0 0 2px currentColor;
 }
 
+/* The script sizes and places each image from its natural size. Until it loads, the image
+   simply covers the frame. */
 .obsidian-parallax-slider__image {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: block;
   width: 100%;
   height: 100%;
+  max-width: none;
   object-fit: cover;
   pointer-events: none;
   user-select: none;
@@ -180,10 +207,6 @@
 }
 
 @container (max-width: 720px) {
-  .obsidian-parallax-slider__inner {
-    padding-block: 3.5rem;
-  }
-
   .obsidian-parallax-slider__header {
     flex-direction: column;
     align-items: flex-start;
@@ -196,9 +219,15 @@
   }
 
   .obsidian-parallax-slider__viewport {
-    --obsidian-parallax-slide-width: 200px;
-    --obsidian-parallax-slide-height: 280px;
-    --obsidian-parallax-gap: 16px;
+    --obsidian-parallax-default-width: 200px;
+    --obsidian-parallax-default-height: 356px;
+    --obsidian-parallax-default-gap: 14px;
+    --obsidian-parallax-default-fade: 1.5rem;
+  }
+
+  .obsidian-parallax-slider[data-orientation="landscape"] .obsidian-parallax-slider__viewport {
+    --obsidian-parallax-default-width: 260px;
+    --obsidian-parallax-default-height: 163px;
   }
 }
 

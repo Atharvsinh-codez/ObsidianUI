@@ -32,8 +32,6 @@ type ShowcaseItem = {
     isNew?: boolean
 }
 
-const effectSizes: Partial<Record<string, ShowcaseSize>> = { 'draggable-marquee': 'tall' }
-
 // Keep Analytics Dashboard featured. Insert each new component immediately after it so the
 // newest card starts the grid and older cards shift right, then wrap in order.
 // Sizes are balanced so the three masonry columns end level; recheck them when adding a card.
@@ -47,7 +45,7 @@ const allComponents: ShowcaseItem[] = [
         isNew: true,
         // The wheel stays with the page so scrolling past the grid never gets caught by the card.
         preview: (
-            <div className="flex h-full w-full items-center bg-[#080808] pt-8">
+            <div className="flex h-full w-full items-center pt-4">
                 <ParallaxSlider scrollOnWheel={false} label="Parallax Slider preview" />
             </div>
         ),
@@ -84,7 +82,7 @@ const allComponents: ShowcaseItem[] = [
     {
         title: 'Discover Button',
         href: '/docs/discover-button',
-        size: 'short',
+        size: 'tall',
         isNew: true,
         preview: <div className="flex h-full w-full items-center justify-center bg-[#191715] p-5"><DiscoverButton /></div>,
     },
@@ -103,7 +101,7 @@ const allComponents: ShowcaseItem[] = [
             </div>
         ),
     },
-    { title: 'Art Gallery', href: '/docs/art-gallery', preview: <EffectPreview slug="art-gallery" compact /> },
+    { title: 'Art Gallery', href: '/docs/art-gallery', size: 'short', preview: <EffectPreview slug="art-gallery" compact /> },
     {
         title: 'Hover Image',
         href: '/docs/hover-img',
@@ -125,7 +123,6 @@ const allComponents: ShowcaseItem[] = [
     ...newEffects.filter(effect => effect.slug !== 'v-prism' && effect.slug !== 'art-gallery').map(effect => ({
         title: effect.title,
         href: `/docs/${effect.slug}`,
-        size: effectSizes[effect.slug],
         preview: <EffectPreview slug={effect.slug} compact />,
     })),
     { title: 'Flip Text', href: '/docs/flip-text', size: 'short', preview: <div className="flex h-full w-full items-center justify-center"><FlipText className="text-[clamp(1.75rem,2.8vw,3rem)] font-medium tracking-[-0.04em]">ObsidianUI</FlipText></div> },

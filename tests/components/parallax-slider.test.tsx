@@ -47,6 +47,23 @@ describe('ParallaxSlider', () => {
         expect(fireEvent.wheel(viewport(), { deltaY: 120 })).toBe(true)
     })
 
+    it('defaults to portrait frames and switches to landscape', () => {
+        const { rerender } = render(<ParallaxSlider slides={slides} />)
+        expect(screen.getByRole('region', { name: 'Gallery' })).toHaveAttribute('data-orientation', 'portrait')
+
+        rerender(<ParallaxSlider slides={slides} orientation="landscape" />)
+        expect(screen.getByRole('region', { name: 'Gallery' })).toHaveAttribute('data-orientation', 'landscape')
+    })
+
+    it('passes each slide focus to its image', () => {
+        render(<ParallaxSlider slides={[{ ...slides[0], focus: '30% 60%' }, slides[1]]} />)
+        const [first, second] = screen.getAllByRole('img')
+
+        expect(first).toHaveAttribute('data-focus', '30% 60%')
+        expect(first.style.objectPosition).toBe('30% 60%')
+        expect(second).not.toHaveAttribute('data-focus')
+    })
+
     it('ships demo slides served from the public effects folder', () => {
         expect(defaultParallaxSlides).toHaveLength(5)
         for (const slide of defaultParallaxSlides) {

@@ -4185,7 +4185,7 @@ interface ProjectItem {
 
 [Canonical page](https://www.obsidianui.dev/docs/parallax-slider) · [Agent guide](https://www.obsidianui.dev/agent-instructions.md)
 
-An endless strip of tall image frames. Drag it, scroll over it, or focus it and use the arrow keys. The strip glides to a stop, and each image drifts against the motion inside its frame, so the gallery feels deep. A slide's title appears below it on hover once the strip is still.
+An endless strip of image frames. Drag it, scroll over it, or focus it and use the arrow keys. The strip glides to a stop, and each image drifts against the motion inside its frame, so the gallery feels deep. A slide's title appears below it on hover once the strip is still. It follows your light or dark theme.
 
 ## Preview
 
@@ -4194,14 +4194,14 @@ An endless strip of tall image frames. Drag it, scroll over it, or focus it and 
 ```tsx
 import { ParallaxSlider } from '@/components/block/parallax-slider'
 
+// Portrait 9:16 frames
 export function Demo() {
-return (
-  <ParallaxSlider
-    eyebrow="Infinite Gallery"
-    title={<>Quiet<br />Frames</>}
-    description="Drag or scroll to browse. Each frame is its own quiet scene."
-  />
-)
+return <ParallaxSlider />
+}
+
+// Full image 16:9 frames
+export function FullImageDemo() {
+return <ParallaxSlider orientation="landscape" />
 }
 ```
 
@@ -4219,15 +4219,28 @@ import { ParallaxSlider } from '@/components/block/parallax-slider'
 <ParallaxSlider
   label="Projects"
   slides={[
-    { title: 'Studio Tide', image: '/images/studio-tide.webp', href: '/work/studio-tide' },
-    { title: 'Petal Room', image: '/images/petal-room.webp', href: '/work/petal-room', focus: '50% 25%' },
+    { title: 'Missing Piece', image: '/images/missing-piece.webp', href: '/work/missing-piece' },
+    { title: 'Opening Move', image: '/images/opening-move.webp', href: '/work/opening-move', focus: '34% 60%' },
   ]}
 />
 ```
 
 Without `slides`, the slider shows five demo images hosted by ObsidianUI. Replace them with your own images before you ship.
 
-Images are zoomed so they have room to drift. Use `focus` to keep the important part of an image in view; it takes any CSS `transform-origin` value, such as `50% 25%` for a face near the top.
+Add a heading above the strip with `eyebrow`, `title`, and `description`. All three are optional, and the slider shows no heading when you leave them out.
+
+## Portrait and full image
+
+The slider has two frame shapes. Switch between them in the preview above.
+
+- `orientation="portrait"` is the default. Frames are tall 9:16 cards, and a wide image fills the frame's height, so most of its width sits outside the frame. That hidden width is what the parallax reveals as the strip moves.
+- `orientation="landscape"` uses wide 16:9 frames that show most of the image. The image is scaled up by `zoom`, 1.3 by default, so it still has a little room to drift. Set `zoom={1}` to show a 16:9 image whole; it then stays still.
+
+```tsx
+<ParallaxSlider orientation="landscape" />
+```
+
+Images keep their own aspect ratio and are never stretched. Use `focus` to choose which part of an image stays in view. It takes two percentages like CSS `object-position`: `34% 60%` keeps a subject left of center and a little below the middle. In portrait frames, the first value does most of the work.
 
 Add `href` to make a slide a link. A drag never opens a link, so visitors can drag across slides freely.
 
@@ -4237,23 +4250,27 @@ The mouse wheel and trackpad move the slider while the pointer is over it. Set `
 
 The strip is one tab stop. The left and right arrow keys move it one slide at a time, and tabbing to a slide link brings that slide to the center. With reduced motion turned on, the strip moves without gliding and the images stay still.
 
+## Light and dark themes
+
+The slider has no background of its own and takes its text color from the page, so it matches light and dark themes without extra setup. Captions, the heading, and empty frames are tinted from that text color.
+
 ## Customize the look
 
-Override the CSS variables on the component or any parent:
+Override the CSS variables on the component or any parent. This example gives the slider a dark band of its own and larger frames:
 
 ```css
 .obsidian-parallax-slider {
-  --obsidian-parallax-background: #f4f4f1;
-  --obsidian-parallax-foreground: #171717;
-  --obsidian-parallax-muted: #737373;
-  --obsidian-parallax-caption: rgb(0 0 0 / 0.6);
+  --obsidian-parallax-background: #080808;
+  --obsidian-parallax-foreground: #f2f2f2;
   --obsidian-parallax-slide-width: 320px;
-  --obsidian-parallax-slide-height: 440px;
-  --obsidian-parallax-gap: 24px;
+  --obsidian-parallax-slide-height: 569px;
+  --obsidian-parallax-gap: 32px;
+  --obsidian-parallax-radius: 0px;
+  --obsidian-parallax-fade: 0px;
 }
 ```
 
-When the slider is narrower than 720px, it uses 200 by 280 pixel slides and stacks the header.
+`--obsidian-parallax-radius` rounds the frame corners and `--obsidian-parallax-fade` sets how far the edges fade out. Without overrides, portrait slides are 270 by 480 pixels and full image slides are 360 by 225. When the slider is narrower than 720px, they shrink to 200 by 356 and 260 by 163, and the heading stacks. A size, gap, or fade you set yourself applies at every width.
 
 ## Install manually — complete source
 
@@ -4274,26 +4291,37 @@ Default demo media loads from ObsidianUI. Replace these URLs with your own asset
 Installation target: `@components/block/parallax-slider.css`
 
 ```css
+/* Colors derive from the inherited text color, so the slider matches light and dark themes
+   without theme selectors. Set --obsidian-parallax-foreground to pin a text color. */
 .obsidian-parallax-slider {
-  --obsidian-parallax-background: #080808;
-  --obsidian-parallax-foreground: #f2f2f2;
-  --obsidian-parallax-muted: #6b6b6b;
-  --obsidian-parallax-caption: rgb(255 255 255 / 0.6);
-  --obsidian-parallax-frame: rgb(255 255 255 / 0.04);
-  --obsidian-parallax-slide-width: 350px;
-  --obsidian-parallax-slide-height: 480px;
-  --obsidian-parallax-gap: 32px;
+  --obsidian-parallax-muted: color-mix(in oklab, currentColor 55%, transparent);
+  --obsidian-parallax-caption: color-mix(in oklab, currentColor 72%, transparent);
+  --obsidian-parallax-frame: color-mix(in oklab, currentColor 6%, transparent);
+  /* Sizes come from the orientation and the container width. The public variables are left
+     unset so a value set on the root wins over all of them. */
+  --obsidian-parallax-default-width: 270px;
+  --obsidian-parallax-default-height: 480px;
+  --obsidian-parallax-default-gap: 20px;
+  --obsidian-parallax-default-fade: 4rem;
+  --obsidian-parallax-space: clamp(2.5rem, 7cqi, 6rem);
   --obsidian-parallax-mono: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
   container-type: inline-size;
   position: relative;
   width: 100%;
   overflow: hidden;
-  background: var(--obsidian-parallax-background);
+  background: var(--obsidian-parallax-background, transparent);
+  /* Unset by default, which leaves color inherited from the page. */
   color: var(--obsidian-parallax-foreground);
 }
 
+.obsidian-parallax-slider[data-orientation="landscape"] {
+  --obsidian-parallax-default-width: 360px;
+  --obsidian-parallax-default-height: 225px;
+}
+
+/* The bottom space is shorter because the captions already sit below the slides. */
 .obsidian-parallax-slider__inner {
-  padding-block: 6rem;
+  padding-block: var(--obsidian-parallax-space) calc(var(--obsidian-parallax-space) - 1.5rem);
 }
 
 .obsidian-parallax-slider__header {
@@ -4347,8 +4375,12 @@ Installation target: `@components/block/parallax-slider.css`
 }
 
 .obsidian-parallax-slider__viewport {
+  --obsidian-parallax-width: var(--obsidian-parallax-slide-width, var(--obsidian-parallax-default-width));
+  --obsidian-parallax-height: var(--obsidian-parallax-slide-height, var(--obsidian-parallax-default-height));
+  --obsidian-parallax-spacing: var(--obsidian-parallax-gap, var(--obsidian-parallax-default-gap));
+  --obsidian-parallax-edge: var(--obsidian-parallax-fade, var(--obsidian-parallax-default-fade));
   position: relative;
-  height: calc(var(--obsidian-parallax-slide-height) + 3rem);
+  height: calc(var(--obsidian-parallax-height) + 3rem);
   overflow: hidden;
   overflow: clip;
   cursor: grab;
@@ -4356,6 +4388,8 @@ Installation target: `@components/block/parallax-slider.css`
   user-select: none;
   -webkit-user-select: none;
   outline: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--obsidian-parallax-edge), #000 calc(100% - var(--obsidian-parallax-edge)), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--obsidian-parallax-edge), #000 calc(100% - var(--obsidian-parallax-edge)), transparent);
 }
 
 .obsidian-parallax-slider[data-dragging="true"] .obsidian-parallax-slider__viewport {
@@ -4363,6 +4397,8 @@ Installation target: `@components/block/parallax-slider.css`
 }
 
 .obsidian-parallax-slider__viewport:focus-visible {
+  -webkit-mask-image: none;
+  mask-image: none;
   box-shadow: inset 0 0 0 2px var(--obsidian-parallax-caption);
 }
 
@@ -4370,16 +4406,16 @@ Installation target: `@components/block/parallax-slider.css`
   display: flex;
   width: max-content;
   height: 100%;
-  gap: var(--obsidian-parallax-gap);
-  padding-inline-start: calc(var(--obsidian-parallax-gap) / 2);
+  gap: var(--obsidian-parallax-spacing);
+  padding-inline-start: calc(var(--obsidian-parallax-spacing) / 2);
   will-change: transform;
 }
 
 .obsidian-parallax-slider__slide {
   position: relative;
   flex: none;
-  width: var(--obsidian-parallax-slide-width);
-  height: var(--obsidian-parallax-slide-height);
+  width: var(--obsidian-parallax-width);
+  height: var(--obsidian-parallax-height);
 }
 
 .obsidian-parallax-slider__link {
@@ -4392,21 +4428,29 @@ Installation target: `@components/block/parallax-slider.css`
 }
 
 .obsidian-parallax-slider__frame {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  border-radius: var(--obsidian-parallax-radius, 10px);
   background: var(--obsidian-parallax-frame);
 }
 
 .obsidian-parallax-slider__link:focus-visible .obsidian-parallax-slider__frame {
-  box-shadow: inset 0 0 0 2px var(--obsidian-parallax-foreground);
+  box-shadow: inset 0 0 0 2px currentColor;
 }
 
+/* The script sizes and places each image from its natural size. Until it loads, the image
+   simply covers the frame. */
 .obsidian-parallax-slider__image {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: block;
   width: 100%;
   height: 100%;
+  max-width: none;
   object-fit: cover;
   pointer-events: none;
   user-select: none;
@@ -4456,10 +4500,6 @@ Installation target: `@components/block/parallax-slider.css`
 }
 
 @container (max-width: 720px) {
-  .obsidian-parallax-slider__inner {
-    padding-block: 3.5rem;
-  }
-
   .obsidian-parallax-slider__header {
     flex-direction: column;
     align-items: flex-start;
@@ -4472,9 +4512,15 @@ Installation target: `@components/block/parallax-slider.css`
   }
 
   .obsidian-parallax-slider__viewport {
-    --obsidian-parallax-slide-width: 200px;
-    --obsidian-parallax-slide-height: 280px;
-    --obsidian-parallax-gap: 16px;
+    --obsidian-parallax-default-width: 200px;
+    --obsidian-parallax-default-height: 356px;
+    --obsidian-parallax-default-gap: 14px;
+    --obsidian-parallax-default-fade: 1.5rem;
+  }
+
+  .obsidian-parallax-slider[data-orientation="landscape"] .obsidian-parallax-slider__viewport {
+    --obsidian-parallax-default-width: 260px;
+    --obsidian-parallax-default-height: 163px;
   }
 }
 
@@ -4502,18 +4548,22 @@ export interface ParallaxSlide {
   image: string;
   alt?: string;
   href?: string;
-  /** Point the zoomed image stays anchored to, as a CSS `transform-origin`. */
+  /** Part of the image to keep in view, as `x% y%` like `object-position`. Defaults to the center. */
   focus?: string;
 }
 
+export type ParallaxSliderOrientation = "portrait" | "landscape";
+
 export interface ParallaxSliderProps {
   slides?: ParallaxSlide[];
+  /** Tall 9:16 frames, or wide 16:9 frames that show most of the image. */
+  orientation?: ParallaxSliderOrientation;
   eyebrow?: ReactNode;
   title?: ReactNode;
   description?: ReactNode;
   /** How far each image drifts against the drag, relative to its distance from the center. */
   parallax?: number;
-  /** Image scale inside its frame; leaves room for the parallax drift. */
+  /** Extra scale on top of filling the frame; adds room to drift. Defaults to 1 for portrait and 1.3 for landscape. */
   zoom?: number;
   /** Let the mouse wheel and trackpad move the slider instead of the page. */
   scrollOnWheel?: boolean;
@@ -4522,11 +4572,11 @@ export interface ParallaxSliderProps {
 }
 
 export const defaultParallaxSlides: ParallaxSlide[] = [
-  { title: "Greenhouse", image: "https://www.obsidianui.dev/effects/parallax-slider/greenhouse.webp", alt: "Woman in a cream slip dress touching a leaf in a misty greenhouse", focus: "45% 28%" },
-  { title: "Studio Tide", image: "https://www.obsidianui.dev/effects/parallax-slider/studio-tide.webp", alt: "Woman in a pale dress at the edge of an indoor sea on a film stage", focus: "45% 55%" },
-  { title: "Petal Room", image: "https://www.obsidianui.dev/effects/parallax-slider/petal-room.webp", alt: "Woman in white linen standing in a gallery room carpeted with pale flowers", focus: "45% 24%" },
-  { title: "Afterimage", image: "https://www.obsidianui.dev/effects/parallax-slider/afterimage.webp", alt: "Woman facing a large projection of a face in a dim warehouse", focus: "50% 30%" },
-  { title: "Mint Hour", image: "https://www.obsidianui.dev/effects/parallax-slider/mint-hour.webp", alt: "Close portrait of a woman with short dark hair in a mint sweater", focus: "50% 25%" },
+  { title: "Missing Piece", image: "https://www.obsidianui.dev/effects/parallax-slider/missing-piece.webp", alt: "A hand placing the last puzzle piece into its gap", focus: "50% 75%" },
+  { title: "Enter", image: "https://www.obsidianui.dev/effects/parallax-slider/enter.webp", alt: "A finger pressing the Enter key", focus: "66% 75%" },
+  { title: "Opening Move", image: "https://www.obsidianui.dev/effects/parallax-slider/opening-move.webp", alt: "Two hands moving a king and a pawn across a chessboard", focus: "34% 60%" },
+  { title: "Hand Off", image: "https://www.obsidianui.dev/effects/parallax-slider/hand-off.webp", alt: "One hand passing a glowing sphere to another", focus: "50% 50%" },
+  { title: "Fine Tune", image: "https://www.obsidianui.dev/effects/parallax-slider/fine-tune.webp", alt: "A hand turning a large control dial", focus: "55% 70%" },
 ];
 
 const LERP = 0.05;
@@ -4540,13 +4590,20 @@ const SETTLE_MS = 200;
 const LEAD_COPIES = 2;
 const MIN_COPIES = 6;
 
+function parseFocus(focus: string | undefined): [number, number] {
+  const [x, y = x] = (focus ?? "").trim().split(/\s+/).map((part) => parseFloat(part) / 100);
+  const clamp = (value: number | undefined) => (value === undefined || Number.isNaN(value) ? 0.5 : Math.min(1, Math.max(0, value)));
+  return [clamp(x), clamp(y)];
+}
+
 export function ParallaxSlider({
   slides = defaultParallaxSlides,
+  orientation = "portrait",
   eyebrow,
   title,
   description,
-  parallax = 0.25,
-  zoom = 2.25,
+  parallax = 0.2,
+  zoom,
   scrollOnWheel = true,
   label = "Gallery",
   className,
@@ -4558,6 +4615,7 @@ export function ParallaxSlider({
   const [copies, setCopies] = useState(MIN_COPIES);
   const count = slides.length;
   const hasHeader = Boolean(eyebrow || title || description);
+  const scale = Math.max(1, zoom ?? (orientation === "landscape" ? 1.3 : 1));
 
   useEffect(() => {
     const root = rootRef.current;
@@ -4566,10 +4624,12 @@ export function ParallaxSlider({
     if (!root || !viewport || !track || count === 0) return;
 
     const slideElements = Array.from(track.children) as HTMLElement[];
-    const images = slideElements.map((slide) => slide.querySelector<HTMLElement>("[data-parallax-image]"));
+    const images = slideElements.map((slide) => slide.querySelector<HTMLImageElement>("img[data-parallax-image]"));
+    // How far each image can shift before its edge shows inside the frame.
+    const room = images.map(() => ({ left: 0, right: 0 }));
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const state = {
-      current: 0, target: 0, width: 0, slideWidth: 0, offset: 0, pitch: 0, sequence: 0,
+      current: 0, target: 0, width: 0, slideWidth: 0, slideHeight: 0, offset: 0, pitch: 0, sequence: 0,
       lastInput: 0, moving: false, frame: 0, pointer: null as number | null, pointerX: 0,
       dragDistance: 0, dragged: false, reduce: motionQuery.matches,
     };
@@ -4587,18 +4647,38 @@ export function ParallaxSlider({
       while (state.current < -state.sequence * 4) { state.current += state.sequence; state.target += state.sequence; }
     };
 
+    const paintImage = (index: number) => {
+      const image = images[index];
+      if (!image) return;
+      const distance = state.current + state.offset + index * state.pitch + state.slideWidth / 2 - state.width / 2;
+      if (Math.abs(distance) > state.width / 2 + state.slideWidth + 500) return;
+      const drift = state.reduce ? 0 : distance * -parallax;
+      const shift = Math.max(-room[index].right, Math.min(room[index].left, drift));
+      image.style.transform = `translate3d(${shift}px, 0, 0)`;
+    };
+
     const paint = () => {
       track.style.transform = `translate3d(${state.current}px, 0, 0)`;
-      const center = state.width / 2;
-      const reach = center + state.slideWidth + 500;
-      const strength = state.reduce ? 0 : parallax;
-      for (let index = 0; index < images.length; index++) {
-        const image = images[index];
-        if (!image) continue;
-        const distance = state.current + state.offset + index * state.pitch + state.slideWidth / 2 - center;
-        if (Math.abs(distance) > reach) continue;
-        image.style.transform = `translate3d(${distance * -strength}px, 0, 0) scale(${zoom})`;
-      }
+      for (let index = 0; index < images.length; index++) paintImage(index);
+    };
+
+    // Sizes the image to cover its frame at its natural ratio, so the part outside the frame
+    // is what the parallax reveals.
+    const fit = (index: number) => {
+      const image = images[index];
+      if (!image?.naturalWidth || !state.slideWidth || !state.slideHeight) return;
+      const frameWidth = state.slideWidth;
+      const frameHeight = state.slideHeight;
+      const ratio = image.naturalWidth / image.naturalHeight;
+      const width = Math.max(frameWidth, frameHeight * ratio) * scale;
+      const height = Math.max(frameHeight, frameWidth / ratio) * scale;
+      const [focusX, focusY] = parseFocus(image.dataset.focus);
+      Object.assign(image.style, {
+        width: `${width}px`, height: `${height}px`,
+        left: `${(frameWidth - width) * focusX}px`, top: `${(frameHeight - height) * focusY}px`,
+      });
+      room[index] = { left: (width - frameWidth) * focusX, right: (width - frameWidth) * (1 - focusX) };
+      paintImage(index);
     };
 
     const step = () => {
@@ -4630,6 +4710,7 @@ export function ParallaxSlider({
       const previousPitch = state.pitch;
       state.width = viewport.clientWidth;
       state.slideWidth = slideElements[0].offsetWidth;
+      state.slideHeight = slideElements[0].offsetHeight;
       state.offset = slideElements[0].offsetLeft;
       state.pitch = slideElements.length > 1 ? slideElements[1].offsetLeft - slideElements[0].offsetLeft : state.slideWidth;
       state.sequence = state.pitch * count;
@@ -4647,6 +4728,12 @@ export function ParallaxSlider({
       if (needed > copies) setCopies(needed);
       wrap();
       paint();
+      images.forEach((_, index) => fit(index));
+    };
+
+    const onImageLoad = (event: Event) => {
+      const index = images.indexOf(event.currentTarget as HTMLImageElement);
+      if (index >= 0) fit(index);
     };
 
     const onWheel = (event: WheelEvent) => {
@@ -4721,6 +4808,7 @@ export function ParallaxSlider({
 
     const resizeObserver = new ResizeObserver(measure);
     resizeObserver.observe(viewport);
+    images.forEach((image) => image?.addEventListener("load", onImageLoad));
     if (scrollOnWheel) viewport.addEventListener("wheel", onWheel, { passive: false });
     viewport.addEventListener("pointerdown", onPointerDown);
     viewport.addEventListener("click", onClick, true);
@@ -4736,6 +4824,7 @@ export function ParallaxSlider({
       cancelAnimationFrame(state.frame);
       window.clearTimeout(releaseTimer);
       resizeObserver.disconnect();
+      images.forEach((image) => image?.removeEventListener("load", onImageLoad));
       viewport.removeEventListener("wheel", onWheel);
       viewport.removeEventListener("pointerdown", onPointerDown);
       viewport.removeEventListener("click", onClick, true);
@@ -4746,10 +4835,16 @@ export function ParallaxSlider({
       window.removeEventListener("pointercancel", onPointerUp);
       motionQuery.removeEventListener("change", onMotionChange);
     };
-  }, [count, copies, parallax, zoom, scrollOnWheel]);
+  }, [count, copies, parallax, scale, orientation, scrollOnWheel]);
 
   return (
-    <section ref={rootRef} className={cn("obsidian-parallax-slider", className)} aria-label={hasHeader ? undefined : label} data-moving="false">
+    <section
+      ref={rootRef}
+      className={cn("obsidian-parallax-slider", className)}
+      aria-label={hasHeader ? undefined : label}
+      data-orientation={orientation}
+      data-moving="false"
+    >
       <div className="obsidian-parallax-slider__inner">
         {hasHeader && (
           <div className="obsidian-parallax-slider__header">
@@ -4777,13 +4872,14 @@ export function ParallaxSlider({
                     {/* eslint-disable-next-line @next/next/no-img-element -- frames are transformed every frame; next/image adds nothing here */}
                     <img
                       data-parallax-image=""
+                      data-focus={slide.focus}
                       className="obsidian-parallax-slider__image"
                       src={slide.image}
                       alt={readable ? slide.alt ?? slide.title : ""}
                       draggable={false}
                       loading="lazy"
                       decoding="async"
-                      style={{ transform: `scale(${zoom})`, transformOrigin: slide.focus }}
+                      style={{ objectPosition: slide.focus }}
                     />
                   </span>
                   <span className="obsidian-parallax-slider__caption">
@@ -4838,11 +4934,12 @@ export function cn(...inputs: ClassValue[]) {
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | slides | ParallaxSlide[] | Five demo images | Slides in order. Each needs a title and image; alt, href, and focus are optional. |
+| orientation | 'portrait' \| 'landscape' | 'portrait' | Tall 9:16 frames, or wide 16:9 frames that show most of the image. |
 | eyebrow | ReactNode | - | Small label above the title. |
 | title | ReactNode | - | Heading shown above the strip. |
 | description | ReactNode | - | Short note beside the heading. |
-| parallax | number | 0.25 | How far images drift against the motion. Use 0 to turn the drift off. |
-| zoom | number | 2.25 | Image scale inside each frame. Lower values show more of the image but leave less room to drift. |
+| parallax | number | 0.2 | How far images drift against the motion. Use 0 to turn the drift off. |
+| zoom | number | 1 portrait, 1.3 landscape | Extra scale on top of filling the frame. The drift stops at the image edge, so higher values drift further but crop more. Values below 1 count as 1. |
 | scrollOnWheel | boolean | true | Lets the mouse wheel and trackpad move the slider. |
 | label | string | Gallery | Accessible name for the slider. |
 | className | string | - | Additional classes for the root element. |

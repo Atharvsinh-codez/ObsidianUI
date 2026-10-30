@@ -10,18 +10,22 @@ export interface ParallaxSlide {
   image: string;
   alt?: string;
   href?: string;
-  /** Point the zoomed image stays anchored to, as a CSS `transform-origin`. */
+  /** Part of the image to keep in view, as `x% y%` like `object-position`. Defaults to the center. */
   focus?: string;
 }
 
+export type ParallaxSliderOrientation = "portrait" | "landscape";
+
 export interface ParallaxSliderProps {
   slides?: ParallaxSlide[];
+  /** Tall 9:16 frames, or wide 16:9 frames that show most of the image. */
+  orientation?: ParallaxSliderOrientation;
   eyebrow?: ReactNode;
   title?: ReactNode;
   description?: ReactNode;
   /** How far each image drifts against the drag, relative to its distance from the center. */
   parallax?: number;
-  /** Image scale inside its frame; leaves room for the parallax drift. */
+  /** Extra scale on top of filling the frame; adds room to drift. Defaults to 1 for portrait and 1.3 for landscape. */
   zoom?: number;
   /** Let the mouse wheel and trackpad move the slider instead of the page. */
   scrollOnWheel?: boolean;
@@ -30,11 +34,11 @@ export interface ParallaxSliderProps {
 }
 
 export const defaultParallaxSlides: ParallaxSlide[] = [
-  { title: "Greenhouse", image: "/effects/parallax-slider/greenhouse.webp", alt: "Woman in a cream slip dress touching a leaf in a misty greenhouse", focus: "45% 28%" },
-  { title: "Studio Tide", image: "/effects/parallax-slider/studio-tide.webp", alt: "Woman in a pale dress at the edge of an indoor sea on a film stage", focus: "45% 55%" },
-  { title: "Petal Room", image: "/effects/parallax-slider/petal-room.webp", alt: "Woman in white linen standing in a gallery room carpeted with pale flowers", focus: "45% 24%" },
-  { title: "Afterimage", image: "/effects/parallax-slider/afterimage.webp", alt: "Woman facing a large projection of a face in a dim warehouse", focus: "50% 30%" },
-  { title: "Mint Hour", image: "/effects/parallax-slider/mint-hour.webp", alt: "Close portrait of a woman with short dark hair in a mint sweater", focus: "50% 25%" },
+  { title: "Missing Piece", image: "/effects/parallax-slider/missing-piece.webp", alt: "A hand placing the last puzzle piece into its gap", focus: "50% 75%" },
+  { title: "Enter", image: "/effects/parallax-slider/enter.webp", alt: "A finger pressing the Enter key", focus: "66% 75%" },
+  { title: "Opening Move", image: "/effects/parallax-slider/opening-move.webp", alt: "Two hands moving a king and a pawn across a chessboard", focus: "34% 60%" },
+  { title: "Hand Off", image: "/effects/parallax-slider/hand-off.webp", alt: "One hand passing a glowing sphere to another", focus: "50% 50%" },
+  { title: "Fine Tune", image: "/effects/parallax-slider/fine-tune.webp", alt: "A hand turning a large control dial", focus: "55% 70%" },
 ];
 
 const LERP = 0.05;
@@ -48,13 +52,20 @@ const SETTLE_MS = 200;
 const LEAD_COPIES = 2;
 const MIN_COPIES = 6;
 
+function parseFocus(focus: string | undefined): [number, number] {
+  const [x, y = x] = (focus ?? "").trim().split(/\s+/).map((part) => parseFloat(part) / 100);
+  const clamp = (value: number | undefined) => (value === undefined || Number.isNaN(value) ? 0.5 : Math.min(1, Math.max(0, value)));
+  return [clamp(x), clamp(y)];
+}
+
 export function ParallaxSlider({
   slides = defaultParallaxSlides,
+  orientation = "portrait",
   eyebrow,
   title,
   description,
-  parallax = 0.25,
-  zoom = 2.25,
+  parallax = 0.2,
+  zoom,
   scrollOnWheel = true,
   label = "Gallery",
   className,
@@ -66,6 +77,7 @@ export function ParallaxSlider({
   const [copies, setCopies] = useState(MIN_COPIES);
   const count = slides.length;
   const hasHeader = Boolean(eyebrow || title || description);
+  const scale = Math.max(1, zoom ?? (orientation === "landscape" ? 1.3 : 1));
 
   useEffect(() => {
     const root = rootRef.current;
@@ -74,10 +86,12 @@ export function ParallaxSlider({
     if (!root || !viewport || !track || count === 0) return;
 
     const slideElements = Array.from(track.children) as HTMLElement[];
-    const images = slideElements.map((slide) => slide.querySelector<HTMLElement>("[data-parallax-image]"));
+    const images = slideElements.map((slide) => slide.querySelector<HTMLImageElement>("img[data-parallax-image]"));
+    // How far each image can shift before its edge shows inside the frame.
+    const room = images.map(() => ({ left: 0, right: 0 }));
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const state = {
-      current: 0, target: 0, width: 0, slideWidth: 0, offset: 0, pitch: 0, sequence: 0,
+      current: 0, target: 0, width: 0, slideWidth: 0, slideHeight: 0, offset: 0, pitch: 0, sequence: 0,
       lastInput: 0, moving: false, frame: 0, pointer: null as number | null, pointerX: 0,
       dragDistance: 0, dragged: false, reduce: motionQuery.matches,
     };
@@ -95,18 +109,38 @@ export function ParallaxSlider({
       while (state.current < -state.sequence * 4) { state.current += state.sequence; state.target += state.sequence; }
     };
 
+    const paintImage = (index: number) => {
+      const image = images[index];
+      if (!image) return;
+      const distance = state.current + state.offset + index * state.pitch + state.slideWidth / 2 - state.width / 2;
+      if (Math.abs(distance) > state.width / 2 + state.slideWidth + 500) return;
+      const drift = state.reduce ? 0 : distance * -parallax;
+      const shift = Math.max(-room[index].right, Math.min(room[index].left, drift));
+      image.style.transform = `translate3d(${shift}px, 0, 0)`;
+    };
+
     const paint = () => {
       track.style.transform = `translate3d(${state.current}px, 0, 0)`;
-      const center = state.width / 2;
-      const reach = center + state.slideWidth + 500;
-      const strength = state.reduce ? 0 : parallax;
-      for (let index = 0; index < images.length; index++) {
-        const image = images[index];
-        if (!image) continue;
-        const distance = state.current + state.offset + index * state.pitch + state.slideWidth / 2 - center;
-        if (Math.abs(distance) > reach) continue;
-        image.style.transform = `translate3d(${distance * -strength}px, 0, 0) scale(${zoom})`;
-      }
+      for (let index = 0; index < images.length; index++) paintImage(index);
+    };
+
+    // Sizes the image to cover its frame at its natural ratio, so the part outside the frame
+    // is what the parallax reveals.
+    const fit = (index: number) => {
+      const image = images[index];
+      if (!image?.naturalWidth || !state.slideWidth || !state.slideHeight) return;
+      const frameWidth = state.slideWidth;
+      const frameHeight = state.slideHeight;
+      const ratio = image.naturalWidth / image.naturalHeight;
+      const width = Math.max(frameWidth, frameHeight * ratio) * scale;
+      const height = Math.max(frameHeight, frameWidth / ratio) * scale;
+      const [focusX, focusY] = parseFocus(image.dataset.focus);
+      Object.assign(image.style, {
+        width: `${width}px`, height: `${height}px`,
+        left: `${(frameWidth - width) * focusX}px`, top: `${(frameHeight - height) * focusY}px`,
+      });
+      room[index] = { left: (width - frameWidth) * focusX, right: (width - frameWidth) * (1 - focusX) };
+      paintImage(index);
     };
 
     const step = () => {
@@ -138,6 +172,7 @@ export function ParallaxSlider({
       const previousPitch = state.pitch;
       state.width = viewport.clientWidth;
       state.slideWidth = slideElements[0].offsetWidth;
+      state.slideHeight = slideElements[0].offsetHeight;
       state.offset = slideElements[0].offsetLeft;
       state.pitch = slideElements.length > 1 ? slideElements[1].offsetLeft - slideElements[0].offsetLeft : state.slideWidth;
       state.sequence = state.pitch * count;
@@ -155,6 +190,12 @@ export function ParallaxSlider({
       if (needed > copies) setCopies(needed);
       wrap();
       paint();
+      images.forEach((_, index) => fit(index));
+    };
+
+    const onImageLoad = (event: Event) => {
+      const index = images.indexOf(event.currentTarget as HTMLImageElement);
+      if (index >= 0) fit(index);
     };
 
     const onWheel = (event: WheelEvent) => {
@@ -229,6 +270,7 @@ export function ParallaxSlider({
 
     const resizeObserver = new ResizeObserver(measure);
     resizeObserver.observe(viewport);
+    images.forEach((image) => image?.addEventListener("load", onImageLoad));
     if (scrollOnWheel) viewport.addEventListener("wheel", onWheel, { passive: false });
     viewport.addEventListener("pointerdown", onPointerDown);
     viewport.addEventListener("click", onClick, true);
@@ -244,6 +286,7 @@ export function ParallaxSlider({
       cancelAnimationFrame(state.frame);
       window.clearTimeout(releaseTimer);
       resizeObserver.disconnect();
+      images.forEach((image) => image?.removeEventListener("load", onImageLoad));
       viewport.removeEventListener("wheel", onWheel);
       viewport.removeEventListener("pointerdown", onPointerDown);
       viewport.removeEventListener("click", onClick, true);
@@ -254,10 +297,16 @@ export function ParallaxSlider({
       window.removeEventListener("pointercancel", onPointerUp);
       motionQuery.removeEventListener("change", onMotionChange);
     };
-  }, [count, copies, parallax, zoom, scrollOnWheel]);
+  }, [count, copies, parallax, scale, orientation, scrollOnWheel]);
 
   return (
-    <section ref={rootRef} className={cn("obsidian-parallax-slider", className)} aria-label={hasHeader ? undefined : label} data-moving="false">
+    <section
+      ref={rootRef}
+      className={cn("obsidian-parallax-slider", className)}
+      aria-label={hasHeader ? undefined : label}
+      data-orientation={orientation}
+      data-moving="false"
+    >
       <div className="obsidian-parallax-slider__inner">
         {hasHeader && (
           <div className="obsidian-parallax-slider__header">
@@ -285,13 +334,14 @@ export function ParallaxSlider({
                     {/* eslint-disable-next-line @next/next/no-img-element -- frames are transformed every frame; next/image adds nothing here */}
                     <img
                       data-parallax-image=""
+                      data-focus={slide.focus}
                       className="obsidian-parallax-slider__image"
                       src={slide.image}
                       alt={readable ? slide.alt ?? slide.title : ""}
                       draggable={false}
                       loading="lazy"
                       decoding="async"
-                      style={{ transform: `scale(${zoom})`, transformOrigin: slide.focus }}
+                      style={{ objectPosition: slide.focus }}
                     />
                   </span>
                   <span className="obsidian-parallax-slider__caption">
