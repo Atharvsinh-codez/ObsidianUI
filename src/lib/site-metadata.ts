@@ -24,6 +24,7 @@ export const docsDescriptions: Record<string, string> = {
   "flip-text": "Preview Flip Text, an animated React component whose characters flip and rotate on hover.",
   "text-stream": "Preview Text reel, a vertical text stream that changes speed and direction as you scroll.",
   "draggable-marquee": "Explore a looping image marquee with drag momentum and keyboard controls for React interfaces.",
+  "parallax-slider": "Preview Parallax Slider, an endless React image strip you can drag or scroll, with images that drift inside their frames for depth.",
 };
 
 export type DocsSearchDetails = {
@@ -106,6 +107,13 @@ export const docsSearchDetails: Record<string, DocsSearchDetails> = {
     keywords: ["React hover image", "cursor follow image", "image reveal on hover", "hover preview list", "Motion hover effect", "portfolio link list", "Hover Image", "ObsidianUI"],
     datePublished: "2026-09-23",
     dateModified: "2026-09-25",
+  },
+  "parallax-slider": {
+    title: "Parallax Slider: Infinite React Image Gallery – ObsidianUI",
+    category: "component",
+    keywords: ["React image slider", "infinite gallery", "parallax carousel", "draggable image strip", "horizontal scroll gallery", "portfolio slider", "Parallax Slider", "ObsidianUI"],
+    datePublished: "2026-10-30",
+    dateModified: "2026-10-30",
   },
   "split-showcase": {
     title: "Split Showcase: React Partner Cards – ObsidianUI",

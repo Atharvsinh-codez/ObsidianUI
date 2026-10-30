@@ -4,7 +4,7 @@ Animated, interactive components for React. Built with Tailwind CSS and animatio
 
 ## Explore the components
 
-Find your next detail. Preview it, read the usage example, and copy all required files from its JSON manifest. 12 components have published documentation. The [complete registry](https://www.obsidianui.dev/r/registry.json) also includes supporting UI primitives.
+Find your next detail. Preview it, read the usage example, and copy all required files from its JSON manifest. 13 components have published documentation. The [complete registry](https://www.obsidianui.dev/r/registry.json) also includes supporting UI primitives.
 
 - [Active Sessions](https://www.obsidianui.dev/markdown/docs/active-sessions.md): [download all source files](https://www.obsidianui.dev/r/active-sessions.json) and [interactive preview](https://www.obsidianui.dev/docs/active-sessions).
 - [Art Gallery](https://www.obsidianui.dev/markdown/docs/art-gallery.md): [download all source files](https://www.obsidianui.dev/r/art-gallery.json) and [interactive preview](https://www.obsidianui.dev/docs/art-gallery).
@@ -12,6 +12,7 @@ Find your next detail. Preview it, read the usage example, and copy all required
 - [Draggable Marquee](https://www.obsidianui.dev/markdown/docs/draggable-marquee.md): [download all source files](https://www.obsidianui.dev/r/draggable-marquee.json) and [interactive preview](https://www.obsidianui.dev/docs/draggable-marquee).
 - [Flip Text](https://www.obsidianui.dev/markdown/docs/flip-text.md): [download all source files](https://www.obsidianui.dev/r/flip-text.json) and [interactive preview](https://www.obsidianui.dev/docs/flip-text).
 - [Hover Image](https://www.obsidianui.dev/markdown/docs/hover-img.md): [download all source files](https://www.obsidianui.dev/r/hover-img.json) and [interactive preview](https://www.obsidianui.dev/docs/hover-img).
+- [Parallax Slider](https://www.obsidianui.dev/markdown/docs/parallax-slider.md): [download all source files](https://www.obsidianui.dev/r/parallax-slider.json) and [interactive preview](https://www.obsidianui.dev/docs/parallax-slider).
 - [Split Showcase](https://www.obsidianui.dev/markdown/docs/split-showcase.md): [download all source files](https://www.obsidianui.dev/r/split-showcase.json) and [interactive preview](https://www.obsidianui.dev/docs/split-showcase).
 - [Status Bars](https://www.obsidianui.dev/markdown/docs/status-bars.md): [download all source files](https://www.obsidianui.dev/r/status-bars.json) and [interactive preview](https://www.obsidianui.dev/docs/status-bars).
 - [Text reel](https://www.obsidianui.dev/markdown/docs/text-stream.md): [download all source files](https://www.obsidianui.dev/r/text-stream.json) and [interactive preview](https://www.obsidianui.dev/docs/text-stream).

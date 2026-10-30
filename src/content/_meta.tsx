@@ -25,6 +25,7 @@ const meta = {
     "draggable-marquee": "Draggable Marquee",
     "flip-text": "Flip Text",
     "hover-img": "Hover Image",
+    "parallax-slider": "Parallax Slider",
     "split-showcase": "Split Showcase",
     "status-bars": "Status Bars",
     "text-stream": "Text reel",

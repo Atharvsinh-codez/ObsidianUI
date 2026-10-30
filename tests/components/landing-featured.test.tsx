@@ -64,13 +64,13 @@ describe('landing featured components', () => {
         expect(previewInteraction).toHaveBeenCalledWith('art-gallery')
     })
 
-    it('keeps Analytics Dashboard featured with v-prism starting the grid', () => {
+    it('keeps Analytics Dashboard featured with Parallax Slider starting the grid', () => {
         const { container } = render(<ComponentsGrid />)
         expect(container.querySelector('.component-showcase-featured a[aria-label]'))
             .toHaveAttribute('href', '/docs/analytics-dashboard')
         const links = container.querySelectorAll('.component-showcase-grid a[aria-label$=" documentation"]')
         expect([...links].map(link => link.getAttribute('href'))).toEqual([
-            '/docs/v-prism', '/docs/dashboard-shell', '/docs/active-sessions', '/docs/status-bars', '/docs/discover-button', '/docs/split-showcase', '/docs/art-gallery', '/docs/hover-img',
+            '/docs/parallax-slider', '/docs/v-prism', '/docs/dashboard-shell', '/docs/active-sessions', '/docs/status-bars', '/docs/discover-button', '/docs/split-showcase', '/docs/art-gallery', '/docs/hover-img',
             '/docs/draggable-marquee', '/docs/text-stream', '/docs/flip-text',
         ])
     })
@@ -79,7 +79,7 @@ describe('landing featured components', () => {
         const { container } = render(<ComponentsGrid />)
         const badged = [...container.querySelectorAll('.component-showcase-grid .component-showcase-badge')]
             .map(badge => badge.closest('article')?.querySelector('a[aria-label]')?.getAttribute('href'))
-        expect(badged).toEqual(['/docs/dashboard-shell', '/docs/active-sessions', '/docs/status-bars', '/docs/discover-button'])
+        expect(badged).toEqual(['/docs/parallax-slider', '/docs/dashboard-shell', '/docs/active-sessions', '/docs/status-bars', '/docs/discover-button'])
         expect(container.querySelector('.component-showcase-featured .component-showcase-badge')).toBeNull()
     })
 })

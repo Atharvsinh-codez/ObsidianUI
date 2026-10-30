@@ -12,6 +12,7 @@ Installation guides and complete component source.
 - [Draggable Marquee](https://www.obsidianui.dev/markdown/docs/draggable-marquee.md)
 - [Flip Text](https://www.obsidianui.dev/markdown/docs/flip-text.md)
 - [Hover Image](https://www.obsidianui.dev/markdown/docs/hover-img.md)
+- [Parallax Slider](https://www.obsidianui.dev/markdown/docs/parallax-slider.md)
 - [Split Showcase](https://www.obsidianui.dev/markdown/docs/split-showcase.md)
 - [Status Bars](https://www.obsidianui.dev/markdown/docs/status-bars.md)
 - [Text reel](https://www.obsidianui.dev/markdown/docs/text-stream.md)

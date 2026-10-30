@@ -18,6 +18,7 @@ import './components-grid.css'
 import FlipText from '@/components/block/flip-text'
 import { DiscoverButton } from '@/components/block/discover-button'
 import { HoverImg } from '@/components/block/hover-img'
+import { ParallaxSlider } from '@/components/block/parallax-slider'
 import { SplitShowcase, VercelLogo, TracwellLogo } from '@/components/block/split-showcase'
 
 type ShowcaseSize = 'short' | 'medium' | 'tall'
@@ -39,6 +40,18 @@ const effectSizes: Partial<Record<string, ShowcaseSize>> = { 'draggable-marquee'
 const allComponents: ShowcaseItem[] = [
     // Full size and unscaled so the featured card is the live, usable dashboard.
     { title: 'Analytics Dashboard', href: '/docs/analytics-dashboard', preview: <AnalyticsDashboardPreview /> },
+    {
+        title: 'Parallax Slider',
+        href: '/docs/parallax-slider',
+        size: 'tall',
+        isNew: true,
+        // The wheel stays with the page so scrolling past the grid never gets caught by the card.
+        preview: (
+            <div className="flex h-full w-full items-center bg-[#080808] pt-8">
+                <ParallaxSlider scrollOnWheel={false} label="Parallax Slider preview" />
+            </div>
+        ),
+    },
     { title: 'v-prism', href: '/docs/v-prism', size: 'tall', preview: <EffectPreview slug="v-prism" compact /> },
     {
         title: 'Dashboard Shell',
@@ -90,7 +103,7 @@ const allComponents: ShowcaseItem[] = [
             </div>
         ),
     },
-    { title: 'Art Gallery', href: '/docs/art-gallery', size: 'short', preview: <EffectPreview slug="art-gallery" compact /> },
+    { title: 'Art Gallery', href: '/docs/art-gallery', preview: <EffectPreview slug="art-gallery" compact /> },
     {
         title: 'Hover Image',
         href: '/docs/hover-img',

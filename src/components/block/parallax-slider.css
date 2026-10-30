@@ -1,0 +1,209 @@
+.obsidian-parallax-slider {
+  --obsidian-parallax-background: #080808;
+  --obsidian-parallax-foreground: #f2f2f2;
+  --obsidian-parallax-muted: #6b6b6b;
+  --obsidian-parallax-caption: rgb(255 255 255 / 0.6);
+  --obsidian-parallax-frame: rgb(255 255 255 / 0.04);
+  --obsidian-parallax-slide-width: 350px;
+  --obsidian-parallax-slide-height: 480px;
+  --obsidian-parallax-gap: 32px;
+  --obsidian-parallax-mono: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--obsidian-parallax-background);
+  color: var(--obsidian-parallax-foreground);
+}
+
+.obsidian-parallax-slider__inner {
+  padding-block: 6rem;
+}
+
+.obsidian-parallax-slider__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0 2.5rem 4rem;
+}
+
+.obsidian-parallax-slider__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 1.5rem;
+  font-family: var(--obsidian-parallax-mono);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--obsidian-parallax-muted);
+}
+
+.obsidian-parallax-slider__eyebrow::before {
+  content: "";
+  display: block;
+  width: 1.5rem;
+  height: 1px;
+  background: currentColor;
+}
+
+.obsidian-parallax-slider__title {
+  margin: 0;
+  font-size: clamp(2.5rem, 6cqi, 5.5rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: inherit;
+}
+
+.obsidian-parallax-slider__description {
+  max-width: 280px;
+  margin: 0;
+  font-family: var(--obsidian-parallax-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  line-height: 1.7;
+  text-align: right;
+  text-transform: uppercase;
+  color: var(--obsidian-parallax-muted);
+}
+
+.obsidian-parallax-slider__viewport {
+  position: relative;
+  height: calc(var(--obsidian-parallax-slide-height) + 3rem);
+  overflow: hidden;
+  overflow: clip;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+
+.obsidian-parallax-slider[data-dragging="true"] .obsidian-parallax-slider__viewport {
+  cursor: grabbing;
+}
+
+.obsidian-parallax-slider__viewport:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--obsidian-parallax-caption);
+}
+
+.obsidian-parallax-slider__track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  gap: var(--obsidian-parallax-gap);
+  padding-inline-start: calc(var(--obsidian-parallax-gap) / 2);
+  will-change: transform;
+}
+
+.obsidian-parallax-slider__slide {
+  position: relative;
+  flex: none;
+  width: var(--obsidian-parallax-slide-width);
+  height: var(--obsidian-parallax-slide-height);
+}
+
+.obsidian-parallax-slider__link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+.obsidian-parallax-slider__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--obsidian-parallax-frame);
+}
+
+.obsidian-parallax-slider__link:focus-visible .obsidian-parallax-slider__frame {
+  box-shadow: inset 0 0 0 2px var(--obsidian-parallax-foreground);
+}
+
+.obsidian-parallax-slider__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.obsidian-parallax-slider__caption {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--obsidian-parallax-mono);
+  font-size: 0.7rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--obsidian-parallax-caption);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.obsidian-parallax-slider__caption svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  stroke-width: 2;
+}
+
+.obsidian-parallax-slider__slide:hover .obsidian-parallax-slider__caption,
+.obsidian-parallax-slider__link:focus-visible .obsidian-parallax-slider__caption {
+  opacity: 1;
+}
+
+/* Touch screens have no hover, so captions stay up whenever the strip is still. */
+@media (hover: none) {
+  .obsidian-parallax-slider__caption {
+    opacity: 1;
+  }
+}
+
+.obsidian-parallax-slider[data-moving="true"] .obsidian-parallax-slider__caption {
+  opacity: 0;
+}
+
+@container (max-width: 720px) {
+  .obsidian-parallax-slider__inner {
+    padding-block: 3.5rem;
+  }
+
+  .obsidian-parallax-slider__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0 1.25rem 2.5rem;
+  }
+
+  .obsidian-parallax-slider__description {
+    text-align: left;
+  }
+
+  .obsidian-parallax-slider__viewport {
+    --obsidian-parallax-slide-width: 200px;
+    --obsidian-parallax-slide-height: 280px;
+    --obsidian-parallax-gap: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .obsidian-parallax-slider__caption {
+    transition: none;
+  }
+}

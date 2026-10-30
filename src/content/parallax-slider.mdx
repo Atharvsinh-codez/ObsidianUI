@@ -1,0 +1,103 @@
+import { Dependencies } from '@/components/docs/component-installation'
+import { CLICommand } from '@/components/docs/cli-command'
+import { PropsTable } from '@/components/docs/props-table'
+import { ComponentPreview } from '@/components/docs/component-preview'
+import { ParallaxSlider } from '@/components/block/parallax-slider'
+
+# Parallax Slider
+
+An endless strip of tall image frames. Drag it, scroll over it, or focus it and use the arrow keys. The strip glides to a stop, and each image drifts against the motion inside its frame, so the gallery feels deep. A slide's title appears below it on hover once the strip is still.
+
+<ComponentPreview
+  component={
+    <ParallaxSlider
+      className="parallax-slider-docs-preview"
+      eyebrow="Infinite Gallery"
+      title={<>Quiet<br />Frames</>}
+      description="Drag or scroll to browse. Each frame is its own quiet scene."
+    />
+  }
+  code={`import { ParallaxSlider } from '@/components/block/parallax-slider'
+
+export function Demo() {
+  return (
+    <ParallaxSlider
+      eyebrow="Infinite Gallery"
+      title={<>Quiet<br />Frames</>}
+      description="Drag or scroll to browse. Each frame is its own quiet scene."
+    />
+  )
+}`}
+  previewClassName="p-0 sm:p-0"
+  expandable
+/>
+
+## Install using CLI
+
+<CLICommand componentName="parallax-slider" />
+
+## Usage
+
+```tsx copy
+import { ParallaxSlider } from '@/components/block/parallax-slider'
+
+<ParallaxSlider
+  label="Projects"
+  slides={[
+    { title: 'Studio Tide', image: '/images/studio-tide.webp', href: '/work/studio-tide' },
+    { title: 'Petal Room', image: '/images/petal-room.webp', href: '/work/petal-room', focus: '50% 25%' },
+  ]}
+/>
+```
+
+Without `slides`, the slider shows five demo images hosted by ObsidianUI. Replace them with your own images before you ship.
+
+Images are zoomed so they have room to drift. Use `focus` to keep the important part of an image in view; it takes any CSS `transform-origin` value, such as `50% 25%` for a face near the top.
+
+Add `href` to make a slide a link. A drag never opens a link, so visitors can drag across slides freely.
+
+## Wheel and keyboard
+
+The mouse wheel and trackpad move the slider while the pointer is over it. Set `scrollOnWheel={false}` if the slider sits in a long page and should never hold the page scroll.
+
+The strip is one tab stop. The left and right arrow keys move it one slide at a time, and tabbing to a slide link brings that slide to the center. With reduced motion turned on, the strip moves without gliding and the images stay still.
+
+## Customize the look
+
+Override the CSS variables on the component or any parent:
+
+```css copy
+.obsidian-parallax-slider {
+  --obsidian-parallax-background: #f4f4f1;
+  --obsidian-parallax-foreground: #171717;
+  --obsidian-parallax-muted: #737373;
+  --obsidian-parallax-caption: rgb(0 0 0 / 0.6);
+  --obsidian-parallax-slide-width: 320px;
+  --obsidian-parallax-slide-height: 440px;
+  --obsidian-parallax-gap: 24px;
+}
+```
+
+When the slider is narrower than 720px, it uses 200 by 280 pixel slides and stacks the header.
+
+## Install manually
+
+<Dependencies step={1} title="Copy the source code" source="parallax-slider">
+  <p className="mt-2 text-sm text-muted-foreground">Add the registry source to <code>components/block/parallax-slider.tsx</code> and its stylesheet to <code>components/block/parallax-slider.css</code>. Install the listed dependencies from the registry item.</p>
+</Dependencies>
+
+## Props
+
+<PropsTable
+  data={[
+    { prop: 'slides', type: 'ParallaxSlide[]', defaultValue: 'Five demo images', description: 'Slides in order. Each needs a title and image; alt, href, and focus are optional.' },
+    { prop: 'eyebrow', type: 'ReactNode', defaultValue: '-', description: 'Small label above the title.' },
+    { prop: 'title', type: 'ReactNode', defaultValue: '-', description: 'Heading shown above the strip.' },
+    { prop: 'description', type: 'ReactNode', defaultValue: '-', description: 'Short note beside the heading.' },
+    { prop: 'parallax', type: 'number', defaultValue: '0.25', description: 'How far images drift against the motion. Use 0 to turn the drift off.' },
+    { prop: 'zoom', type: 'number', defaultValue: '2.25', description: 'Image scale inside each frame. Lower values show more of the image but leave less room to drift.' },
+    { prop: 'scrollOnWheel', type: 'boolean', defaultValue: 'true', description: 'Lets the mouse wheel and trackpad move the slider.' },
+    { prop: 'label', type: 'string', defaultValue: 'Gallery', description: 'Accessible name for the slider.' },
+    { prop: 'className', type: 'string', defaultValue: '-', description: 'Additional classes for the root element.' },
+  ]}
+/>

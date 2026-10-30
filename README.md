@@ -44,6 +44,7 @@ Made with Droid:
 - [Active Sessions](https://www.obsidianui.dev/docs/active-sessions)
 - [Status Bars](https://www.obsidianui.dev/docs/status-bars)
 - [Discover Button](https://www.obsidianui.dev/docs/discover-button)
+- [Parallax Slider](https://www.obsidianui.dev/docs/parallax-slider)
 
 **Now cooking:** a **Dashboard** component, built with Factory. Coming soon.
 

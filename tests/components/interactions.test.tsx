@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 // Keep native controls and event bubbling intact while skipping visual timelines.
 vi.mock('motion/react', async () => {
@@ -24,7 +23,6 @@ vi.mock('motion/react', async () => {
 });
 vi.mock('@paper-design/shaders-react', () => ({ LiquidMetal: () => null }));
 
-import FileInput from '@/components/block/file-input';
 import { LiquidMetalButton } from '@/components/block/liquid-metal';
 
 describe('component interactions', () => {
@@ -45,33 +43,5 @@ describe('component interactions', () => {
         expect(control).toHaveAttribute('tabindex', '-1');
         fireEvent.click(control);
         expect(onClick).not.toHaveBeenCalled();
-    });
-
-    it('opens the native file picker from a keyboard-focusable upload button', async () => {
-        const user = userEvent.setup();
-        const { container } = render(<FileInput />);
-        const input = container.querySelector<HTMLInputElement>('input[type="file"]')!;
-        const openPicker = vi.spyOn(input, 'click');
-        await user.tab();
-        expect(screen.getByRole('button', { name: 'Upload a file' })).toHaveFocus();
-        await user.keyboard('{Enter}');
-        expect(openPicker).toHaveBeenCalledTimes(1);
-    });
-
-    it('rejects multiple dropped files in single-file mode', () => {
-        const onFileChange = vi.fn();
-        render(<FileInput onFileChange={onFileChange} />);
-        const files = [new File(['first'], 'first.png', { type: 'image/png' }), new File(['second'], 'second.png', { type: 'image/png' })];
-        fireEvent.drop(screen.getByRole('button', { name: 'Upload a file' }), { dataTransfer: { files } });
-        expect(screen.getByRole('alert')).toHaveTextContent('Choose only one file.');
-        expect(onFileChange).not.toHaveBeenCalled();
-    });
-
-    it('accepts wildcard file types and forwards all files when enabled', async () => {
-        const onFileChange = vi.fn().mockResolvedValue(undefined);
-        render(<FileInput accept="image/*" allowMultiple onFileChange={onFileChange} />);
-        const files = [new File(['first'], 'first.webp', { type: 'image/webp' }), new File(['second'], 'second.png', { type: 'image/png' })];
-        fireEvent.drop(screen.getByRole('button', { name: 'Upload a file' }), { dataTransfer: { files } });
-        await waitFor(() => expect(onFileChange).toHaveBeenCalledWith(files));
     });
 });

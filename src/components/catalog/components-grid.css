@@ -137,6 +137,10 @@
   border-radius: 0;
 }
 
+.component-showcase-media .obsidian-parallax-slider__inner {
+  padding-block: 0;
+}
+
 .component-showcase-card-hover-image .component-showcase-frame,
 .component-showcase-card-hover-image .component-showcase-media,
 .component-showcase-card-hover-image .hover-img-container {

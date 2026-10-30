@@ -42,6 +42,7 @@ test("sidebar groups every published documentation file once and keeps installat
     "split-showcase": "Components",
     "text-stream": "Components",
     "draggable-marquee": "Components",
+    "parallax-slider": "Components",
   };
   for (const [slug, group] of Object.entries(expectedCategories)) {
     assert.ok(groups.get(group)?.includes(slug), `${slug} belongs in ${group}`);
