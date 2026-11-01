@@ -50,9 +50,9 @@ test("installer version-checks and validates both files before any write", () =>
       mkdirSync(path.dirname(filename), { recursive: true });
       writeFileSync(filename, template);
     }
-    writeVersion("16.3.5");
-    assert.throws(() => patchNextVary(directory), /supports Next 16\.3\.4 only/);
-    writeVersion("16.3.4");
+    writeVersion("16.4.4");
+    assert.throws(() => patchNextVary(directory), /supports Next 16\.4\.3 only/);
+    writeVersion("16.4.3");
     writeFileSync(path.join(directory, PATCH_TARGETS[1]), "changed upstream");
     assert.throws(() => patchNextVary(directory), /template changed/);
     assert.equal(readFileSync(path.join(directory, PATCH_TARGETS[0]), "utf8"), template);

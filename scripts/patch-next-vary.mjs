@@ -3,7 +3,7 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-export const SUPPORTED_NEXT_VERSION = "16.3.4";
+export const SUPPORTED_NEXT_VERSION = "16.4.3";
 export const PATCH_TARGETS = [
   "dist/build/templates/app-page-runtime.js",
   "dist/esm/build/templates/app-page-runtime.js",
@@ -15,7 +15,7 @@ const originalBlock = [
 ].join("\n");
 const patchedBlock = [
   "const varyHeader = routeModule.getVaryHeader(resolvedPathname, interceptionRoutePatterns);",
-  "            // ObsidianUI compatibility: preserve upstream Vary in Next 16.3.4.",
+  "            // ObsidianUI compatibility: preserve upstream Vary in Next 16.4.3.",
   "            const existingVary = res.getHeader('Vary');",
   "            const varyTokens = [...(Array.isArray(existingVary) ? existingVary : [existingVary]), varyHeader]",
   "                .filter((value) => value != null)",

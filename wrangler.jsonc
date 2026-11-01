@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "obsidianui",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Zone routes run on the existing proxied DNS records; the apex record must be proxied (orange cloud).
+  "routes": [
+    { "pattern": "www.obsidianui.dev/*", "zone_name": "obsidianui.dev" },
+    { "pattern": "obsidianui.dev/*", "zone_name": "obsidianui.dev" }
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      // Lets the worker call itself for ISR revalidation; must match "name".
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "obsidianui"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "obsidianui-next-cache"
+    }
+  ],
+  "images": {
+    "binding": "IMAGES"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

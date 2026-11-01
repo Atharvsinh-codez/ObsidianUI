@@ -19,7 +19,7 @@ const nextConfig = {
             { key: 'X-Content-Type-Options', value: 'nosniff' },
             { key: 'Link', value: '</llms.txt>; rel="describedby"' },
         ];
-        // Docs & page cache: s-maxage caches on Vercel edge CDN; stale-while-revalidate serves stale during revalidation.
+        // Docs & page cache: s-maxage caches on the CDN; stale-while-revalidate serves stale during revalidation.
         const pageCacheHeaders = [
             { key: 'Cache-Control', value: 'public, s-maxage=3600, stale-while-revalidate=86400' },
         ];
@@ -42,6 +42,14 @@ const nextConfig = {
             { source: '/docs', headers: pageCacheHeaders },
             { source: '/docs/:path*', headers: pageCacheHeaders },
         ];
+    },
+    async redirects() {
+        return [{
+            source: '/:path*',
+            has: [{ type: 'host', value: 'obsidianui.dev' }],
+            destination: 'https://www.obsidianui.dev/:path*',
+            permanent: true,
+        }];
     },
     async rewrites() {
         return [{ source: '/cdn/:path*', destination: 'https://cdn-new.obsidianui.dev/:path*' }];

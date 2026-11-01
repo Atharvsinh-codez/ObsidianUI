@@ -1,0 +1,52 @@
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/effects/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/logo/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/folder-preview/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/r/*
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+  Link: </llms.txt>; rel="describedby"
+
+/markdown/*
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+  Link: </llms.txt>; rel="describedby"
+  Content-Type: text/markdown; charset=utf-8
+
+/agent-instructions.md
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+  Link: </llms.txt>; rel="describedby"
+  Content-Type: text/markdown; charset=utf-8
+
+/llms.txt
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+  Link: </llms.txt>; rel="describedby"
+  Content-Type: text/plain; charset=utf-8
+
+/llm.txt
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+  Link: </llms.txt>; rel="describedby"
+  Content-Type: text/plain; charset=utf-8
+
+/llms-full.txt
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+  Link: </llms.txt>; rel="describedby"
+  Content-Type: text/plain; charset=utf-8
+
+/robots.txt
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+  Link: </llms.txt>; rel="describedby"
+  Content-Type: text/plain; charset=utf-8

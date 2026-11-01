@@ -12,9 +12,9 @@ const request = (pathname: string, accept = "*/*", init: NextRequestInit = {}) =
 };
 const documentVary = "Accept, Accept-Encoding, RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch";
 
-test("every known page negotiates a bounded generated Markdown URL and advertises alternatives", () => {
+test("every known page negotiates a bounded generated Markdown URL and advertises alternatives", async () => {
   for (const [pathname, markdown] of Object.entries(routeMap)) {
-    const response = proxy(request(`${pathname}?campaign=test`, "text/markdown"));
+    const response = await proxy(request(`${pathname}?campaign=test`, "text/markdown"));
     assert.equal(response.status, 200, pathname);
     assert.equal(response.headers.get("x-middleware-rewrite"), `https://www.obsidianui.dev${markdown}`, pathname);
     assert.equal(response.headers.get("content-type"), "text/markdown; charset=utf-8");
@@ -24,10 +24,10 @@ test("every known page negotiates a bounded generated Markdown URL and advertise
   }
 });
 
-test("HTML and default clients retain pages, including the existing docs redirect", () => {
+test("HTML and default clients retain pages, including the existing docs redirect", async () => {
   for (const accept of ["*/*", "text/html", "text/markdown;q=0.4,text/html;q=0.8"]) {
     for (const pathname of ["/", "/components", "/api", "/docs"]) {
-      const response = proxy(request(pathname, accept));
+      const response = await proxy(request(pathname, accept));
       assert.equal(response.headers.get("x-middleware-next"), "1");
       assert.equal(response.headers.get("x-middleware-rewrite"), null);
       assert.equal(response.headers.get("vary"), documentVary);
@@ -36,25 +36,25 @@ test("HTML and default clients retain pages, including the existing docs redirec
   }
 });
 
-test("all predictable Markdown aliases are mapped without filesystem reads", () => {
+test("all predictable Markdown aliases are mapped without filesystem reads", async () => {
   for (const [pathname, markdown] of Object.entries(routeMap)) {
     const alias = pathname === "/" ? "/index.md" : `${pathname}.md`;
-    assert.equal(proxy(request(alias)).headers.get("x-middleware-rewrite"), `https://www.obsidianui.dev${markdown}`);
+    assert.equal((await proxy(request(alias))).headers.get("x-middleware-rewrite"), `https://www.obsidianui.dev${markdown}`);
   }
-  assert.equal(proxy(request("/components.md", "text/html")).status, 406);
+  assert.equal((await proxy(request("/components.md", "text/html"))).status, 406);
 });
 
 test("unsupported representation receives 406 rather than incorrect content", async () => {
-  const response = proxy(request("/components", "application/json"));
+  const response = await proxy(request("/components", "application/json"));
   assert.equal(response.status, 406);
   assert.match(await response.text(), /Accept: text\/html or Accept: text\/markdown/);
   assert.equal(response.headers.get("vary"), documentVary);
 });
 
-test("missing document URLs reach the HTML not-found page for HTML clients", () => {
+test("missing document URLs reach the HTML not-found page for HTML clients", async () => {
   for (const pathname of ["/missing", "/docs/removed-component", "/constructor", "/__proto__"]) {
     for (const accept of ["*/*", "text/html"]) {
-      const response = proxy(request(pathname, accept));
+      const response = await proxy(request(pathname, accept));
       assert.equal(response.headers.get("x-middleware-next"), "1", pathname);
       assert.equal(response.headers.get("content-type"), null);
     }
@@ -63,7 +63,7 @@ test("missing document URLs reach the HTML not-found page for HTML clients", () 
 
 test("missing document URLs return concise Markdown 404 recovery to Markdown clients", async () => {
   for (const pathname of ["/missing", "/docs/removed-component", "/docs/missing.md", "/constructor", "/__proto__", "/docs/%2e%2e%2fprivate.md", "/docs/a%5cb.md"]) {
-    const response = proxy(request(pathname, "text/markdown"));
+    const response = await proxy(request(pathname, "text/markdown"));
     assert.equal(response.status, 404, pathname);
     assert.equal(response.headers.get("content-type"), "text/markdown; charset=utf-8");
     assert.equal(response.headers.get("cache-control"), "no-store");
@@ -76,40 +76,40 @@ test("missing document URLs return concise Markdown 404 recovery to Markdown cli
 });
 
 test("HEAD negotiates the same route and error headers without an error body", async () => {
-  const head = proxy(request("/components", "text/markdown", { method: "HEAD" }));
+  const head = await proxy(request("/components", "text/markdown", { method: "HEAD" }));
   assert.equal(head.headers.get("x-middleware-rewrite"), "https://www.obsidianui.dev/markdown/components.md");
   for (const [pathname, accept, status] of [["/missing", "text/markdown", 404], ["/components", "application/json", 406]] as const) {
-    const response = proxy(request(pathname, accept, { method: "HEAD" }));
+    const response = await proxy(request(pathname, accept, { method: "HEAD" }));
     assert.equal(response.status, status);
     assert.equal(await response.text(), "");
   }
 });
 
-test("RSC navigation stays in Next and cannot become a Markdown rewrite", () => {
+test("RSC navigation stays in Next and cannot become a Markdown rewrite", async () => {
   const variants: NextRequestInit[] = [{ headers: { rsc: "1" } }, { headers: { Accept: "text/x-component" } }];
   for (const pathname of ["/components", "/docs/missing"]) {
     for (const init of variants) {
-      const response = proxy(request(pathname, "text/markdown", init));
+      const response = await proxy(request(pathname, "text/markdown", init));
       assert.equal(response.headers.get("x-middleware-next"), "1");
       assert.equal(response.headers.get("x-middleware-rewrite"), null);
     }
   }
 });
 
-test("write methods, API routes, registries and static assets keep existing handling", () => {
+test("write methods, API routes, registries and static assets keep existing handling", async () => {
   for (const method of ["POST", "PUT", "PATCH", "DELETE", "OPTIONS"]) {
-    assert.equal(proxy(request("/components", "text/markdown", { method })).headers.get("x-middleware-next"), "1");
+    assert.equal((await proxy(request("/components", "text/markdown", { method }))).headers.get("x-middleware-next"), "1");
   }
   for (const pathname of ["/api/docs/installation/markdown", "/r/art-gallery.json", "/_next/static/chunk.js", "/_next/image", "/_pagefind/pagefind.js", "/markdown/index.md", "/logo.svg", "/effects/demo.png", "/openapi.json", "/robots.txt", "/llms.txt", "/agent-instructions.md", "/.well-known/example"]) {
-    const response = proxy(request(pathname, "text/markdown"));
+    const response = await proxy(request(pathname, "text/markdown"));
     assert.equal(response.headers.get("x-middleware-next"), "1", pathname);
     assert.equal(response.headers.get("vary"), null);
   }
 });
 
-test("agent User-Agents receive the same public negotiation behavior as every reader", () => {
+test("agent User-Agents receive the same public negotiation behavior as every reader", async () => {
   for (const userAgent of ["GPTBot", "ClaudeBot", "ChatGPT-User", "PerplexityBot", "Google-Extended", "Applebot-Extended", "DeepSeekBot", "Mozilla/5.0"]) {
-    const response = proxy(request("/", "text/html", { headers: { "User-Agent": userAgent } }));
+    const response = await proxy(request("/", "text/html", { headers: { "User-Agent": userAgent } }));
     assert.equal(response.headers.get("x-middleware-next"), "1");
     assert.equal(response.status, 200);
   }

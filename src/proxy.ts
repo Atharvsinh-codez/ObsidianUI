@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import routeMap from "./lib/generated/agent-route-map.json";
 import { acceptsMarkdown, acceptsReactStream, appendVary, negotiateDocument } from "./lib/agent/content-negotiation";
 
@@ -28,7 +29,31 @@ function markdownResponse(request: NextRequest, body: string, status: number) {
   return documentHeaders(response);
 }
 
-function rewriteMarkdown(request: NextRequest, pathname: string) {
+function assetsBinding(): { fetch(input: string | URL): Promise<Response> } | undefined {
+  try {
+    return getCloudflareContext().env.ASSETS;
+  } catch {
+    // Outside a Worker (next dev, next start, tests) there is no Cloudflare context.
+    return undefined;
+  }
+}
+
+async function rewriteMarkdown(request: NextRequest, pathname: string) {
+  // On Workers, public files live in the assets binding, which proxy rewrites never reach.
+  const assets = assetsBinding();
+  if (assets) {
+    const asset = await assets.fetch(new URL(pathname, request.url));
+    if (!asset.ok) {
+      await asset.body?.cancel();
+      return markdownResponse(request, recovery, 404);
+    }
+    if (request.method === "HEAD") await asset.body?.cancel();
+    const response = new NextResponse(request.method === "HEAD" ? null : asset.body, {
+      status: 200,
+      headers: { "Content-Type": "text/markdown; charset=utf-8", "Access-Control-Allow-Origin": "*" },
+    });
+    return documentHeaders(response, pathname);
+  }
   const target = request.nextUrl.clone();
   target.pathname = pathname;
   target.search = "";
@@ -39,7 +64,7 @@ function rewriteMarkdown(request: NextRequest, pathname: string) {
   return documentHeaders(response, pathname);
 }
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   if (request.method !== "GET" && request.method !== "HEAD") return NextResponse.next();
   const pathname = request.nextUrl.pathname;
   const accept = request.headers.get("accept");

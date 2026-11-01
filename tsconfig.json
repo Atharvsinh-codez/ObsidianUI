@@ -38,6 +38,8 @@
   ],
   "exclude": [
     "node_modules",
+    ".open-next",
+    ".wrangler",
     "v-prism-recreate-by-athrix",
     "UK1Sb-ZRte2Iv3pphsfge-files (1)"
   ]
